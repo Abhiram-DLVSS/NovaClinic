@@ -159,6 +159,16 @@ a:focus {
   color: #ffffff;
   text-transform: uppercase;
 }
+.navbar-brand2 span {
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: bold;
+  font-size: 22px;
+  background-color: #fff; 
+  border-radius: 20px;
+  color: #000;
+  text-transform: uppercase;
+}
 
 .custom_nav-container {
   padding: 0;
@@ -1006,7 +1016,7 @@ a:focus {
 .form-check-book-button:hover{
   background-color: #2EE59D;
   font-weight: bolder;
-  letter-spacing: 1.5px;
+  /* letter-spacing: 1.5px; */
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
   /* color: #fff; */
   transform: translateY(1px);
@@ -1034,11 +1044,15 @@ a:focus {
 .form-check-apply-button:hover{
   background-color: #2EE59D;
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  /* color: #fff; */
-  font-size: 14px;
+  /* font-size: 14px; */
   border: none;
-  font-weight: bolder;
+  /* font-weight: bolder; */
   transform: translateY(1px);
+  
+  /* box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #22bb7e;
+  border: none;
+  transform: translateY(1px); */
 }
 .form-check-for-button{
   width: 90%;
@@ -1116,3 +1130,14 @@ a:focus {
 .modal-content{
   border-radius: 20px;
 }
+/* .bd-highlight{
+  border: 2px solid black;
+} */
+.modal-body-date{
+  padding: 10px 10px 10px 100px;
+  /* border: 2px solid black; */
+}
+/* .datePicker{
+  display: block;
+  margin : 0 auto;
+} */

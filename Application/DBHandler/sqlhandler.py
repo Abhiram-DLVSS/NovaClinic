@@ -8,16 +8,6 @@ class Mysqlhandler:
 		
 	def __init__(self):
 		pass
-	def add_user(self,name,phno,email,message):
-		cursor=cnx.cursor()
-		query = ("insert into test values('{}',{},'{}','{}');".format(name,phno,email,message))
-		cursor.execute(query)
-		cursor.execute("commit")
-		print("Added User.")
-		cursor=cnx.cursor()
-		query = ("select * from test;")
-		cursor.execute(query)
-		return
 	def show_doctors():
 		cursor=cnx.cursor()
 		query = ("select * from doctors;")

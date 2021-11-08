@@ -75,7 +75,11 @@ def aptmnt():
 def process_qt_calculation1():
     print("workin")
     if request.method == "POST":
-        qtc_data = request.form.get('p_Lname')
-        print(qtc_data)
-    results = {'processed': 'true'}
-    return jsonify(results)
+        p_Lname = request.form.get('p_Lname')
+        p_Fname = request.form.get('p_Fname')
+        age = request.form.get('age')
+        gender = request.form.get('gender')
+        date = request.form.get('date')
+        results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date}
+        print(results)
+    return results
