@@ -13,7 +13,7 @@
   <meta name="author" content="" />
   <link rel="shortcut icon" href="static/images/favicon.png" type="">
 
-  <title> Nova Clinic </title>
+  <title> Nova Clinic</title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
@@ -30,8 +30,8 @@
 
   <!-- Custom styles for this template -->
   <link href="/static/css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="/static/css/responsive.css" rel="stylesheet" />
+  
+  <!-- <link href="/static/css/bs-datepicker.css" rel="stylesheet" /> -->
   
   <!-- AJAX -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
@@ -58,6 +58,14 @@
 
          
         </nav>
+      </div>
+      <br>
+      <div class="container" style="">
+          <a class="navbar-brand2" href="/">
+            <span>
+              Doctors
+            </span>
+          </a>
       </div>
     </header>
     <!-- end header section -->
@@ -162,7 +170,7 @@
           <div class="card-body">
             <h5 class="card-title">{{a_tuple[0]}}</h5>
             <br>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">Speciality: {{a_tuple[1]}}</li>
@@ -171,22 +179,23 @@
           </ul>
           <div class="card-body">
             <div class="button-cen">
-              <a href="/aptmnt" >
+              <!-- <a href="/aptmnt" >
                   <button class="form-check-book-button" type="submit" name="book" id="book" value="{{a_tuple[0]}}" formmethod="post">Book  Appointment</button>
-              </a>
+              </a> -->
               <button type="button" 
                     class="btn form-check-book-button" 
                     data-toggle="modal" 
                     name="book1"
                     id="book1"
                     value="{{a_tuple[0]}}"
-                    data-target="#exampleModal">
-                    {{a_tuple[0]}}
+                    data-target="#book-modal">
+                    <!-- {{a_tuple[0]}} -->
+                    Book Appointment
             </button>
   
             <!-- Modal -->
             <div class="modal fade"
-                 id="exampleModal" data-backdrop="static" data-bs-keyboard="false">
+                 id="book-modal" data-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -195,7 +204,8 @@
                             <button type="button" 
                                     class="close" 
                                     data-dismiss="modal" 
-                                    aria-label="Close">
+                                    aria-label="Close"
+                                    id="modalClose">
                                 <span aria-hidden="true">
                                   x</span>
                             </button>
@@ -209,15 +219,15 @@
                             name="self"
                             id="self"
                             value="{{a_tuple[0]}}"
-                            data-target="#self-modal">
+                            data-target="#date-modal">
                             Self</button>
                             <br>
                             <br>
                               <button type="button" class="btn form-check-for-button"
                               data-toggle="modal" 
                               data-dismiss="modal"
-                              name="self"
-                              id="self"
+                              name="others"
+                              id="others"
                               value="{{a_tuple[0]}}"
                               data-target="#others-modal">Others</button>
                         </div>
@@ -234,41 +244,7 @@
                 </div>
             </div>
 
-            <div class="modal fade"
-            id="self-modal" data-backdrop="static" data-bs-keyboard="false">
-           <div class="modal-dialog modal-dialog-centered">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <h5 class="modal-title" id="modal_title">
-                        Self</h5>
-                       <button type="button" 
-                               class="close" 
-                               data-dismiss="modal" 
-                               aria-label="Close">
-                           <span aria-hidden="true">
-                             x</span>
-                       </button>
-                   </div>
-                   <div class="modal-body">
-                       <!-- GeeksforGeeks -->
-                       <!-- <h6 id="modal_body"></h6> -->
-                       <button type="button" class="btn form-check-for-button">Self</button>
-                       <br>
-                       <br>
-                         <button type="button" class="btn form-check-for-button">Others</button>
-                   </div>
-                   <!-- <div class="modal-footer">
-                       <button type="button"
-                               class="btn btn-secondary" 
-                               data-dismiss="modal">
-                         Close</button> -->
-                       <!-- <button type="button" 
-                               class="btn btn-primary">
-                         Save changes</button> -->
-                   <!-- </div> -->
-               </div>
-           </div>
-       </div>
+            
        <div class="modal fade"
             id="others-modal" data-backdrop="static" data-bs-keyboard="false">
            <div class="modal-dialog modal-dialog-centered">
@@ -279,7 +255,8 @@
                        <button type="button" 
                                class="close" 
                                data-dismiss="modal" 
-                               aria-label="Close">
+                               aria-label="Close"
+                                id="modalClose">
                            <span aria-hidden="true">
                              x</span>
                        </button>
@@ -333,7 +310,14 @@
                           </div> -->
                         <br>
                         <div>
-                          <button type="submit" class="btn form-check-for-button"  name="next" id="next" >Next</button>
+                          <!-- <button type="submit" class="btn form-check-for-button"  name="next" id="next" >Next</button> -->
+                          <button type="button" class="btn form-check-for-button"
+                          data-toggle="modal" 
+                          data-dismiss="modal"
+                          name="next_atPatient"
+                          id="next_atPatient"
+                          value="{{a_tuple[0]}}"
+                          data-target="#date-modal">Next</button>
                         </div>
 
                       </form>
@@ -351,8 +335,103 @@
            </div>
        </div>
 
-              
+       
 
+       <div class="modal fade"
+       id="date-modal" data-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="modal_title">
+                   Choose a convienient date</h5>
+                  <button type="button" 
+                          class="close" 
+                          data-dismiss="modal" 
+                          aria-label="Close"
+                          id="modalClose">
+                      <span aria-hidden="true">
+                        x</span>
+                  </button>
+              </div>
+              <div class="modal-body date-modal-body">
+                <br>
+                <div class="modal-body-date" >
+                  <input type="text" class="form-control" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 275px; text-align: center;">
+                </div>
+                <br>
+                <button type="button" class="btn form-check-for-button"
+                          data-toggle="modal" 
+                          data-dismiss="modal"
+                          name="next_atdate"
+                          id="next_atdate"
+                          value="{{a_tuple[0]}}"
+                          data-target="#slot-modal">Next</button>
+                <!-- <input type="text" class="form-control" name="dateRangePicker" id="dateRangePicker" placeholder="Date Range"> -->
+              </div>
+              <!-- <div class="modal-footer">
+                  <button type="button"
+                          class="btn btn-secondary" 
+                          data-dismiss="modal">
+                    Close</button> -->
+                  <!-- <button type="button" 
+                          class="btn btn-primary">
+                    Save changes</button> -->
+              <!-- </div> -->
+          </div>
+      </div>
+  </div>
+
+
+  <div class="modal fade"
+  id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
+ <div class="modal-dialog modal-dialog-centered">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title" id="modal_title">
+               Choose a convienient slot</h5>
+             <button type="button" 
+                     class="close" 
+                     data-dismiss="modal" 
+                     aria-label="Close"
+                     id="modalClose">
+                 <span aria-hidden="true">
+                   x</span>
+             </button>
+         </div>
+         <div class="modal-body">
+          <label>Morning</label>
+          <br>
+          <label style="color: red;">No free slots Available</label>
+          <br>          
+          <label>Evening</label>
+          <br>
+          <div id="slot-modal-body-id-wrapper">
+
+          </div>
+          <br>
+          <label style="color: red;">No free slots Available</label>
+          <br>
+          <br>
+          <button type="button" class="btn form-check-for-button"
+          data-toggle="modal" 
+          data-dismiss="modal"
+          name="next_atslot"
+          id="next_atslot"
+          value="{{a_tuple[0]}}"
+          data-target="#date-modal">Next</button>
+         </div>
+         <!-- <div class="modal-footer">
+             <button type="button"
+                     class="btn btn-secondary" 
+                     data-dismiss="modal">
+               Close</button> -->
+             <!-- <button type="button" 
+                     class="btn btn-primary">
+               Save changes</button> -->
+         <!-- </div> -->
+     </div>
+ </div>
+</div>
 
             </div>
           </div>
@@ -484,9 +563,30 @@
   <!-- owl slider -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
   </script>
-  <!-- Testing -->
+  
+  <!-- moment js -->
+  <script type="text/javascript" src="static/js/moment.min.js"></script>
+
+  <!-- Date Picker -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js">
+  </script>
+  <script>
+    
+    $(function(){
+        let datePicker = document.getElementById('datePicker');
+        let picker = new Litepicker({
+            element: datePicker,
+            format: 'YYYY-MM-DD',
+            lockDays:[ ['2000-01-01', moment().subtract(1, 'day').format('YYYY-MM-DD')]]
+            
+        });
+    });
+  </script>
+  <!-- custom js -->
+  <script type="text/javascript" src="static/js/custom.js"></script>
+  <!-- To send data of others -->
   <script type="text/javascript">
-  var name_of_the_doctor_chosen,p_Fname,p_Lname,age,gender,str;
+  var name_of_the_doctor_chosen,p_Fname,p_Lname,age,gender,str,date,num;
 //   var server_data = [
 //   {"QTc": formatedQTc},
 //   {"prolonged": prolonged},
@@ -501,7 +601,7 @@
     $("#modal_title").html(str);
    });
 
-   $("#next").click(function(){
+   $("#next_atPatient").click(function(){
     p_Fname = $("#Fname").val();
     p_Lname = $("#Lname").val();
     age=$("#inputAge").val();
@@ -509,16 +609,35 @@
     // alert("u clicked next");
     // alert(p_Fname+p_Lname+age+gender);
     console.log("test");
-    $.ajax({
-  type: "POST",
-  url: "/process_qtc",
-  data: {"p_Lname":p_Lname},
-});
+    
 console.log("work");
     
-   });  
+   });
+
+   $("#next_atdate").click(function(){
+     date = $("#datePicker").val();
+     $.ajax({
+  type: "POST",
+  url: "/process_qtc",
+  data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date},
+  success:function(data){
+    alert(Object.keys(data).length)
+    num=Object.keys(data).length;
+    var wrapper = document.getElementById("slot-modal-body-id-wrapper");
+   var myHTML = '';
+   for (var i = 0; i < parseInt(num); i++) {
+    myHTML += '<span class="test">Testing loop #' + (i + 1) + '</span><br/><br/>';
+  }
+  wrapper.innerHTML=myHTML
+  }
+});
+   });
+
+  
   
   </script>
+
+  
 
 </body>
 
