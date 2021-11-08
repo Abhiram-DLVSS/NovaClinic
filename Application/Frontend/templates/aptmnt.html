@@ -32,6 +32,10 @@
   <link href="/static/css/style.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="/static/css/responsive.css" rel="stylesheet" />
+  
+  <!-- AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
 
 </head>
 
@@ -193,16 +197,29 @@
                                     data-dismiss="modal" 
                                     aria-label="Close">
                                 <span aria-hidden="true">
-                                  ×</span>
+                                  x</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <!-- GeeksforGeeks -->
                             <!-- <h6 id="modal_body"></h6> -->
-                            <button type="button" class="btn form-check-for-button">Self</button>
+                            <button type="button" class="btn form-check-for-button" 
+                            data-toggle="modal" 
+                            data-dismiss="modal"
+                            name="self"
+                            id="self"
+                            value="{{a_tuple[0]}}"
+                            data-target="#self-modal">
+                            Self</button>
                             <br>
                             <br>
-                              <button type="button" class="btn form-check-for-button">Others</button>
+                              <button type="button" class="btn form-check-for-button"
+                              data-toggle="modal" 
+                              data-dismiss="modal"
+                              name="self"
+                              id="self"
+                              value="{{a_tuple[0]}}"
+                              data-target="#others-modal">Others</button>
                         </div>
                         <!-- <div class="modal-footer">
                             <button type="button"
@@ -216,6 +233,124 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade"
+            id="self-modal" data-backdrop="static" data-bs-keyboard="false">
+           <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <h5 class="modal-title" id="modal_title">
+                        Self</h5>
+                       <button type="button" 
+                               class="close" 
+                               data-dismiss="modal" 
+                               aria-label="Close">
+                           <span aria-hidden="true">
+                             x</span>
+                       </button>
+                   </div>
+                   <div class="modal-body">
+                       <!-- GeeksforGeeks -->
+                       <!-- <h6 id="modal_body"></h6> -->
+                       <button type="button" class="btn form-check-for-button">Self</button>
+                       <br>
+                       <br>
+                         <button type="button" class="btn form-check-for-button">Others</button>
+                   </div>
+                   <!-- <div class="modal-footer">
+                       <button type="button"
+                               class="btn btn-secondary" 
+                               data-dismiss="modal">
+                         Close</button> -->
+                       <!-- <button type="button" 
+                               class="btn btn-primary">
+                         Save changes</button> -->
+                   <!-- </div> -->
+               </div>
+           </div>
+       </div>
+       <div class="modal fade"
+            id="others-modal" data-backdrop="static" data-bs-keyboard="false">
+           <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <h5 class="modal-title" id="modal_title">
+                        Patient Details</h5>
+                       <button type="button" 
+                               class="close" 
+                               data-dismiss="modal" 
+                               aria-label="Close">
+                           <span aria-hidden="true">
+                             x</span>
+                       </button>
+                   </div>
+                   <div class="modal-body">
+                       <!-- GeeksforGeeks -->
+                       <!-- <h6 id="modal_body"></h6> -->
+                       <form>
+                          <div class="row">
+                            <div class="col">
+                              <input type="text" class="form-control" name="Fname" id="Fname" placeholder="First name">
+                            </div>
+                            <div class="col">
+                              <input type="text" class="form-control" name="Lname" id="Lname"placeholder="Last name">
+                            </div>
+                          </div>
+                          <br>
+                          
+                          <div class="form-row">
+                          <div class="col">
+                            <!-- <label for="inputAge">Age</label> -->
+                            <input type="text" class="form-control" id="inputAge" placeholder="Age">
+                          </div>
+                          <div class="col">
+                          <select class="form-select" id="inputGender">
+                            <option hidden value="">Gender</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>                            
+                            <option value="O">Others</option>
+                          </select>
+                        </div>
+                        <!-- <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                          <label class="form-check-label" for="inlineRadio1">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                          <label class="form-check-label" for="inlineRadio2">Female</label>
+                        </div> -->
+                          </div>
+                          <!-- <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <select id="inputState" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>...</option>
+                              </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                              <input type="text" class="form-control" id="inputZip" placeholder="Zip">
+                            </div>
+                          </div> -->
+                        <br>
+                        <div>
+                          <button type="submit" class="btn form-check-for-button"  name="next" id="next" >Next</button>
+                        </div>
+
+                      </form>
+                   </div>
+                   <!-- <div class="modal-footer">
+                       <button type="button"
+                               class="btn btn-secondary" 
+                               data-dismiss="modal">
+                         Close</button> -->
+                       <!-- <button type="button" 
+                               class="btn btn-primary">
+                         Save changes</button> -->
+                   <!-- </div> -->
+               </div>
+           </div>
+       </div>
+
               
 
 
@@ -339,6 +474,8 @@
 
   <!-- jQery -->
   <script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
+  <!-- <script src="{{ url_for('static', filename='jquery.js') }}"></script> -->
+
   <!-- popper js -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
@@ -349,14 +486,38 @@
   </script>
   <!-- Testing -->
   <script type="text/javascript">
+  var name_of_the_doctor_chosen,p_Fname,p_Lname,age,gender,str;
+//   var server_data = [
+//   {"QTc": formatedQTc},
+//   {"prolonged": prolonged},
+//   {"HR": heartRate},
+//   {"QT": qtInt},
+//   {"Sex": selectedSex}
+// ];
    $("#book1").click(function(){
-    var name = $("#book1").val();
+    name_of_the_doctor_chosen = $("#book1").val();
     // $("#modal_body").html(str);
-    var str="Appointment with <b>Dr. "+name+"</b> is for?";
+    str="Appointment with <b>Dr. "+name_of_the_doctor_chosen+"</b> is for?";
     $("#modal_title").html(str);
-
-
    });
+
+   $("#next").click(function(){
+    p_Fname = $("#Fname").val();
+    p_Lname = $("#Lname").val();
+    age=$("#inputAge").val();
+    gender=$("#inputGender").val();
+    // alert("u clicked next");
+    // alert(p_Fname+p_Lname+age+gender);
+    console.log("test");
+    $.ajax({
+  type: "POST",
+  url: "/process_qtc",
+  data: {"p_Lname":p_Lname},
+});
+console.log("work");
+    
+   });  
+  
   </script>
 
 </body>

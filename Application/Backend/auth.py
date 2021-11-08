@@ -34,6 +34,7 @@ def aptmnt():
         if high=='high2low'and speciality==None:
             query="select * from doctors order by exp desc;"
             result=Mysqlhandler.show_doctors_as_requested(query)
+            print(result)
             return render_template("aptmnt.html",result=result,high=high,speciality=speciality)
         elif high=='low2high'and speciality==None:
             query="select * from doctors order by exp;"
@@ -60,3 +61,21 @@ def aptmnt():
         query="select * from doctors;"
         result=Mysqlhandler.show_doctors_as_requested(query)        
         return render_template("aptmnt.html",result=result)
+
+# @auth.route('/aptmnt/process_qtc', methods=['POST', 'GET'])
+# def process_qt_calculation():
+#     print("workig")
+#     if request.method == "POST":
+#         qtc_data = request.get_data()
+#         print(qtc_data)
+#     results = {'processed': 'true'}
+#     return jsonify(results)
+
+@auth.route('/process_qtc', methods=['POST', 'GET'])
+def process_qt_calculation1():
+    print("workin")
+    if request.method == "POST":
+        qtc_data = request.form.get('p_Lname')
+        print(qtc_data)
+    results = {'processed': 'true'}
+    return jsonify(results)
