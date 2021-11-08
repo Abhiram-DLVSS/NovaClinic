@@ -1009,7 +1009,7 @@ a:focus {
   letter-spacing: 1.5px;
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
   /* color: #fff; */
-  transform: translateY(-7px);
+  transform: translateY(1px);
   border: none;
 }
 .form-check-apply-button{
@@ -1038,7 +1038,7 @@ a:focus {
   font-size: 14px;
   border: none;
   font-weight: bolder;
-  transform: translateY(-7px);
+  transform: translateY(1px);
 }
 .form-check-for-button{
   width: 90%;
@@ -1067,7 +1067,7 @@ a:focus {
   /* font-size: 14px; */
   border: none;
   font-weight: bolder;
-  transform: translateY(-7px);
+  transform: translateY(1px);
 }
 .form-check-clear-button{
   width: 90%;
