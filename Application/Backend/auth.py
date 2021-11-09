@@ -80,6 +80,47 @@ def process_qt_calculation1():
         age = request.form.get('age')
         gender = request.form.get('gender')
         date = request.form.get('date')
-        results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date}
-        print(results)
-    return results
+        docName = request.form.get('docName')
+        results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName}
+        query="select * from slots where doctorid='{}' and date='{}';".format(docName,date)
+
+        result=Mysqlhandler.show_doctors_as_requested(query)
+        print(result)
+        if not result:#if result is empty
+            return "Empty"
+        else:
+            for i in result:
+                print(i[0])
+            print(result[0][1])
+            data={
+                "date":result[0][0],
+                "doctorid":result[0][1],
+                "09:00-09:15":result[0][2],
+                "09:15-09:30":result[0][3],
+                "09:30-09:45":result[0][4],
+                "09:45-10:00":result[0][5],
+                "10:00-10:15":result[0][6],
+                "10:15-10:30":result[0][7],
+                "10:30-10:45":result[0][8],
+                "10:45-11:00":result[0][9],
+                "11:00-11:15":result[0][10],
+                "11:15-11:30":result[0][11],
+                "11:30-11:45":result[0][12],
+                "11:45-12:00":result[0][13],
+                "18:00-18:15":result[0][14],
+                "18:15-18:30":result[0][15],
+                "18:30-18:45":result[0][16],
+                "18:45-19:00":result[0][17],
+                "19:00-19:15":result[0][18],
+                "19:15-19:30":result[0][19],
+                "19:30-19:45":result[0][20],
+                "19:45-20:00":result[0][21],
+                "20:00-20:15":result[0][22],
+                "20:15-20:30":result[0][23],
+                "20:30-20:45":result[0][24],
+                "20:45-21:00":result[0][25]
+                }
+        # data=[["date",result[0][0]],["doctorid",result[0][]]]
+        # print("woah")
+        # print(results)
+        return data
