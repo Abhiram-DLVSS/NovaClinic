@@ -1041,6 +1041,7 @@ a:focus {
   cursor: pointer;
   outline: none;
   }
+  
 .form-check-apply-button:hover{
   background-color: #2EE59D;
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
@@ -1141,3 +1142,68 @@ a:focus {
   display: block;
   margin : 0 auto;
 } */
+.form-check-slot-enabled-button{
+  width: 90%;
+  max-width: 140px;
+  height: 45px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  
+  border: 1px solid black;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+.form-check-slot-enabled-button:hover{
+   background-color: #2EE59D;
+   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+   /* font-size: 14px; */
+   border: none;
+   /* font-weight: bolder; */
+   transform: translateY(1px);
+   
+   /* box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+   color: #22bb7e;
+   border: none;
+   transform: translateY(1px); */
+}
+.form-check-slot-disabled-button{
+  width: 90%;
+  max-width: 140px;
+  height: 45px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #ccc;
+  
+  border: 1px solid black;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+.form-check-slot-disabled-button:hover{
+  box-shadow: 0px 15px 20px rgba(255,89,94, 0.4);
+  /* color: #FF595E; */
+  /* border: none; */
+  /* transform: translateY(1px); */
+}
+.slot-buttons-padding{
+  width: 90%;
+  max-width: 150px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;  
+}

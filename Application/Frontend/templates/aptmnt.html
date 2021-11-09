@@ -42,10 +42,6 @@
 <body>
   <div class="hero_area">
 
-    <!-- <div class="hero_bg_box">
-      <img src="static/images/hero-bg.png" alt="">
-    </div> -->
-
     <!-- header section strats -->
     <header class="header_section">
       <div class="container">
@@ -156,7 +152,6 @@
 
 
     </div>
-    <!-- <div class="testing-web-middle" id="middle"></div> -->
     <!-- right half -->
     <div class="testing-web-right" id="right">
       <div class="d-flex flex-column bd-highlight mb-3">
@@ -179,17 +174,14 @@
           </ul>
           <div class="card-body">
             <div class="button-cen">
-              <!-- <a href="/aptmnt" >
-                  <button class="form-check-book-button" type="submit" name="book" id="book" value="{{a_tuple[0]}}" formmethod="post">Book  Appointment</button>
-              </a> -->
               <button type="button" 
-                    class="btn form-check-book-button" 
+                    class="btn form-check-book-button book1" 
                     data-toggle="modal" 
-                    name="book1"
-                    id="book1"
+                    name="{{a_tuple[0]}}"
+                    id="{{a_tuple[0]}}"
                     value="{{a_tuple[0]}}"
-                    data-target="#book-modal">
-                    <!-- {{a_tuple[0]}} -->
+                    data-target="#book-modal"
+                    onclick="booked_doc(this.id)">
                     Book Appointment
             </button>
   
@@ -211,8 +203,6 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <!-- GeeksforGeeks -->
-                            <!-- <h6 id="modal_body"></h6> -->
                             <button type="button" class="btn form-check-for-button" 
                             data-toggle="modal" 
                             data-dismiss="modal"
@@ -231,15 +221,6 @@
                               value="{{a_tuple[0]}}"
                               data-target="#others-modal">Others</button>
                         </div>
-                        <!-- <div class="modal-footer">
-                            <button type="button"
-                                    class="btn btn-secondary" 
-                                    data-dismiss="modal">
-                              Close</button> -->
-                            <!-- <button type="button" 
-                                    class="btn btn-primary">
-                              Save changes</button> -->
-                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -262,8 +243,6 @@
                        </button>
                    </div>
                    <div class="modal-body">
-                       <!-- GeeksforGeeks -->
-                       <!-- <h6 id="modal_body"></h6> -->
                        <form>
                           <div class="row">
                             <div class="col">
@@ -277,7 +256,6 @@
                           
                           <div class="form-row">
                           <div class="col">
-                            <!-- <label for="inputAge">Age</label> -->
                             <input type="text" class="form-control" id="inputAge" placeholder="Age">
                           </div>
                           <div class="col">
@@ -288,30 +266,10 @@
                             <option value="O">Others</option>
                           </select>
                         </div>
-                        <!-- <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                          <label class="form-check-label" for="inlineRadio1">Male</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                          <label class="form-check-label" for="inlineRadio2">Female</label>
-                        </div> -->
-                          </div>
-                          <!-- <div class="form-row">
-                            <div class="form-group col-md-4">
-                              <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                              </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                              <input type="text" class="form-control" id="inputZip" placeholder="Zip">
-                            </div>
-                          </div> -->
+                    </div>
                         <br>
                         <div>
-                          <!-- <button type="submit" class="btn form-check-for-button"  name="next" id="next" >Next</button> -->
-                          <button type="button" class="btn form-check-for-button"
+                            <button type="button" class="btn form-check-for-button"
                           data-toggle="modal" 
                           data-dismiss="modal"
                           name="next_atPatient"
@@ -322,15 +280,7 @@
 
                       </form>
                    </div>
-                   <!-- <div class="modal-footer">
-                       <button type="button"
-                               class="btn btn-secondary" 
-                               data-dismiss="modal">
-                         Close</button> -->
-                       <!-- <button type="button" 
-                               class="btn btn-primary">
-                         Save changes</button> -->
-                   <!-- </div> -->
+                   
                </div>
            </div>
        </div>
@@ -366,17 +316,8 @@
                           id="next_atdate"
                           value="{{a_tuple[0]}}"
                           data-target="#slot-modal">Next</button>
-                <!-- <input type="text" class="form-control" name="dateRangePicker" id="dateRangePicker" placeholder="Date Range"> -->
-              </div>
-              <!-- <div class="modal-footer">
-                  <button type="button"
-                          class="btn btn-secondary" 
-                          data-dismiss="modal">
-                    Close</button> -->
-                  <!-- <button type="button" 
-                          class="btn btn-primary">
-                    Save changes</button> -->
-              <!-- </div> -->
+                        </div>
+                        
           </div>
       </div>
   </div>
@@ -399,18 +340,31 @@
              </button>
          </div>
          <div class="modal-body">
-          <label>Morning</label>
+          <label>🌤️MORNING</label>
           <br>
-          <label style="color: red;">No free slots Available</label>
-          <br>          
-          <label>Evening</label>
-          <br>
-          <div id="slot-modal-body-id-wrapper">
-
+          <div id="slot-modal-body-id-mor-wrapper">
           </div>
+          <div class="d-flex flex-wrap" id="slot-modal-body-id-mor-wrapper2">
+            <!-- <button class="form-check-apply-button">Apply</button> -->
+          </div>
+          <div id="slot-modal-body-id-mor-wrapper3">
+            <!-- <button class="form-check-apply-button">Apply</button> -->
+          </div>
+          <!-- <br>
+          <label style="color: red;">No slots Available</label> -->
+          <br>      
+          <label>🌙EVENING</label>
           <br>
-          <label style="color: red;">No free slots Available</label>
-          <br>
+          <div id="slot-modal-body-id-eve-wrapper">
+          </div>
+          <div class="d-flex flex-wrap" id="slot-modal-body-id-eve-wrapper2">
+            <!-- <button class="form-check-apply-button">Apply</button> -->
+          </div>
+          <div id="slot-modal-body-id-eve-wrapper3">
+            <!-- <button class="form-check-apply-button">Apply</button> -->
+          </div>
+          <!-- <br>
+          <label style="color: red;">No slots Available</label> -->
           <br>
           <button type="button" class="btn form-check-for-button"
           data-toggle="modal" 
@@ -420,15 +374,7 @@
           value="{{a_tuple[0]}}"
           data-target="#date-modal">Next</button>
          </div>
-         <!-- <div class="modal-footer">
-             <button type="button"
-                     class="btn btn-secondary" 
-                     data-dismiss="modal">
-               Close</button> -->
-             <!-- <button type="button" 
-                     class="btn btn-primary">
-               Save changes</button> -->
-         <!-- </div> -->
+         
      </div>
  </div>
 </div>
@@ -577,7 +523,13 @@
         let picker = new Litepicker({
             element: datePicker,
             format: 'YYYY-MM-DD',
-            lockDays:[ ['2000-01-01', moment().subtract(1, 'day').format('YYYY-MM-DD')]]
+            minDate:moment().format('YYYY-MM-DD'),
+            maxDate:moment().add(14, 'day').format('YYYY-MM-DD'),
+            lockDaysFilter: (day) => {//to not include Sundays
+              const d = day.getDay();
+              return [0].includes(d);
+            } 
+            //inlineMode:true
             
         });
     });
@@ -587,31 +539,24 @@
   <!-- To send data of others -->
   <script type="text/javascript">
   var name_of_the_doctor_chosen,p_Fname,p_Lname,age,gender,str,date,num;
-//   var server_data = [
-//   {"QTc": formatedQTc},
-//   {"prolonged": prolonged},
-//   {"HR": heartRate},
-//   {"QT": qtInt},
-//   {"Sex": selectedSex}
-// ];
-   $("#book1").click(function(){
-    name_of_the_doctor_chosen = $("#book1").val();
+   function booked_doc(clicked_id){
+    docName = $("#"+clicked_id).val();
     // $("#modal_body").html(str);
-    str="Appointment with <b>Dr. "+name_of_the_doctor_chosen+"</b> is for?";
+    str="Appointment with <b>Dr. "+docName+"</b> is for?";
     $("#modal_title").html(str);
-   });
+   }
 
    $("#next_atPatient").click(function(){
     p_Fname = $("#Fname").val();
     p_Lname = $("#Lname").val();
     age=$("#inputAge").val();
-    gender=$("#inputGender").val();
-    // alert("u clicked next");
-    // alert(p_Fname+p_Lname+age+gender);
-    console.log("test");
-    
-console.log("work");
-    
+    gender=$("#inputGender").val();    
+   });
+   $("#self").click(function(){
+    p_Fname = "def_Fname";
+    p_Lname = "def_Lname";
+    age="99";
+    gender="M";
    });
 
    $("#next_atdate").click(function(){
@@ -619,19 +564,78 @@ console.log("work");
      $.ajax({
   type: "POST",
   url: "/process_qtc",
-  data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date},
+  data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName},
   success:function(data){
-    alert(Object.keys(data).length)
-    num=Object.keys(data).length;
-    var wrapper = document.getElementById("slot-modal-body-id-wrapper");
-   var myHTML = '';
-   for (var i = 0; i < parseInt(num); i++) {
-    myHTML += '<span class="test">Testing loop #' + (i + 1) + '</span><br/><br/>';
+    //Morning
+    var i = 0;
+    if(data=="Empty"){
+    var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper3");
+    var myHTML = '';
+    myHTML += '<br><label style="color: red;">No slots Available</label>';
+    wrapper.innerHTML=myHTML
+
+    //clearing if any buttons are present
+    wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
+    myHTML = '';
+    wrapper.innerHTML=myHTML
+    }
+    else{
+    // alert(data);
+    const keys = Object.keys(data);
+    alert(keys);
+    // alert(Object.keys(data).length)
+    // num=Object.keys(data).length;
+    var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
+    var myHTML = '';
+   for (; i < 12; i++) {
+     if(data[keys[i]]==0){
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    else{
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    }
+    wrapper.innerHTML=myHTML
+    //clearing if any buttons are present
+    wrapper = document.getElementById("slot-modal-body-id-mor-wrapper3");
+    myHTML = '';
+    wrapper.innerHTML=myHTML
+    }
+
+    //Evening
+    if(data=="Empty"){
+    var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper3");
+    var myHTML = '';
+    myHTML += '<br><label style="color: red;">No slots Available</label>';
+    wrapper.innerHTML=myHTML
+
+    //clearing if any buttons are present
+    wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
+    myHTML = '';
+    wrapper.innerHTML=myHTML
+    }
+    else{
+    // alert(data);
+    const keys = Object.keys(data);
+    alert(keys);
+    // alert(Object.keys(data).length)
+    // num=Object.keys(data).length;
+    var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
+    var myHTML = '';
+   for (; i < 24; i++) {
+     if(data[keys[i]]==0){
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    else{
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    }
+    wrapper.innerHTML=myHTML
+    //clearing if any buttons are present
+    wrapper = document.getElementById("slot-modal-body-id-eve-wrapper3");
+    myHTML = '';
+    wrapper.innerHTML=myHTML
+    }
+
   }
-  wrapper.innerHTML=myHTML
-  }
-});
-   });
+    });
+    });
 
   
   
