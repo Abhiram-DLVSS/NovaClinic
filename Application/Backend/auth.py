@@ -15,4 +15,4 @@ def sign_in():
 
 @auth.route('/signup',methods=['GET','POST'])
 def sign_up():
-    return "<p>Sign Up page</p>"
+    return render_template("signup.html")
