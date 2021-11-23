@@ -61,8 +61,9 @@
                   <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Appointment</a>
+                  <a class="nav-link" href="#">Appointments</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">Doctors</a>
                   </li>
@@ -71,8 +72,20 @@
                     Account
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="Edit">Edit Details</a>
-                    <a class="dropdown-item" href="#">Change Password</a>
+                    <!-- <a class="dropdown-item" href="Edit">Edit Details</a> -->
+                    <button type="button" 
+                    class="btn" 
+                    data-toggle="modal"
+                    data-target="#book-modal">
+                    Edit Details
+            </button>
+                    <!--a class="dropdown-item" href="#">Change Password</a>-->
+                    <button type="button" 
+                    class="btn" 
+                    data-toggle="modal"
+                    data-target="#book-modal1">
+                    Change Password
+            </button>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Logout</a>
                   </div>
@@ -86,7 +99,11 @@
 
       </div>
     </header>
+
+
+    
     <!-- end header section -->
+
     <!-- slider section -->
     <section class="slider_section ">
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
@@ -165,10 +182,164 @@
     </section>
     <!-- end slider section -->
   </div>
+  <div class="modal fade"
+                 id="book-modal" data-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal_title">
+                              Update Details</h5>
+                            <button type="button" 
+                                    class="close" 
+                                    data-dismiss="modal" 
+                                    aria-label="Close"
+                                    id="modalClose">
+                                <span aria-hidden="true">
+                                  x</span>
+                            </button>
+                        </div>
+                        <form>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">First name</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Update First Name">
+                            <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Last Name</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Update Last Name">
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Phone Number</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Update contact info">
+                          </div>
+                          <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">I confirm to update these details.</label>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                        <!-- <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-secondary" 
+                                    data-dismiss="modal">
+                              Close</button> -->
+                            <!-- <button type="button" 
+                                    class="btn btn-primary">
+                              Save changes</button> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade"
+            id="book-modal1" data-backdrop="static" data-bs-keyboard="false">
+           <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <h5 class="modal-title" id="modal_title">
+                        Change Password</h5>
+                       <button type="button" 
+                               class="close" 
+                               data-dismiss="modal" 
+                               aria-label="Close"
+                               id="modalClose">
+                           <span aria-hidden="true">
+                             x</span>
+                       </button>
+                   </div>
+                   <form>
+                     <div class="form-group">
+                       <label for="exampleInputEmail1">Current Password</label>
+                       <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your current password">
+                       <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small>
+                     </div>
+                     <div class="form-group">
+                       <label for="exampleInputPassword1">New Password</label>
+                       <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter new password">
+                     </div>
+                     <div class="form-group">
+                       <label for="exampleInputPassword1">Confirm Password</label>
+                       <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Re-enter Password">
+                     </div>
+                     <div class="form-group form-check">
+                       <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                       <label class="form-check-label" for="exampleCheck1">I confirm to update these details.</label>
+                     </div>
+                     <button type="submit" class="btn btn-primary">Submit</button>
+                   </form>
+
+                   <!-- <div class="modal-footer">
+                       <button type="button"
+                               class="btn btn-secondary" 
+                               data-dismiss="modal">
+                         Close</button> -->
+                       <!-- <button type="button" 
+                               class="btn btn-primary">
+                         Save changes</button> -->
+                   <!-- </div> -->
+               </div>
+           </div>
+       </div>
+
+
 
 
   <!-- department section -->
   <block> 
+    <head>
+      <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      </style>
+      </head>
+      <body>
+      
+      <h2>Your Appointments</h2>
+      
+      <table>
+        <tr>
+          <th>Doctor</th>
+          <th>Specialization</th>
+          <th>Appointment Date & Time</th>
+        </tr>
+        <tr>
+          <td>Alfreds Futterkiste</td>
+          <td>Maria Anders</td>
+          <td>Germany</td>
+        </tr>
+        <tr>
+          <td>Centro comercial Moctezuma</td>
+          <td>Francisco Chang</td>
+          <td>Mexico</td>
+        </tr>
+        <tr>
+          <td>Ernst Handel</td>
+          <td>Roland Mendel</td>
+          <td>Austria</td>
+        </tr>
+        <tr>
+          <td>Island Trading</td>
+          <td>Helen Bennett</td>
+          <td>UK</td>
+        </tr>
+        
+      </table>
+      
+      </body>
   <section class="department_section layout_padding">
     <div class="department_container">
       <div class="container ">
@@ -416,15 +587,15 @@
                 </div>
                 <div class="col-lg-6">
                   <div>
-                    <input type="text" class="form-control" id="phno" name="phno" placeholder="Phone Number" />
+                    <input type="text" class="form-control" id="docname" name="docname" placeholder="Consulted Doctor name" />
                   </div>
                 </div>
               </div>
               <div>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
+                <input type="text" class="form-control" id="spec" name="spec" placeholder="Doctor specialization" />
               </div>
               <div>
-                <input type="text" class="message-box" id="message" name="message" placeholder="Message" />
+                <input type="text" class="message-box" id="message" name="message" placeholder="Your Message" />
               </div>
               <div class="btn_box">
                 <button type="submit" class="btn btn-primary">
