@@ -7,6 +7,10 @@ auth = Blueprint('auth',__name__)
 def login():
     return "<p>Login</p>"
 
+@auth.route('/home',methods=['GET','POST'])
+def home():
+    return "<p>Home</p>"
+
 @auth.route('/logout')
 def logout():
     return "<p>Logout</p>"
@@ -85,8 +89,17 @@ def process_qt_calculation1():
         query="select * from slots where doctorid='{}' and date='{}';".format(docName,date)
 
         result=Mysqlhandler.show_doctors_as_requested(query)
-        print(result)
+
+        if not result:
+            query="insert into slots values('{}','{}',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);".format(date,docName)
+            Mysqlhandler.show_doctors_as_requested(query)
+            
+
+        query="select * from slots where doctorid='{}' and date='{}';".format(docName,date)
+        result=Mysqlhandler.show_doctors_as_requested(query)
+            
         if not result:#if result is empty
+            print("Empty")
             return "Empty"
         else:
             for i in result:
@@ -124,3 +137,45 @@ def process_qt_calculation1():
         # print("woah")
         # print(results)
         return data
+
+@auth.route('/process_qtc2', methods=['POST', 'GET'])
+def process_qt_calculation2():
+    print("workin")
+    if request.method == "POST":
+        if(request.form.get('flag')=="commit"):
+            query="commit;"
+            Mysqlhandler.show_doctors_as_requested(query)
+            return "test"
+        if(request.form.get('flag')=="rollback"):
+            query="rollback;"
+            Mysqlhandler.show_doctors_as_requested(query)
+            return "test"
+            
+        p_Lname = request.form.get('p_Lname')
+        p_Fname = request.form.get('p_Fname')
+        age = request.form.get('age')
+        gender = request.form.get('gender')
+        date = request.form.get('date')
+        docName = request.form.get('docName')
+        slot = request.form.get('slot')
+        results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName,"slot":slot}
+        # date[2]='$'
+        # date[8]='$'
+        # date[5]='_'
+        sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
+        query="update slots set {}=1 where doctorid='{}' and date='{}';".format(sqlslot,docName,date)
+        Mysqlhandler.show_doctors_as_requested(query)
+        
+        query="insert into aptmnt(patientid,doctorid,date,slot) values('{}','{}','{}','{}');".format(p_Fname,docName,date,slot)
+        Mysqlhandler.show_doctors_as_requested(query)
+        print("testing")
+        # if not result:#if result is empty
+        #     return "Empty"
+        # else:
+        #     for i in result:
+        #         print(i[0])
+        #     print(result[0][1])
+        # data=[["date",result[0][0]],["doctorid",result[0][]]]
+        # print("woah")
+        # print(results)
+        return "Test"

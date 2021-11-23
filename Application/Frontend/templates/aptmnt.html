@@ -365,18 +365,68 @@
           </div>
           <!-- <br>
           <label style="color: red;">No slots Available</label> -->
-          <br>
-          <button type="button" class="btn form-check-for-button"
-          data-toggle="modal" 
-          data-dismiss="modal"
-          name="next_atslot"
-          id="next_atslot"
-          value="{{a_tuple[0]}}"
-          data-target="#date-modal">Next</button>
+          
          </div>
          
      </div>
  </div>
+</div>
+
+<div class="modal fade" id="confirm-modal" data-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_title">
+          Confirm Appointment</h5>
+        <button type="button" 
+                class="close" 
+                data-dismiss="modal" 
+                aria-label="Close"
+                id="modalClose">
+            <span aria-hidden="true">
+              x</span>
+        </button>
+    </div>
+    <div class="modal-body-confirm">
+      
+      <div id="confirm-modal-body-id-wrapper">
+        
+      </div>
+      <br>
+      <button type="button" class="btn form-check-for-button"
+                          data-toggle="modal" 
+                          data-dismiss="modal"
+                          name="confirm"
+                          id="confirm"
+                          value="{{a_tuple[0]}}"
+                          data-target="#tq-modal">Confirm</button>
+      <button type="button" class="form-check-clear-button"
+                          data-toggle="modal" 
+                          data-dismiss="modal"
+                          name="cancel"
+                          id="cancel">Cancel</button>
+      </div> 
+      <br>                   
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="tq-modal" data-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class='col-12 modal-title text-center' style="font-size:30px;" id="modal_title">
+          Appointment Successful!</h5>
+          <!-- <button type="button" onclick="location.href='home'" class="btn btn-primary">Ok -->
+                  <!-- </button> -->
+      </div>
+    <div class="modal-body">
+      <button type="button" class="btn form-check-for-button" onclick="location.href='home'"
+        name="next_attq"
+        id="next_attq">Ok</button>
+      </div>                        
+    </div>
+  </div>
 </div>
 
             </div>
@@ -538,7 +588,7 @@
   <script type="text/javascript" src="static/js/custom.js"></script>
   <!-- To send data of others -->
   <script type="text/javascript">
-  var name_of_the_doctor_chosen,p_Fname,p_Lname,age,gender,str,date,num;
+  var name_of_the_doctor_chosen,p_Fname,p_Lname,age,gender,str,date,num,slot;
    function booked_doc(clicked_id){
     docName = $("#"+clicked_id).val();
     // $("#modal_body").html(str);
@@ -582,16 +632,18 @@
     else{
     // alert(data);
     const keys = Object.keys(data);
-    alert(keys);
+    // alert(keys);
     // alert(Object.keys(data).length)
     // num=Object.keys(data).length;
     var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
     var myHTML = '';
    for (; i < 12; i++) {
      if(data[keys[i]]==0){
-    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button"  data-toggle="modal" data-dismiss="modal" data-target="#confirm-modal" onclick="time(this.id)" id="'+keys[i]+'">'+keys[i]+'</button></div>';}
+    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
     else{
-    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+'</button></div>';}
+    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
     }
     wrapper.innerHTML=myHTML
     //clearing if any buttons are present
@@ -599,6 +651,7 @@
     myHTML = '';
     wrapper.innerHTML=myHTML
     }
+    
 
     //Evening
     if(data=="Empty"){
@@ -615,16 +668,19 @@
     else{
     // alert(data);
     const keys = Object.keys(data);
-    alert(keys);
+    // alert(keys);
     // alert(Object.keys(data).length)
     // num=Object.keys(data).length;
     var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
     var myHTML = '';
    for (; i < 24; i++) {
      if(data[keys[i]]==0){
-    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+          
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" data-toggle="modal" data-dismiss="modal" data-target="#confirm-modal" onclick="time(this.id)" id="'+keys[i]+'">'+keys[i]+'</button></div>';}
+    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
     else{
-    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+'</button></div>';}
+    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
     }
     wrapper.innerHTML=myHTML
     //clearing if any buttons are present
@@ -633,13 +689,86 @@
     wrapper.innerHTML=myHTML
     }
 
-  }
+    
+
+    
+    
+    }
     });
     });
 
+    
+  function time(clicked_id){
+    slot =clicked_id;
+    // $("#"+clicked_id).style.color="blue";
+    // alert(clicked_id);
+    var wrapper = document.getElementById("confirm-modal-body-id-wrapper");
+    var myHTML = '';
+    myHTML += '<br><p><b>Name</b>:</p>';
+    myHTML += '<p>'+p_Fname+'</p>';
+    
+    myHTML += '<br><p><b>Doctor</b>:</p>';    
+    myHTML += '<p>'+docName+'</p>';
+
+    myHTML += '<br><p><b>Date</b>:</p>';    
+    myHTML += '<p>'+date+'</p>';
+    
+    myHTML += '<br><p><b>Slot</b>:</p>';
+    myHTML += '<p>'+slot+'</p>';
+
+    wrapper.innerHTML=myHTML
+    
+    $.ajax({
+      type: "POST",
+      url: "/process_qtc2",
+      data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName,"slot":slot}
+
+      
+      });
+    }
+
+    $("#confirm").click(function(){
+      alert("check");
+
+      $.ajax({
+      type: "POST",
+      url: "/process_qtc2",
+      data: {"flag":"commit"}
+
+      
+      });
+        
+   });
+
+   $(".close").click(function(){
+      // alert("rollback");
+
+      $.ajax({
+      type: "POST",
+      url: "/process_qtc2",
+      data: {"flag":"rollback"}
+
+      
+      });
+        
+   });
+   $("#cancel").click(function(){
+      // alert("rollback");
+
+      $.ajax({
+      type: "POST",
+      url: "/process_qtc2",
+      data: {"flag":"rollback"}
+
+      
+      });
+        
+   });
+    
   
   
   </script>
+  
 
   
 
