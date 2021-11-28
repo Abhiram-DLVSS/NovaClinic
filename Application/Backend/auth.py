@@ -1,5 +1,5 @@
-from flask import Blueprint,render_template,request,flash,jsonify
 from Application.DBHandler import Mysqlhandler
+from flask import Blueprint, flash, jsonify, render_template, request
 
 auth = Blueprint('auth',__name__)
 
@@ -20,7 +20,7 @@ def sign_up():
     return "<p>Sign Up</p>"
 
 @auth.route('/aptmnt',methods=['GET','POST'])
-def aptmnt():  
+def aptmnt():
     if request.method=="POST":
         high = request.form.get('high')
         speciality = request.form.get('speciality')
@@ -65,15 +65,7 @@ def aptmnt():
         query="select * from doctors;"
         result=Mysqlhandler.show_doctors_as_requested(query)        
         return render_template("aptmnt.html",result=result)
-
-# @auth.route('/aptmnt/process_qtc', methods=['POST', 'GET'])
-# def process_qt_calculation():
-#     print("workig")
-#     if request.method == "POST":
-#         qtc_data = request.get_data()
-#         print(qtc_data)
-#     results = {'processed': 'true'}
-#     return jsonify(results)
+        
 
 @auth.route('/process_qtc', methods=['POST', 'GET'])
 def process_qt_calculation1():
@@ -140,7 +132,6 @@ def process_qt_calculation1():
 
 @auth.route('/process_qtc2', methods=['POST', 'GET'])
 def process_qt_calculation2():
-    print("workin")
     if request.method == "POST":
         if(request.form.get('flag')=="commit"):
             query="commit;"
@@ -159,23 +150,29 @@ def process_qt_calculation2():
         docName = request.form.get('docName')
         slot = request.form.get('slot')
         results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName,"slot":slot}
-        # date[2]='$'
-        # date[8]='$'
-        # date[5]='_'
         sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
         query="update slots set {}=1 where doctorid='{}' and date='{}';".format(sqlslot,docName,date)
         Mysqlhandler.show_doctors_as_requested(query)
         
         query="insert into aptmnt(patientid,doctorid,date,slot) values('{}','{}','{}','{}');".format(p_Fname,docName,date,slot)
         Mysqlhandler.show_doctors_as_requested(query)
-        print("testing")
-        # if not result:#if result is empty
-        #     return "Empty"
-        # else:
-        #     for i in result:
-        #         print(i[0])
-        #     print(result[0][1])
-        # data=[["date",result[0][0]],["doctorid",result[0][]]]
-        # print("woah")
-        # print(results)
         return "Test"
+
+@auth.route('/receptionist',methods=['GET','POST'])
+def receptionist():
+    query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.name,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno;"
+    result=Mysqlhandler.show_doctors_as_requested(query) 
+    if request.method=="POST":
+        date = request.form.get('datePicker')
+        speciality = request.form.get('speciality')
+
+        if request.form.get('clear')=='clear':#if clear button is pressed
+            date=None
+            speciality=None
+        
+        # query="select * from doctors;"
+        # result=Mysqlhandler.show_doctors_as_requested(query)        
+        # return render_template("aptmnt.html",result=result)
+        print(date)
+        return render_template("receptionist.html",date=date,speciality=speciality,result=result)
+    return render_template("receptionist.html",result=result)
