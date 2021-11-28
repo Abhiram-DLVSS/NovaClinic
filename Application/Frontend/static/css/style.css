@@ -146,6 +146,7 @@ a:focus {
 }
 
 /*header section*/
+
 .hero_area {
   position: relative;
   min-height: 100vh;
@@ -299,8 +300,10 @@ a:focus {
   top: 0;
 }
 
+
 /*end header section*/
 /* slider section */
+
 .slider_section {
   -webkit-box-flex: 1;
       -ms-flex: 1;
@@ -493,7 +496,9 @@ a:focus {
 
 .department_section .btn-box a:hover {
   background-color: transparent;
+
   color: #000000;
+
 }
 
 .about_section .row {
@@ -634,7 +639,9 @@ a:focus {
 
 .doctor_section .btn-box a:hover {
   background-color: transparent;
+
   color: #000000;
+
 }
 
 .contact_section {
@@ -961,6 +968,42 @@ a:focus {
 .footer_section .footer-info p a {
   color: inherit;
 }
+
+
+.form-check-book-button{
+  width: 90%;
+  max-width: 220px;
+  height: 45px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  
+  border: 1px solid black;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+.form-check-book-button:hover{
+  background-color: #2EE59D;
+  font-weight: bolder;
+  letter-spacing: 1.5px;
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  transform: translateY(-7px);
+  border: none;
+}
+
+.button-cen{
+  padding-top: 7px;
+  text-align: center;
+}
+
 .form-group{
   padding: 10px 10px 10px 10px;
+
 }
