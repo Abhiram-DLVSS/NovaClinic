@@ -11,7 +11,7 @@ body {
   padding: 0;
   width:100vw;
   height: 100vh;
-  background-color: #eee;
+  background-color: #fefefe;
 }
 .content {
   display: flex;
@@ -493,7 +493,7 @@ a:focus {
 
 .department_section .btn-box a:hover {
   background-color: transparent;
-  color: #62d2a2;
+  color: #000000;
 }
 
 .about_section .row {
@@ -634,7 +634,7 @@ a:focus {
 
 .doctor_section .btn-box a:hover {
   background-color: transparent;
-  color: #1fab89;
+  color: #000000;
 }
 
 .contact_section {
@@ -961,8 +961,6 @@ a:focus {
 .footer_section .footer-info p a {
   color: inherit;
 }
-
-
-  
-
-/*# sourceMappingURL=style.css.map */
+.form-group{
+  padding: 10px 10px 10px 10px;
+}
