@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="static/images/favicon.png" type="">
+
+  <title> Nova Clinic</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!--owl slider stylesheet -->
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" /> -->
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- font awesome style -->
+  <link href="static/css/font-awesome.min.css" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="/static/css/style_aptmnt.css" rel="stylesheet" />
+  
+  <!-- <link href="/static/css/bs-datepicker.css" rel="stylesheet" /> -->
+  
+  <!-- AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+
+</head>
+
+<body>
+  <div class="hero_area">
+
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="/home">
+            <span>
+              Nova Clinic
+            </span>
+          </a>
+
+         
+        </nav>
+      </div>
+      <br>
+      <div class="container">
+          <a class="navbar-brand2">
+            <span>
+              Doctors
+            </span>
+          </a>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- Testing -->
+    <form method="POST">
+    <div class="testing-wrapper">
+    <br>
+      <div class="testing-web">
+        
+      
+      <div class="testing-web-left" id="left">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="high2low">
+            {% if high=="high2low"%}
+            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="high2low" checked>
+            {%endif%}
+            <label class="form-check-label" for="flexRadioDefault1">
+              Sort by: High-Low Experience
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault2" value="low2high">
+            
+            {% if high=="low2high"%}
+            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault2" value="low2high" checked>
+            {%endif%}
+            <label class="form-check-label" for="flexRadioDefault2">
+              Sort by: Low-High Experience
+            </label>
+          </div>
+        <hr class="solid" color="white">
+      
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="speciality" id="gp" value="General Physician">
+        
+        {% if speciality=="General Physician"%}
+        <input class="form-check-input" type="radio" name="speciality" id="gp" value="General Physician" checked>
+        {%endif%}
+        <label class="form-check-label" for="gp">
+          General Physician
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio"  name="speciality" id="ca" value="Cardiology">
+        {% if speciality=="Cardiology"%}
+        <input class="form-check-input" type="radio"  name="speciality" id="ca" value="Cardiology" checked>
+        {%endif%}
+        <label class="form-check-label" for="ca">
+          Cardiology
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio"  name="speciality" id="der" value="Dermatology">
+        {% if speciality=="Dermatology"%}
+        <input class="form-check-input" type="radio"  name="speciality" id="der" value="Dermatology" checked>
+        {%endif%}
+        <label class="form-check-label" for="der">
+          Dermatology
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="speciality" id="dent" value="Dentist">
+        {% if speciality=="Dentist"%}
+        <input class="form-check-input" type="radio" name="speciality" id="dent" value="Dentist" checked>
+        {%endif%}
+        <label class="form-check-label" for="dent">
+          Dentist
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio"  name="speciality" id="neu" value="Neurology">
+        {% if speciality=="Neurology"%}
+        <input class="form-check-input" type="radio"  name="speciality" id="neu" value="Neurology" checked>
+        {%endif%}
+        <label class="form-check-label" for="neu">
+          Neurology
+        </label>
+      </div>
+      
+      <div class="button-cen">
+        <button class="form-check-apply-button" type="submit" formmethod="post">Apply</button>
+      </div>
+      <div class="button-cen">
+        <button class="form-check-clear-button" type="submit" name="clear" value="clear" formmethod="post">Clear</button>
+      </div>
+
+      
+
+
+    </div>
+    <!-- right half -->
+    <div class="testing-web-right" id="right">
+      <div class="d-flex flex-column bd-highlight mb-3">
+        {%for a_tuple in result%}
+        <div class="card" >
+          <div class="card-img-wrapper">
+          <div class="card-img">
+          <img src="/static/images/{{a_tuple[4]}}.png" class="card-img-top" alt="Doctor">
+          </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">{{a_tuple[0]}}</h4>
+            <p class="card-text"><small>Doctor ID: {{a_tuple[5]}}</small></small></p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Speciality: {{a_tuple[1]}}</li>
+            <li class="list-group-item">Education: {{a_tuple[3]}}</li>
+            <li class="list-group-item">Experience: {{a_tuple[2]}}</li>
+          </ul>
+          <div class="card-body">
+            <div class="button-cen">
+              <button type="button" 
+                    class="btn form-check-book-button book1" 
+                    data-toggle="modal" 
+                    name="{{a_tuple[5]}}"
+                    id="{{a_tuple[5]}}"
+                    value="{{a_tuple[5]}}"
+                    data-target="#book-modal"
+                    onclick="booked_doc(this.id)">
+                    Book Appointment
+            </button>
+  
+
+
+            </div>
+          </div>
+        </div>
+        <br>
+        {% endfor %}
+      </div>
+
+    </div>
+    
+    </div>
+  
+  </div>
+              <!-- Modal -->
+              <div class="modal fade"
+              id="book-modal" data-backdrop="static" data-bs-keyboard="false">
+             <div class="modal-dialog modal-dialog-centered">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                         <h5 class="modal-title" id="for_whom">
+                           Modal title</h5>
+                         <button type="button" 
+                                 class="close" 
+                                 data-dismiss="modal" 
+                                 aria-label="Close"
+                                 id="modalClose">
+                             <span aria-hidden="true">
+                               x</span>
+                         </button>
+                     </div>
+                     <div class="modal-body" style="text-align: center;">
+                         <button type="button" class="btn form-check-for-button" 
+                         data-toggle="modal" 
+                         data-dismiss="modal"
+                         name="self"
+                         id="self"
+                         data-target="#date-modal">
+                         Self</button>
+                         <br>
+                         <br>
+                           <button type="button" class="btn form-check-for-button"
+                           data-toggle="modal" 
+                           data-dismiss="modal"
+                           name="others"
+                           id="others"
+                           data-target="#others-modal">Others</button>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+         
+    <div class="modal fade"
+         id="others-modal" data-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">
+                     Patient Details</h5>
+                    <button type="button" 
+                            class="close" 
+                            data-dismiss="modal" 
+                            aria-label="Close"
+                             id="modalClose">
+                        <span aria-hidden="true">
+                          x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                       <div class="row">
+                         <div class="col">
+                           <input type="text" class="form-control" name="Fname" id="Fname" placeholder="First name">
+                         </div>
+                         <div class="col">
+                           <input type="text" class="form-control" name="Lname" id="Lname"placeholder="Last name">
+                         </div>
+                       </div>
+                       <br>
+                       
+                       <div class="form-row">
+                       <div class="col">
+                         <input type="text" class="form-control" id="inputAge" placeholder="Age">
+                       </div>
+                       <div class="col">
+                       <select class="form-select" id="inputGender">
+                         <option hidden value="">Gender</option>
+                         <option value="M">Male</option>
+                         <option value="F">Female</option>                            
+                         <option value="O">Others</option>
+                       </select>
+                     </div>
+                 </div>
+                     <br>
+                     <div style="text-align: center;">
+                       <button type="button" class="btn form-check-for-button"
+                       data-toggle="modal" 
+                       data-dismiss="modal"
+                       name="next_atPatient"
+                       id="next_atPatient"
+                       data-target="#date-modal">Next</button>
+                     </div>
+
+                   </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="modal fade"
+    id="date-modal" data-backdrop="static" data-bs-keyboard="false">
+   <div class="modal-dialog modal-dialog-centered">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title" id="modal_title">
+                Choose a convienient date</h5>
+               <button type="button" 
+                       class="close" 
+                       data-dismiss="modal" 
+                       aria-label="Close"
+                       id="modalClose">
+                   <span aria-hidden="true">
+                     x</span>
+               </button>
+           </div>
+           <div class="modal-body date-modal-body">
+             <br>
+             <div class="modal-body-date" >
+               <input type="text" class="form-control" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 275px; text-align: center;">
+             </div>
+             <br>
+             <div  style="text-align: center;">
+             <button type="button" class="btn form-check-for-button"
+                       data-toggle="modal" 
+                       data-dismiss="modal"
+                       name="next_atdate"
+                       id="next_atdate"
+                       data-target="#slot-modal">Next</button>
+                      </div>
+          </div>
+                     
+       </div>
+   </div>
+</div>
+
+
+<div class="modal fade"
+id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="modal_title">
+            Choose a convienient slot</h5>
+          <button type="button" 
+                  class="close" 
+                  data-dismiss="modal" 
+                  aria-label="Close"
+                  id="modalClose">
+              <span aria-hidden="true">
+                x</span>
+          </button>
+      </div>
+      <div class="modal-body">
+       <label>🌤️MORNING</label>
+       <br>
+       <div id="slot-modal-body-id-mor-wrapper">
+       </div>
+       <div class="d-flex flex-wrap" id="slot-modal-body-id-mor-wrapper2">
+         <!-- <button class="form-check-apply-button">Apply</button> -->
+       </div>
+       <div id="slot-modal-body-id-mor-wrapper3">
+         <!-- <button class="form-check-apply-button">Apply</button> -->
+       </div>
+       <!-- <br>
+       <label style="color: red;">No slots Available</label> -->
+       <br>      
+       <label>🌙EVENING</label>
+       <br>
+       <div id="slot-modal-body-id-eve-wrapper">
+       </div>
+       <div class="d-flex flex-wrap" id="slot-modal-body-id-eve-wrapper2">
+         <!-- <button class="form-check-apply-button">Apply</button> -->
+       </div>
+       <div id="slot-modal-body-id-eve-wrapper3">
+         <!-- <button class="form-check-apply-button">Apply</button> -->
+       </div>
+       <!-- <br>
+       <label style="color: red;">No slots Available</label> -->
+       
+      </div>
+      
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="confirm-modal" data-backdrop="static" data-bs-keyboard="false">
+<div class="modal-dialog modal-dialog-centered">
+ <div class="modal-content">
+   <div class="modal-header">
+     <h5 class="modal-title" id="modal_title">
+       Confirm Appointment</h5>
+     <button type="button" 
+             class="close" 
+             data-dismiss="modal" 
+             aria-label="Close"
+             id="modalClose">
+         <span aria-hidden="true">
+           x</span>
+     </button>
+ </div>
+ <div class="modal-body-confirm modal-body">
+   
+   <div id="confirm-modal-body-id-wrapper">
+     
+   </div>
+   <br>
+   <button type="button" class="btn form-check-for-button"
+                       data-toggle="modal" 
+                       data-dismiss="modal"
+                       name="confirm"
+                       id="confirm"
+                       data-target="#tq-modal">Confirm</button>
+   <button type="button" class="form-check-clear-button"
+                       data-toggle="modal" 
+                       data-dismiss="modal"
+                       name="cancel"
+                       id="cancel">Cancel</button>
+   </div> 
+   <br>                   
+ </div>
+</div>
+</div>
+
+<div class="modal fade" id="tq-modal" data-backdrop="static" data-bs-keyboard="false">
+<div class="modal-dialog modal-dialog-centered">
+ <div class="modal-content">
+   <div class="modal-header">
+     <h5 class='col-12 modal-title text-center' style="font-size:30px;" id="modal_title">
+       Appointment Successful!</h5>
+       <!-- <button type="button" onclick="location.href='home'" class="btn btn-primary">Ok -->
+               <!-- </button> -->
+   </div>
+ <div class="modal-body">
+   <button type="button" class="btn form-check-for-button" onclick="location.href='home'"
+     name="next_attq"
+     id="next_attq">Ok</button>
+   </div>                        
+ </div>
+</div>
+</div>
+</form>
+  </div>
+  
+
+  
+  <!-- Testing end -->
+
+  <!-- footer section -->
+  <footer class="footer_section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-3 footer_col">
+          <div class="footer_contact">
+            <h4>
+              Reach at..
+            </h4>
+            <div class="contact_link_box">
+              <a href="https://goo.gl/maps/ynmcXzyhzYbKVZVn7">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span>
+                  Location
+                </span>
+              </a>
+              <a href="tel:91123456789">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <span>
+                  Call +91 1234567890
+                </span>
+              </a>
+              <a href="mailto:NovaClinic108@gmail.com">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span>
+                  NovaClinic108@gmail.com
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="footer_social">
+            <a href="">
+              <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 footer_col">
+          <div class="footer_detail">
+            <h4>
+              About
+            </h4>
+            <p>
+              {about Nova Clinic}
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-2 mx-auto footer_col">
+          <div class="footer_link_box">
+            <h4>
+              Links
+            </h4>
+            <div class="footer_links">
+              <a class="active" href="index.html">
+                Home
+              </a>
+              <a class="" href="about.html">
+                About
+              </a>
+              <a class="" href="departments.html">
+                Departments
+              </a>
+              <a class="" href="doctors.html">
+                Doctors
+              </a>
+              <a class="" href="contact.html">
+                Contact Us
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 footer_col ">
+          <h4>
+            Newsletter
+          </h4>
+          <form action="#">
+            <input type="email" placeholder="Enter email" />
+            <button type="submit">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-info">
+        <p>
+          &copy; <span id="displayYear"></span>  Nova Clinic Enterprise Ltd. All Rights Reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+  <!-- footer section -->
+
+  <!-- jQery -->
+  <script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
+  <!-- <script src="{{ url_for('static', filename='jquery.js') }}"></script> -->
+
+  <!-- popper js -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <!-- bootstrap js -->
+  <script type="text/javascript" src="static/js/bootstrap.js"></script>
+  </script>
+  
+  <!-- moment js -->
+  <script type="text/javascript" src="static/js/moment.min.js"></script>
+
+  <!-- Date Picker -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js">
+  </script>
+  <script>
+    
+    $(function(){
+        let datePicker = document.getElementById('datePicker');
+        let picker = new Litepicker({
+            element: datePicker,
+            format: 'YYYY-MM-DD',
+            minDate:moment().format('YYYY-MM-DD'),
+            maxDate:moment().add(14, 'day').format('YYYY-MM-DD'),
+            lockDaysFilter: (day) => {//to not include Sundays
+              const d = day.getDay();
+              return [0].includes(d);
+            } 
+            //inlineMode:true
+            
+        });
+    });
+  </script>
+  <!-- custom js -->
+  <script type="text/javascript" src="static/js/custom.js"></script>
+  <!-- To send data of others -->
+  <script type="text/javascript">
+  var name_of_the_doctor_chosen,p_Fname,p_Lname,age,gender,str,date,num,slot,doc_id;
+   function booked_doc(clicked_id){
+    docName = $("#"+clicked_id).val();
+    // $("#modal_body").html(str);
+    str="Appointment with <b>Dr. "+docName+"</b> is for?";
+    $("#for_whom").html(str);
+   }
+
+   $("#next_atPatient").click(function(){
+    p_Fname = $("#Fname").val();
+    p_Lname = $("#Lname").val();
+    age=$("#inputAge").val();
+    gender=$("#inputGender").val();    
+   });
+   $("#self").click(function(){
+    p_Fname = "def_Fname";
+    p_Lname = "def_Lname";
+    age="99";
+    gender="M";
+   });
+
+   $("#next_atdate").click(function(){
+     date = $("#datePicker").val();
+     $.ajax({
+  type: "POST",
+  url: "/process_qtc",
+  data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName},
+  success:function(data){
+    //Morning
+    var i = 0;
+    if(data=="Empty"){
+    var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper3");
+    var myHTML = '';
+    myHTML += '<br><label style="color: red;">No slots Available</label>';
+    wrapper.innerHTML=myHTML
+
+    //clearing if any buttons are present
+    wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
+    myHTML = '';
+    wrapper.innerHTML=myHTML
+    }
+    else{
+    // alert(data);
+    const keys = Object.keys(data);
+    // alert(keys);
+    // alert(Object.keys(data).length)
+    // num=Object.keys(data).length;
+    var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
+    var myHTML = '';
+   for (; i < 12; i++) {
+     if(data[keys[i]]==0){
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button"  data-toggle="modal" data-dismiss="modal" data-target="#confirm-modal" onclick="time(this.id)" id="'+keys[i]+'">'+keys[i]+'</button></div>';}
+    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    else{
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+'</button></div>';}
+    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    }
+    wrapper.innerHTML=myHTML
+    //clearing if any buttons are present
+    wrapper = document.getElementById("slot-modal-body-id-mor-wrapper3");
+    myHTML = '';
+    wrapper.innerHTML=myHTML
+    }
+    
+
+    //Evening
+    if(data=="Empty"){
+    var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper3");
+    var myHTML = '';
+    myHTML += '<br><label style="color: red;">No slots Available</label>';
+    wrapper.innerHTML=myHTML
+
+    //clearing if any buttons are present
+    wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
+    myHTML = '';
+    wrapper.innerHTML=myHTML
+    }
+    else{
+    // alert(data);
+    const keys = Object.keys(data);
+    // alert(keys);
+    // alert(Object.keys(data).length)
+    // num=Object.keys(data).length;
+    var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
+    var myHTML = '';
+   for (; i < 24; i++) {
+     if(data[keys[i]]==0){
+          
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" data-toggle="modal" data-dismiss="modal" data-target="#confirm-modal" onclick="time(this.id)" id="'+keys[i]+'">'+keys[i]+'</button></div>';}
+    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    else{
+    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+'</button></div>';}
+    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
+    }
+    wrapper.innerHTML=myHTML
+    //clearing if any buttons are present
+    wrapper = document.getElementById("slot-modal-body-id-eve-wrapper3");
+    myHTML = '';
+    wrapper.innerHTML=myHTML
+    }
+
+    
+
+    
+    
+    }
+    });
+    });
+
+    
+  function time(clicked_id){
+    slot =clicked_id;
+    // $("#"+clicked_id).style.color="blue";
+    // alert(clicked_id);
+    var wrapper = document.getElementById("confirm-modal-body-id-wrapper");
+    var myHTML = '';
+    myHTML += '<br><p><b>Name</b>:</p>';
+    myHTML += '<p>'+p_Fname+'</p>';
+    
+    myHTML += '<br><p><b>Doctor</b>:</p>';    
+    myHTML += '<p>'+docName+'</p>';
+
+    myHTML += '<br><p><b>Date</b>:</p>';    
+    myHTML += '<p>'+date+'</p>';
+    
+    myHTML += '<br><p><b>Slot</b>:</p>';
+    myHTML += '<p>'+slot+'</p>';
+
+    wrapper.innerHTML=myHTML
+    
+    $.ajax({
+      type: "POST",
+      url: "/process_qtc2",
+      data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName,"slot":slot}
+
+      
+      });
+    }
+
+    $("#confirm").click(function(){
+      alert("check");
+
+      $.ajax({
+      type: "POST",
+      url: "/process_qtc2",
+      data: {"flag":"commit"}
+
+      
+      });
+        
+   });
+
+   $(".close").click(function(){
+      // alert("rollback");
+
+      $.ajax({
+      type: "POST",
+      url: "/process_qtc2",
+      data: {"flag":"rollback"}
+
+      
+      });
+        
+   });
+   $("#cancel").click(function(){
+      // alert("rollback");
+
+      $.ajax({
+      type: "POST",
+      url: "/process_qtc2",
+      data: {"flag":"rollback"}
+
+      
+      });
+        
+   });
+    
+  
+  
+  </script>
+  
+
+  
+
+</body>
+
+</html>
