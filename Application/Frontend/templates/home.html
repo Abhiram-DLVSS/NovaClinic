@@ -27,6 +27,10 @@
   <!-- font awesome style -->
   <link href="static/css/font-awesome.min.css" rel="stylesheet" />
 
+  <!-- AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
+
   <!-- Custom styles for this template -->
   <link href="static/css/style.css" rel="stylesheet" />
   <!-- responsive style -->
@@ -198,25 +202,27 @@
                                   x</span>
                             </button>
                         </div>
-                        <form>
+                        <form >
                           <div class="form-group">
-                            <label for="exampleInputEmail1">First name</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Update First Name">
-                            <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small>
+                            <label>First name</label>
+                            <input type="text" class="form-control" name="FName" id="FName"  placeholder="Update First Name">
+                            <!-- <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small> -->
                           </div>
                           <div class="form-group">
-                            <label for="exampleInputPassword1">Last Name</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Update Last Name">
+                            <label>Last Name</label>
+                            <input type="text" class="form-control" name="LName" id="LName" placeholder="Update Last Name">
                           </div>
                           <div class="form-group">
-                            <label for="exampleInputPassword1">Phone Number</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Update contact info">
+                            <label>Phone Number</label>
+                            <input type="text" class="form-control" name="Phno" id="Phno" placeholder="Update contact info">
                           </div>
-                          <div class="form-group form-check">
+                          <!-- <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
                             <label class="form-check-label" for="exampleCheck1">I confirm to update these details.</label>
-                          </div>
-                          <button type="submit" class="btn btn-primary">Submit</button>
+                          </div> -->
+                        <div class="form-group">
+                          <button name="update_atPatient" id="update_atPatient" data-dismiss="modal" class="btn btn-primary">Update</button>
+                        </div>
                         </form>
 
                         <!-- <div class="modal-footer">
@@ -250,34 +256,26 @@
                    </div>
                    <form>
                      <div class="form-group">
-                       <label for="exampleInputEmail1">Current Password</label>
-                       <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your current password">
-                       <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small>
+                       <label for="Currentpassword">Current Password</label>
+                       <input type="text" class="form-control" id="Currentpassword" placeholder="Enter your current password">
+                       <!-- <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small> -->
                      </div>
                      <div class="form-group">
-                       <label for="exampleInputPassword1">New Password</label>
-                       <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter new password">
+                       <label for="Newpassword">New Password</label>
+                       <input type="password" class="form-control" id="Newpassword" placeholder="Enter new password">
                      </div>
                      <div class="form-group">
-                       <label for="exampleInputPassword1">Confirm Password</label>
-                       <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Re-enter Password">
+                       <label for="Confirmpassword">Confirm Password</label>
+                       <input type="password" class="form-control" id="Confirmpassword" placeholder="Re-enter Password">
                      </div>
-                     <div class="form-group form-check">
+                     <!-- <div class="form-group form-check">
                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
                        <label class="form-check-label" for="exampleCheck1">I confirm to update these details.</label>
-                     </div>
-                     <button type="submit" class="btn btn-primary">Submit</button>
+                     </div> -->
+                     <div class="form-group">
+                     <button class="btn btn-primary" name="update_atPatient_credentials" id="update_atPatient_credentials" >Submit</button>
+                    </div>
                    </form>
-
-                   <!-- <div class="modal-footer">
-                       <button type="button"
-                               class="btn btn-secondary" 
-                               data-dismiss="modal">
-                         Close</button> -->
-                       <!-- <button type="button" 
-                               class="btn btn-primary">
-                         Save changes</button> -->
-                   <!-- </div> -->
                </div>
            </div>
        </div>
@@ -309,36 +307,31 @@
       <body>
       
       <h2>Your Appointments</h2>
-      
+      <div class="form-group">
       <table>
         <tr>
-          <th>Doctor</th>
-          <th>Specialization</th>
-          <th>Appointment Date & Time</th>
+          <th>Appointment ID</th>
+          <th>Doctor ID</th>
+          <th>Doctor Name</th>
+          <th>Patient Name</th>
+          <th>Patient Phone Number</th>
+          <th>Appointment Date</th>
+          <th>Appointment Time</th>
         </tr>
+        {%for a_tuple in result%}
         <tr>
-          <td>Alfreds Futterkiste</td>
-          <td>Maria Anders</td>
-          <td>Germany</td>
+          <td>{{a_tuple[0]}}</td>
+          <td>{{a_tuple[1]}}</td>
+          <td>{{a_tuple[2]}}</td>
+          <td>{{a_tuple[3]}} {{a_tuple[4]}}</td>
+          <td>{{a_tuple[5]}}</td>
+          <td>{{a_tuple[6]}}</td>          
+          <td>{{a_tuple[7]}}</td>
         </tr>
-        <tr>
-          <td>Centro comercial Moctezuma</td>
-          <td>Francisco Chang</td>
-          <td>Mexico</td>
-        </tr>
-        <tr>
-          <td>Ernst Handel</td>
-          <td>Roland Mendel</td>
-          <td>Austria</td>
-        </tr>
-        <tr>
-          <td>Island Trading</td>
-          <td>Helen Bennett</td>
-          <td>UK</td>
-        </tr>
+        {% endfor %}
         
       </table>
-      
+    </div>
       </body>
   <section class="department_section layout_padding">
     <div class="department_container">
@@ -413,11 +406,6 @@
             </div>
           </div>
         </div>
-        <div class="btn-box">
-          <a href="Our specializations">
-            View All
-          </a>
-        </div>
       </div>
     </div>
   </section>
@@ -425,152 +413,11 @@
 
   <!-- end department section -->
 
-  <!-- about section -->
-
-  <section class="about_section layout_margin-bottom">
-    <div class="container  ">
-      <div class="row">
-        <div class="col-md-6 ">
-          <div class="img-box">
-            <img src="static/images/about-img.jpg" alt="">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="detail-box">
-            <div class="heading_container">
-              <h2>
-                About <span>Us</span>
-              </h2>
-            </div>
-            <p>
-              Track physician referral patterns, analyze patient flows, and discover provider networks and affiliations to identify market opportunity and product or therapy alignment.
-            </p>
-            <a href="">
-              Read More
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- end about section -->
-
-  <!-- doctor section -->
-
-  <section class="doctor_section layout_padding">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          Our Doctors
-        </h2>
-        <p class="col-md-10 mx-auto px-0">
-          We believe it is primarily the physician's duty to balance the goals of medicine with the goals of care.
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 col-lg-4 mx-auto">
-          <div class="box">
-            <div class="img-box">
-              <img src="static/images/d1.jpg" alt="">
-            </div>
-            <div class="detail-box">
-              <div class="social_box">
-                <a href="">
-                  <i class="fa fa-facebook" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-youtube" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-linkedin" aria-hidden="true"></i>
-                </a>
-              </div>
-              <h5>
-                Elina Josh
-              </h5>
-              <h6 class="">
-                Doctor
-              </h6>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-4 mx-auto">
-          <div class="box">
-            <div class="img-box">
-              <img src="static/images/d2.jpg" alt="">
-            </div>
-            <div class="detail-box">
-              <div class="social_box">
-                <a href="">
-                  <i class="fa fa-facebook" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-youtube" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-linkedin" aria-hidden="true"></i>
-                </a>
-              </div>
-              <h5>
-                Adam View
-              </h5>
-              <h6 class="">
-                Doctor
-              </h6>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-4 mx-auto">
-          <div class="box">
-            <div class="img-box">
-              <img src="static/images/d3.jpg" alt="">
-            </div>
-            <div class="detail-box">
-              <div class="social_box">
-                <a href="">
-                  <i class="fa fa-facebook" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-twitter" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-youtube" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-linkedin" aria-hidden="true"></i>
-                </a>
-              </div>
-              <h5>
-                Mia Mike
-              </h5>
-              <h6 class="">
-                Doctor
-              </h6>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="btn-box">
-        <a href="">
-          View All
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- end doctor section -->
 
   <!-- contact section -->
-  <section class="contact_section layout_padding">
+  <section class="contact_section layout_padding" style="background-color: #178066;">
     <div class="container">
-      <div class="heading_container">
+      <div class="heading_container" style="color: white">
         <h2>
           Get In Touch
         </h2>
@@ -840,6 +687,37 @@
   </script>
   <!-- custom js -->
   <script type="text/javascript" src="static/js/custom.js"></script>
+  <script type="text/javascript" src="static/js/custom.js"></script>
+  <!-- To send data of others -->
+  <script type="text/javascript">
+  var name_of_the_patient_chosen,p_FName,p_LName,p_Phno,p_CurrentPassword,p_Newpassword,p_Confirmpassword;
+
+   $("#update_atPatient").click(function(){
+    p_FName = $("#FName").val();
+    p_LName = $("#LName").val();
+    p_Phno=$("#Phno").val();
+    // alert(p_FName);
+      $.ajax({
+      type: "POST",
+      url: "/updateInfo",
+      data: {"p_FName":p_FName,"p_LName":p_LName,"Phno":p_Phno}      
+      });
+   });
+  
+   $("#update_atPatient_credentials").click(function(){
+    p_CurrentPassword = $("#Currentpassword").val();
+    p_Newpassword = $("#Newpassword").val();
+    p_Confirmpassword=$("#Confirmpassword").val();
+    alert(p_CurrentPassword);
+    $.ajax({
+      type: "POST",
+      url: "/updateCredentials",
+      data: {"p_CurrentPassword":p_CurrentPassword,"p_Newpassword":p_Newpassword,"p_Confirmpassword":p_Confirmpassword}      
+      });
+   });
+   
+  </script>
+  
 
   <div class="loader-wrapper">
     <span class="loader"><span class="loader-inner"></span></span>
