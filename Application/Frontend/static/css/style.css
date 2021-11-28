@@ -145,7 +145,6 @@ a:focus {
           box-shadow: none;
 }
 
-/*header section*/
 .hero_area {
   position: relative;
   min-height: 100vh;
@@ -299,8 +298,6 @@ a:focus {
   top: 0;
 }
 
-/*end header section*/
-/* slider section */
 .slider_section {
   -webkit-box-flex: 1;
       -ms-flex: 1;
@@ -986,14 +983,11 @@ a:focus {
   font-weight: bolder;
   letter-spacing: 1.5px;
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  /* color: #fff; */
   transform: translateY(-7px);
   border: none;
 }
 
 .button-cen{
-  /* border: 2px solid black; */
   padding-top: 7px;
   text-align: center;
 }
-/*# sourceMappingURL=style.css.map */
