@@ -8,6 +8,21 @@ class Mysqlhandler:
 	
 	def __init__(self):
 		pass
+  
+  def show_doctors():
+		cursor=cnx.cursor()
+		query = ("select * from doctors;")
+		cursor.execute(query)
+		rows=cursor.fetchall()
+		# print(rows)
+		return rows
+  
+	def show_doctors_as_requested(query):
+		cursor=cnx.cursor()
+		cursor.execute(query)
+		rows=cursor.fetchall()
+		# print(rows)
+		return rows
 
 	def check_user(self,phno,password):
 		cursor=cnx.cursor()
@@ -94,4 +109,3 @@ class Mysqlhandler:
 		rows=cursor.fetchall()
 		print(rows)
 		return rows
-
