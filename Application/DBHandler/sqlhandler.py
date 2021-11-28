@@ -9,7 +9,7 @@ class Mysqlhandler:
 	def __init__(self):
 		pass
   
-  def show_doctors():
+	def show_doctors():
 		cursor=cnx.cursor()
 		query = ("select * from doctors;")
 		cursor.execute(query)
@@ -84,26 +84,46 @@ class Mysqlhandler:
 		print("Added User.")
 		return
 		
-	def update_user_info(self,FName,LName,Phno):
+	def update_user_info(self,FName,LName,NewPhno,OldPhno):
 		cursor=cnx.cursor()
-		query="UPDATE user_info SET firstname='{}',lastname='{}' where phno='{}';".format(FName,LName,Phno) 
+		query="UPDATE user_info SET firstname='{}',lastname='{}',phno='{}' where phno='{}';".format(FName,LName,NewPhno,OldPhno)
+		cursor.execute(query)
+		query="UPDATE user_credentials SET phno='{}' where phno='{}';".format(NewPhno,OldPhno)
 		cursor.execute(query)
 		cursor.execute("commit")
 		print("Updated User.")
 		return
   
-	def update_user_credentials(self,p_CurrentPassword,p_Newpassword):
+	def update_user_credentials(self,p_CurrentPassword,p_Newpassword,phno):
 		cursor=cnx.cursor()			
-		query="UPDATE user_credentials SET password1='{}' where password1='{}';".format(p_Newpassword,p_CurrentPassword)
+		
+		query="select * from user_credentials where password1='{}' and phno='{}'".format(p_CurrentPassword,phno)
+		cursor.execute(query)		
+		vari=cursor.fetchall()
+		if(len(vari)==0):
+			# print("Entered password is incorrect")
+			return -1
+
+		query="UPDATE user_credentials SET password1='{}' where phno='{}' and password1='{}';".format(p_Newpassword,phno,p_CurrentPassword)
 		cursor.execute(query)
 		cursor.execute("commit")
 		print("Updated User.")
-		return
+		return 0
   
 	def show_aptmnt(self,patient_id):
 		print(patient_id)
 		cursor=cnx.cursor()	
 		query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.name,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno and aptmnt.patientid='{}';".format(patient_id)
+		# query="select * from aptmnt"
+		cursor.execute(query)
+		rows=cursor.fetchall()
+		print(rows)
+		return rows
+
+	def getName(self,patient_id):
+		print(patient_id)
+		cursor=cnx.cursor()	
+		query="select firstname, lastname from user_info where phno='{}';".format(patient_id)
 		# query="select * from aptmnt"
 		cursor.execute(query)
 		rows=cursor.fetchall()
