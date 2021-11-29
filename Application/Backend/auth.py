@@ -1,14 +1,13 @@
-from datetime import timedelta
+from datetime import date, timedelta,date
 from Application.DBHandler import Mysqlhandler
-from flask import Blueprint,render_template,request,flash,jsonify,redirect,url_for,session
+from flask import Blueprint,render_template,request,flash,jsonify,redirect, sessions,url_for,session
 
 
 auth = Blueprint('auth',__name__)
 # auth.secret_key="secretKEY"
 auth.permanent_session_lifetime=timedelta(days=14)
 
-
-
+todaysdate=date.today()
 @auth.route('/aptmnt',methods=['GET','POST'])
 def aptmnt():
     if "phno" in session:
@@ -19,43 +18,38 @@ def aptmnt():
     if request.method=="POST":
         high = request.form.get('high')
         speciality = request.form.get('speciality')
-        # print("chk")
-        # print(high)
-        # print(speciality)
-        # print("chkend")
+        gender = request.form.get('gender')
+        print("chk")
+        print(high)
+        print(speciality)
+        print(gender)
+        print("chkend")
         
         print(request.form.get('book'))
         print("endend")
         if request.form.get('clear')=='clear':#if clear button is pressed
             high=None
             speciality=None
+            gender=None
+        if high==None and speciality==None and gender==None:
+            identifier=0
+        elif high!=None and speciality==None and gender==None:
+            identifier=1
+        elif high==None and speciality!=None and gender==None:
+            identifier=2
+        elif high==None and speciality==None and gender!=None:
+            identifier=3
+        elif high!=None and speciality!=None and gender==None:
+            identifier=4
+        elif high==None and speciality!=None and gender!=None:
+            identifier=5
+        elif high!=None and speciality==None and gender!=None:
+            identifier=6
+        elif high!=None and speciality!=None and gender!=None:
+            identifier=7
 
-        if high=='high2low'and speciality==None:
-            query="select * from doctors order by exp desc;"
-            result=Mysqlhandler.show_doctors_as_requested(query)
-            print(result)
-            return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno)
-        elif high=='low2high'and speciality==None:
-            query="select * from doctors order by exp;"
-            result=Mysqlhandler.show_doctors_as_requested(query)
-            return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno)
-        elif high==None and speciality!=None:
-            query="select * from doctors where spec='"+speciality+"';"
-            result=Mysqlhandler.show_doctors_as_requested(query)
-            return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno)
-        elif high=='high2low' and speciality!=None:
-            query="select * from doctors where spec='"+speciality+"' order by exp desc;"
-            result=Mysqlhandler.show_doctors_as_requested(query)
-            return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno)
-        elif high=='low2high' and speciality!=None:
-            query="select * from doctors where spec='"+speciality+"' order by exp;"
-            result=Mysqlhandler.show_doctors_as_requested(query)
-            return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno)
-        else:
-            query="select * from doctors;"
-            result=Mysqlhandler.show_doctors_as_requested(query)        
-            return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno)
-
+        result=Mysqlhandler.aptmnt_doctors(0,identifier,speciality,gender,high)
+        return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno,gender=gender)
     else:
         query="select * from doctors;"
         result=Mysqlhandler.show_doctors_as_requested(query)        
@@ -168,30 +162,63 @@ def userName():
 
 @auth.route('/receptionist',methods=['GET','POST'])
 def receptionist():
+    if "phno" in session:
+        return redirect('/homepage')
+    Mysqlhandler.delete_old_aptmnt(0,todaysdate)
+    docids=Mysqlhandler.showDoctors(0)
     if request.method=="POST":
+        docids=Mysqlhandler.showDoctors(0)
+        
         date = request.form.get('datePicker')
         speciality = request.form.get('speciality')
-
+        if date=='':
+                date=None
+        print(date)
+        print(speciality)
         if request.form.get('clear')=='clear':#if clear button is pressed
             date=None
             speciality=None
+        elif speciality==None and date==None:
+            print("nn")
+            query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.FName,doctors.LName,doctors.spec,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno"
+            result=Mysqlhandler.show_doctors_as_requested(query)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids)
+        
+        elif speciality!=None and date==None:
+            print("yn")
+            query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.FName,doctors.LName,doctors.spec,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno and doctors.spec='{}';".format(speciality)
+            result=Mysqlhandler.show_doctors_as_requested(query) 
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids)
+        elif speciality==None and date!=None:
+            print("ny")
+            query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.FName,doctors.LName,doctors.spec,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno and aptmnt.date='{}';".format(date)
+            result=Mysqlhandler.show_doctors_as_requested(query) 
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids)
+        elif speciality!=None and date!=None:
+            print("yy")
+            query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.FName,doctors.LName,doctors.spec,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno and aptmnt.date='{}' and doctors.spec='{}';".format(date,speciality)
+            result=Mysqlhandler.show_doctors_as_requested(query) 
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids)
         
         # query="select * from doctors;"
         # result=Mysqlhandler.show_doctors_as_requested(query)        
         # return render_template("aptmnt.html",result=result)
-        print(date)
-        query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.name,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno;"
-        result=Mysqlhandler.show_doctors_as_requested(query) 
-        return render_template("receptionist.html",date=date,speciality=speciality,result=result)
-    query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.name,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno;"
+        
+        
+    query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.FName,doctors.LName,doctors.spec,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno;"
     result=Mysqlhandler.show_doctors_as_requested(query) 
-    return render_template("receptionist.html",result=result)
+    return render_template("receptionist.html",result=result,docids=docids)
 
 
 @auth.route('/logout')
 def logout():
     session.pop("phno",None)
     return redirect('/login')
+
+@auth.route('/rlogout')
+def rlogout():
+    session.pop("rid",None)
+    return redirect('/rlogin')
 
 @auth.route('/login',methods=['GET','POST'])
 def login():
@@ -273,8 +300,12 @@ def user_info():
 def homepage():
     if "phno" in session:
         phno=session["phno"]
-        result=Mysqlhandler.show_aptmnt(0,phno)#need to be changed
+        result=Mysqlhandler.show_aptmnt(0,phno)
         name=Mysqlhandler.getName(0,phno)
+        Mysqlhandler.delete_old_aptmnt(0,todaysdate)
+        print("Result")
+        print(result)
+        # print(date.today())
         print("Name=")
         print(name)
         if name!=None:
@@ -338,6 +369,94 @@ def updateCredentials():
             return 'failed2'
         else:
             if Mysqlhandler.update_user_credentials(0,p_CurrentPassword,p_Newpassword,phno)==-1:
+                return 'failed'
+            else:
+                return 'success'
+
+@auth.route('/addDoctor', methods=['POST', 'GET'])
+def addDoctor():
+    # recep_id=session["rid"]
+    recep_id="Nova001"
+    if request.method == "POST":
+            
+        Lname = request.form.get('Lname')
+        Fname = request.form.get('Fname')
+        spec = request.form.get('spec')
+        gender = request.form.get('gender')
+        id = request.form.get('id')
+        exp = request.form.get('exp')
+        edu = request.form.get('edu')
+        print(Lname)
+        print(Fname)
+        print(spec)
+        print(edu)
+
+        if len(Lname)==0 or len(Fname)==0 or len(spec)==0 or gender=='Gender' or len(id)==0 or len(edu)==0:
+            return 'failed'
+        elif Mysqlhandler.check_new_docid(0,id)!=1:
+            return 'failed1'
+        else:
+            Mysqlhandler.addDoc(0,id,Fname,Lname,spec,exp,gender,edu,recep_id)
+            Mysqlhandler.commit()
+            return 'success'
+        return "Test"
+
+@auth.route('/updateDoctor', methods=['POST', 'GET'])
+def updateDoctor():
+    # recep_id=session["rid"]
+    recep_id="Nova001"
+    if request.method == "POST":
+        flag= request.form.get('flag')
+        if flag=='get':
+            id = request.form.get('id')
+            result=Mysqlhandler.getDoctor(0,id)
+            return jsonify(result)
+        elif flag=='update':
+            Lname = request.form.get('Lname')
+            Fname = request.form.get('Fname')
+            spec = request.form.get('spec')
+            gender = request.form.get('gender')
+            id = request.form.get('id')
+            exp = request.form.get('exp')
+            edu = request.form.get('edu')
+            if len(Lname)==0 or len(Fname)==0 or len(spec)==0 or gender=='Gender' or len(id)==0 or len(edu)==0:
+                return 'failed'
+            else:
+                Mysqlhandler.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu,recep_id)
+                Mysqlhandler.commit()
+                return 'success'
+
+@auth.route('/deleteDoctor', methods=['POST', 'GET'])
+def deleteDoctor():
+    # recep_id=session["rid"]
+    recep_id="Nova001"
+    if request.method == "POST":
+        flag= request.form.get('flag')
+        if flag=='get':
+            id = request.form.get('id')
+            result=Mysqlhandler.getDoctor(0,id)
+            return jsonify(result)
+        elif flag=='delete':
+            id = request.form.get('id')
+            Mysqlhandler.deleteDoc(0,id)
+            Mysqlhandler.commit()
+            return 'success'
+
+@auth.route('/rupdateCredentials',methods=['GET','POST'])
+def rupdateCredentials():
+    if request.method=="POST":        
+        # recep_id=session["rid"]
+        recep_id="Nova001"
+        CurrentPassword = request.form.get('CurrentPassword')
+        Newpassword = request.form.get('Newpassword')
+        Confirmpassword = request.form.get('Confirmpassword')
+        print(Confirmpassword)
+        if Newpassword!=Confirmpassword:
+            return 'failed1'
+        elif len(Newpassword)<6:
+            return 'failed2'
+        else:
+            if Mysqlhandler.update_receptionist_credentials(0,CurrentPassword,Newpassword,recep_id)==-1:
                 return 'failed'
             else:
                 return 'success'

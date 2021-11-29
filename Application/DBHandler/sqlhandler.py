@@ -113,12 +113,20 @@ class Mysqlhandler:
 	def show_aptmnt(self,patient_id):
 		print(patient_id)
 		cursor=cnx.cursor()	
-		query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.name,user_info.firstname,user_info.lastname,aptmnt.patientid,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno and aptmnt.patientid='{}';".format(patient_id)
+		query="select aptmnt.aptmntid,aptmnt.doctorid,doctors.FName,doctors.LName,user_info.firstname,user_info.lastname,doctors.spec,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctorid=doctors.id and aptmnt.patientid=user_info.phno and aptmnt.patientid='{}';".format(patient_id)
 		# query="select * from aptmnt"
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		print(rows)
 		return rows
+
+	def delete_old_aptmnt(self,date):
+		cursor=cnx.cursor()
+		query="delete from aptmnt where date<'{}';".format(date)
+		query="delete from slots where date<'{}';".format(date)
+		# query="select * from aptmnt"
+		cursor.execute(query)
+		cursor.execute("commit")
 
 	def getName(self,patient_id):
 		print(patient_id)
@@ -128,4 +136,99 @@ class Mysqlhandler:
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		print(rows)
+		return rows
+	def addDoc(self,id,Fname,Lname,spec,exp,gender,edu,rid):
+		cursor=cnx.cursor()
+		query = ("insert into doctors values('{}','{}','{}','{}','{}','{}','{}','defaultprofilepic','{}','{}');").format(id,Fname,Lname,spec,exp,gender,edu,Fname,rid)
+		cursor.execute(query)
+		# print("Added User.")
+		return
+	def commit():		
+		cursor=cnx.cursor()
+		cursor.execute("commit")
+
+	def check_new_docid(self,id):
+		cursor=cnx.cursor()
+		# print("phno="+phno)
+		# print("password="+password)
+		query = "select * from user_credentials where phno='{}';".format(id)
+		if(id==None):
+			return -1
+		cursor.execute(query)
+		vari=cursor.fetchall()
+		# print(vari[0][0])
+		if(len(vari)==0):
+			# print("Account doesn't exist")
+			return 1
+		else:
+			# print("Account already exists")
+			return 0
+
+	def showDoctors(self):
+		cursor=cnx.cursor()
+		query = ("select * from doctors;")
+		cursor.execute(query)
+		rows=cursor.fetchall()
+		print(rows)
+		return rows
+
+	def getDoctor(self,doctorID):
+		cursor=cnx.cursor()
+		query = "select * from doctors where id='{}';".format(doctorID)
+		cursor.execute(query)
+		row=cursor.fetchall()
+		print(row)
+		return row
+
+	def updateDoc(self,id,Fname,Lname,spec,exp,gender,edu,rid):
+		cursor=cnx.cursor()
+		query = ("update doctors set FName='{}',LName='{}',spec='{}',exp='{}',gender='{}',edu='{}',name='{}',rid='{}' where id='{}';").format(Fname,Lname,spec,exp,gender,edu,Fname,rid,id)
+		print(query)
+		cursor.execute(query)
+		# print("Added User.")
+		return
+
+	def deleteDoc(self,doctorID):
+		cursor=cnx.cursor()
+		query = "delete from doctors where id='{}';".format(doctorID)
+		cursor.execute(query)
+
+	def update_receptionist_credentials(self,CurrentPassword,Newpassword,recep_id):
+		cursor=cnx.cursor()			
+		
+		query="select * from receptionist_credentials where password='{}' and recep_id='{}'".format(CurrentPassword,recep_id)
+		cursor.execute(query)		
+		vari=cursor.fetchall()
+		if(len(vari)==0):
+			# print("Entered password is incorrect")
+			return -1
+
+		query="UPDATE receptionist_credentials SET password='{}' where recep_id='{}' and password='{}';".format(Newpassword,recep_id,CurrentPassword)
+		cursor.execute(query)
+		cursor.execute("commit")
+		print("Updated User.")
+		return 0
+	
+	def aptmnt_doctors(self,identifier,spec,gender,order):
+		cursor=cnx.cursor()
+		if identifier==0:
+			 query = "select * from doctors;"
+		elif identifier==1:
+			 query = "select * from doctors order by exp {};".format(order)
+		elif identifier==2:			
+			 query = "select * from doctors where spec='{}';".format(spec)
+		elif identifier==3:
+			 query = "select * from doctors where gender='{}';".format(gender)
+		elif identifier==4:
+			 query = "select * from doctors where spec='{}' order by exp {};".format(spec,order)
+		elif identifier==5:
+			 query = "select * from doctors where gender='{}' and spec='{}';".format(gender,spec)
+		elif identifier==6:
+			 query = "select * from doctors where gender='{}' order by exp {};".format(gender,order)
+		elif identifier==7:
+			 query = "select * from doctors where gender='{}' and spec='{}' order by exp {};".format(gender,spec,order)
+
+		# print(query)
+		cursor.execute(query)
+		rows=cursor.fetchall()
 		return rows

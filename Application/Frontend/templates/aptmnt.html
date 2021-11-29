@@ -82,20 +82,25 @@
         
       
       <div class="testing-web-left" id="left">
+        <div class="filters" style="text-align: center; font-weight: bold; font-size: 20px;">
+          <label class="form-check-label" >
+              Filters
+            </label>
+        </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="high2low">
-            {% if high=="high2low"%}
-            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="high2low" checked>
+            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="desc">
+            {% if high=="desc"%}
+            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="desc" checked>
             {%endif%}
             <label class="form-check-label" for="flexRadioDefault1">
               Sort by: High-Low Experience
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault2" value="low2high">
+            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault2" value="asc">
             
-            {% if high=="low2high"%}
-            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault2" value="low2high" checked>
+            {% if high=="asc"%}
+            <input class="form-check-input" type="radio" name="high" id="flexRadioDefault2" value="asc" checked>
             {%endif%}
             <label class="form-check-label" for="flexRadioDefault2">
               Sort by: Low-High Experience
@@ -150,6 +155,27 @@
         </label>
       </div>
       
+      <hr class="solid" color="white">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="gender" id="genm" value="Male">
+        {% if gender=="Male"%}
+        <input class="form-check-input" type="radio" name="gender" id="genm" value="Male" checked>
+        {%endif%}
+        <label class="form-check-label" for="genm">
+          Male
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="gender" id="genf" value="Female">
+        
+        {% if gender=="Female"%}
+        <input class="form-check-input" type="radio" name="gender" id="genf" value="Female" checked>
+        {%endif%}
+        <label class="form-check-label" for="genf">
+          Female
+        </label>
+      </div>
+      
       <div class="button-cen">
         <button class="form-check-apply-button" type="submit" formmethod="post">Apply</button>
       </div>
@@ -168,28 +194,29 @@
         <div class="card" >
           <div class="card-img-wrapper">
           <div class="card-img">
-          <img src="/static/images/{{a_tuple[4]}}.png" class="card-img-top" alt="Doctor">
+          <img src="/static/images/{{a_tuple[7]}}.png" class="card-img-top" alt="Doctor">
           </div>
           </div>
           <div class="card-body">
-            <h3 class="card-title">{{a_tuple[0]}}</h4>
-            <p class="card-text"><small>Doctor ID: {{a_tuple[5]}}</small></small></p>
+            <h3 class="card-title">Dr.{{a_tuple[1]}} {{a_tuple[2]}}</h4>
+            <p class="card-text"><small>Doctor ID: {{a_tuple[0]}}</small></small></p>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Speciality: {{a_tuple[1]}}</li>
-            <li class="list-group-item">Education: {{a_tuple[3]}}</li>
-            <li class="list-group-item">Experience: {{a_tuple[2]}}</li>
+            <li class="list-group-item">Gender: {{a_tuple[5]}}</li>
+            <li class="list-group-item">Speciality: {{a_tuple[3]}}</li>
+            <li class="list-group-item">Education: {{a_tuple[6]}}</li>
+            <li class="list-group-item">Experience: {{a_tuple[4]}}</li>
           </ul>
           <div class="card-body">
             <div class="button-cen">
               <button type="button" 
                     class="btn form-check-book-button book1" 
                     data-toggle="modal" 
-                    name="{{a_tuple[5]}}"
-                    id="{{a_tuple[5]}}"
-                    value="{{a_tuple[0]}}"
+                    name="{{a_tuple[0]}}"
+                    id="{{a_tuple[0]}}"
+                    value="{{a_tuple[1]}} {{a_tuple[2]}}"
                     data-target="#book-modal"
-                    onclick="booked_doc(this.id,'{{a_tuple[1]}}')">
+                    onclick="booked_doc(this.id,'{{a_tuple[3]}}')">
                     Book Appointment
             </button>
   
