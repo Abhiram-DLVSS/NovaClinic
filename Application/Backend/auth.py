@@ -1,4 +1,4 @@
-from datetime import date, timedelta,date
+from datetime import timedelta,date
 from Application.DBHandler import Mysqlhandler
 from flask import Blueprint,render_template,request,flash,jsonify,redirect, sessions,url_for,session
 
@@ -460,3 +460,26 @@ def rupdateCredentials():
                 return 'failed'
             else:
                 return 'success'
+
+@auth.route('/rlogin',methods=['GET','POST'])
+def rlogin():
+    if request.method == 'POST':
+
+        recep_id = request.form.get('recep_id')
+        password = request.form.get('password')
+        # print("recep_id="+recep_id)
+        # print("password="+password1)
+        
+        val=Mysqlhandler.check_receptionist(0,recep_id,password)
+        print("Val=")
+        print(val)
+        if val==0:
+            flash('Invalid Credentials. Please try again.', category='error')
+            return render_template("rlogin.html")
+        elif val==-1:    
+            return render_template("rlogin.html")
+        else:
+            return redirect('/receptionist')
+    return render_template("rlogin.html")
+
+
