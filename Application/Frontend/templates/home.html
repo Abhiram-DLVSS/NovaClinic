@@ -65,12 +65,12 @@
                   <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Appointments</a>
+                  <a class="nav-link" href="aptmnt">Appointments</a>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="#">Doctors</a>
-                  </li>
+                  </li> -->
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Account
@@ -78,20 +78,20 @@
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <!-- <a class="dropdown-item" href="Edit">Edit Details</a> -->
                     <button type="button" 
-                    class="btn" 
+                    class="btn dropdown-item" 
                     data-toggle="modal"
                     data-target="#book-modal">
                     Edit Details
-            </button>
+                    </button>
                     <!--a class="dropdown-item" href="#">Change Password</a>-->
                     <button type="button" 
-                    class="btn" 
+                    class="btn dropdown-item" 
                     data-toggle="modal"
                     data-target="#book-modal1">
                     Change Password
-            </button>
+                    </button>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Logout</a>
+                    <a class="dropdown-item" href="logout">Logout</a>
                   </div>
                 </li>
                 
@@ -204,24 +204,26 @@
                         </div>
                         <form >
                           <div class="form-group">
-                            <label>First name</label>
-                            <input type="text" class="form-control" name="FName" id="FName"  placeholder="Update First Name">
+                            <label id="firstname_input">First name</label>
+                            <input type="text" class="form-control" name="FName" id="FName" placeholder="Update First Name" value={{Fname}}>
                             <!-- <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small> -->
                           </div>
                           <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" class="form-control" name="LName" id="LName" placeholder="Update Last Name">
+                            <label id="lastname_input">Last Name</label>
+                            <input type="text" class="form-control" name="LName" id="LName" placeholder="Update Last Name" value={{Lname}}>
                           </div>
                           <div class="form-group">
-                            <label>Phone Number</label>
-                            <input type="text" class="form-control" name="Phno" id="Phno" placeholder="Update contact info">
+                            <label id="phno_input">Phone Number</label>
+                            <input type="text" class="form-control" name="Phno" id="Phno" placeholder="Update contact info" value={{phno}}>
                           </div>
                           <!-- <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
                             <label class="form-check-label" for="exampleCheck1">I confirm to update these details.</label>
                           </div> -->
-                        <div class="form-group">
-                          <button name="update_atPatient" id="update_atPatient" data-dismiss="modal" class="btn btn-primary">Update</button>
+                        <div class="form-group" style="text-align: center;">
+                          <button name="update_atPatient" id="update_atPatient" class="btn btn-primary">Update</button>
+                        </div>
+                        <div id="form-group-wrapper-info" style="text-align: center;">
                         </div>
                         </form>
 
@@ -272,9 +274,11 @@
                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
                        <label class="form-check-label" for="exampleCheck1">I confirm to update these details.</label>
                      </div> -->
-                     <div class="form-group">
-                     <button class="btn btn-primary" name="update_atPatient_credentials" id="update_atPatient_credentials" >Submit</button>
+                     <div class="form-group" style="text-align: center;">
+                     <button class="btn btn-primary" name="update_atPatient_credentials" id="update_atPatient_credentials" >Update</button>
                     </div>
+                    <div id="form-group-wrapper-credentials" style="text-align: center;">
+                     </div>
                    </form>
                </div>
            </div>
@@ -306,15 +310,17 @@
       </head>
       <body>
       
-      <h2>Your Appointments</h2>
-      <div class="form-group">
+      {% if result%}
+        
+      <div class="form-group" id="tablediv">
+        <h2>Your Appointments</h2>
       <table>
         <tr>
           <th>Appointment ID</th>
           <th>Doctor ID</th>
           <th>Doctor Name</th>
+          <th>Specialization</th>
           <th>Patient Name</th>
-          <th>Patient Phone Number</th>
           <th>Appointment Date</th>
           <th>Appointment Time</th>
         </tr>
@@ -322,16 +328,17 @@
         <tr>
           <td>{{a_tuple[0]}}</td>
           <td>{{a_tuple[1]}}</td>
-          <td>{{a_tuple[2]}}</td>
-          <td>{{a_tuple[3]}} {{a_tuple[4]}}</td>
-          <td>{{a_tuple[5]}}</td>
-          <td>{{a_tuple[6]}}</td>          
-          <td>{{a_tuple[7]}}</td>
+          <td>{{a_tuple[2]}} {{a_tuple[3]}}</td>
+          <td>{{a_tuple[6]}}</td>
+          <td>{{a_tuple[4]}} {{a_tuple[5]}}</td>
+          <td>{{a_tuple[7]}}</td>          
+          <td>{{a_tuple[8]}}</td>
         </tr>
         {% endfor %}
         
       </table>
     </div>
+    {% endif %}
       </body>
   <section class="department_section layout_padding">
     <div class="department_container">
@@ -700,7 +707,19 @@
       $.ajax({
       type: "POST",
       url: "/updateInfo",
-      data: {"p_FName":p_FName,"p_LName":p_LName,"Phno":p_Phno}      
+      data: {"p_FName":p_FName,"p_LName":p_LName,"Phno":p_Phno},
+      success:function(data){
+        // alert(data);
+        if(data=='failed'){
+          alert('Please enter your details correctly');
+        }
+        else if(data=='failed1'){
+          alert('An account already exists with the given new phone number');
+        }
+        else if(data=='success'){
+          alert('Success');
+        }
+      }
       });
    });
   
@@ -712,9 +731,28 @@
     $.ajax({
       type: "POST",
       url: "/updateCredentials",
-      data: {"p_CurrentPassword":p_CurrentPassword,"p_Newpassword":p_Newpassword,"p_Confirmpassword":p_Confirmpassword}      
+      data: {"p_CurrentPassword":p_CurrentPassword,"p_Newpassword":p_Newpassword,"p_Confirmpassword":p_Confirmpassword},
+      success:function(data){
+        // alert(data);
+        if(data=='failed'){
+          alert('Entered password is incorrect');
+        }
+        else if(data=='failed1'){
+          alert('Passwords doesn\'t match');
+        }
+        else if(data=='failed2'){
+          alert('Password minimum length should be 6');
+        }
+        else if(data=='success'){
+          alert('Success');
+        }
+      }
       });
    });
+
+  //  if({result}==None){
+  //    $('#tablediv').hide();
+  //  }
    
   </script>
   
