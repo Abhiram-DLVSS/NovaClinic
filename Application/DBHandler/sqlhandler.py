@@ -8,8 +8,7 @@ class Mysqlhandler:
 	
 	def __init__(self):
 		pass
-  
-  def show_doctors():
+	def show_doctors():
 		cursor=cnx.cursor()
 		query = ("select * from doctors;")
 		cursor.execute(query)
@@ -109,3 +108,20 @@ class Mysqlhandler:
 		rows=cursor.fetchall()
 		print(rows)
 		return rows
+
+	def check_receptionist(self,recep_id,password):
+		cursor=cnx.cursor()
+		# print("recep_id="+recep_id)
+		# print("password="+password)
+		query = ("select * from receptionist_credentials where recep_id='{}' and password='{}';").format(recep_id,password)
+		if(recep_id==None and password==None):
+			return -1
+		cursor.execute(query)
+		vari=cursor.fetchall()
+		# print(vari[0][0])
+		if(len(vari)!=0):
+			# print("success")
+			return 1
+		else:
+			# print("Failed")
+			return 0
