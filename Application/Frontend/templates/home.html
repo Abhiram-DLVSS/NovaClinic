@@ -78,18 +78,18 @@
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <!-- <a class="dropdown-item" href="Edit">Edit Details</a> -->
                     <button type="button" 
-                    class="btn" 
+                    class="btn dropdown-item" 
                     data-toggle="modal"
                     data-target="#book-modal">
                     Edit Details
-            </button>
+                    </button>
                     <!--a class="dropdown-item" href="#">Change Password</a>-->
                     <button type="button" 
-                    class="btn" 
+                    class="btn dropdown-item" 
                     data-toggle="modal"
                     data-target="#book-modal1">
                     Change Password
-            </button>
+                    </button>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="logout">Logout</a>
                   </div>
@@ -310,15 +310,17 @@
       </head>
       <body>
       
-      <h2>Your Appointments</h2>
-      <div class="form-group">
+      {% if result%}
+        
+      <div class="form-group" id="tablediv">
+        <h2>Your Appointments</h2>
       <table>
         <tr>
           <th>Appointment ID</th>
           <th>Doctor ID</th>
           <th>Doctor Name</th>
+          <th>Specialization</th>
           <th>Patient Name</th>
-          <th>Patient Phone Number</th>
           <th>Appointment Date</th>
           <th>Appointment Time</th>
         </tr>
@@ -326,16 +328,17 @@
         <tr>
           <td>{{a_tuple[0]}}</td>
           <td>{{a_tuple[1]}}</td>
-          <td>{{a_tuple[2]}}</td>
-          <td>{{a_tuple[3]}} {{a_tuple[4]}}</td>
-          <td>{{a_tuple[5]}}</td>
-          <td>{{a_tuple[6]}}</td>          
-          <td>{{a_tuple[7]}}</td>
+          <td>{{a_tuple[2]}} {{a_tuple[3]}}</td>
+          <td>{{a_tuple[6]}}</td>
+          <td>{{a_tuple[4]}} {{a_tuple[5]}}</td>
+          <td>{{a_tuple[7]}}</td>          
+          <td>{{a_tuple[8]}}</td>
         </tr>
         {% endfor %}
         
       </table>
     </div>
+    {% endif %}
       </body>
   <section class="department_section layout_padding">
     <div class="department_container">
@@ -746,6 +749,10 @@
       }
       });
    });
+
+  //  if({result}==None){
+  //    $('#tablediv').hide();
+  //  }
    
   </script>
   
