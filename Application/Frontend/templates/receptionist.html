@@ -41,7 +41,7 @@
   <div class="hero_area">
 
     <!-- header section strats -->
-    <header class="header_section">
+    <!-- <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="/receptionist">
@@ -53,6 +53,84 @@
          
         </nav>
       </div>
+    </header> -->
+    <header class="header_section">
+      <div class="container">
+       <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand">
+                <span>
+                  Nova Clinic
+                </span>
+              </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="rlogout">Logout</a>
+                </li> -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Doctors
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- <a class="dropdown-item" href="Edit">Edit Details</a> -->
+                    <button type="button" 
+                    class="btn dropdown-item" 
+                    data-toggle="modal"
+                    data-target="#addDoc-modal">
+                    Add Doctor
+                    </button>
+                    <button type="button" 
+                    class="btn dropdown-item" 
+                    data-toggle="modal"
+                    data-target="#updateDoc-modal">
+                    Update Doctor
+                    </button>
+                    <button type="button" 
+                    class="btn dropdown-item" 
+                    data-toggle="modal"
+                    data-target="#deleteDoc-modal">
+                    Delete Doctor
+                    </button>
+                  </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Account
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- <a class="dropdown-item" href="Edit">Edit Details</a> -->
+                    <!-- <button type="button" 
+                    class="btn dropdown-item" 
+                    data-toggle="modal"
+                    data-target="#book-modal">
+                    Edit Details
+                    </button> -->
+                    <!--a class="dropdown-item" href="#">Change Password</a>-->
+                    <button type="button" 
+                    class="btn dropdown-item" 
+                    data-toggle="modal"
+                    data-target="#pwd-modal">
+                    Change Password
+                    </button>
+                    <!-- <div class="dropdown-divider"></div> -->
+                    <a class="dropdown-item" href="rlogout">Logout</a>
+                  </div>
+                </li>
+                
+              </ul>
+              
+              </form>
+            </div>
+          </nav>
+
+      </div>
+      
       <br>
       <div class="container">
           <a class="navbar-brand2">
@@ -166,11 +244,12 @@
                 <tr>
                   <th>#</th>
                   <th>Doctor ID</th>
-                  <th>Doctor Name</th>
+                  <th>Doctor Name</th>                  
+                  <th>Specialization</th>
                   <th>Patient Name</th>
                   <th>Patient Phone Number</th>
-                  <th>Appointment Date</th>
-                  <th>Appointment Time</th>
+                  <th>Date</th>
+                  <th>Time</th>
                 </tr>
               </thead>
               <tbody>
@@ -213,12 +292,13 @@
                 {%for a_tuple in result%}
                 <tr>
                   <td>{{a_tuple[0]}}</td>
-                  <td>{{a_tuple[1]}}</td>
-                  <td>{{a_tuple[2]}}</td>
-                  <td>{{a_tuple[3]}} {{a_tuple[4]}}</td>
-                  <td>{{a_tuple[5]}}</td>
-                  <td>{{a_tuple[6]}}</td>          
+                  <td>{{a_tuple[1]}} </td>
+                  <td>{{a_tuple[2]}} {{a_tuple[3]}}</td>
+                  <td>{{a_tuple[4]}} </td>
+                  <td>{{a_tuple[5]}} {{a_tuple[6]}}</td>
                   <td>{{a_tuple[7]}}</td>
+                  <td>{{a_tuple[8]}}</td>                  
+                  <td>{{a_tuple[9]}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -246,8 +326,416 @@
   </div>
   </form>
   </div>
-  
+  <div class="modal fade"
+         id="addDoc-modal" data-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">
+                     Add Doctor</h5>
+                    <button type="button" 
+                            class="close" 
+                            data-dismiss="modal" 
+                            aria-label="Close"
+                             id="modalClose">
+                        <span aria-hidden="true">
+                          x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                       <div class="row">
+                         <div class="col">
+                           <input type="text" class="form-control" name="docID" id="docID" placeholder="Doctor ID">
+                         </div>
+                         <div class="col">
+                         </div>
+                       </div>
+                       
+                       <br>
+                       <div class="row">
+                        <div class="col">
+                          <input type="text" class="form-control" name="Fname" id="Fname" placeholder="First name">
+                        </div>
+                        <div class="col">
+                          <input type="text" class="form-control" name="Lname" id="Lname"placeholder="Last name">
+                        </div>
+                      </div>
+                       <br>
+                       
+                       <div class="row">
+                        <div class="col">
+                          <input type="text" class="form-control" name="spec" id="spec" placeholder="Specialization">
+                        </div>
+                        <div class="col">
+                          <input type="text" class="form-control" id="inputExp" placeholder="Experience">
+                        </div>
+                      </div>
+                      
+                      <br>
 
+                       <div class="form-row">
+                       <div class="col">
+                         <input type="text" class="form-control" id="inputEdu" placeholder="Education">
+                       </div>
+                       <div class="col">
+                       <select class="form-select" id="inputGender">
+                         <option hidden value="">Gender</option>
+                         <option value="Male">Male</option>
+                         <option value="Female">Female</option>                            
+                         <option value="Others">Others</option>
+                       </select>
+                     </div>
+                 </div>
+                     <br>
+                     <div style="text-align: center;">
+                       <button type="button" class="btn form-check-for-button"
+                       data-toggle="modal" 
+                       data-dismiss="modal"
+                       name="addDocbutton"
+                       id="addDocbutton"
+                       data-target="#confirm-modal">Next</button>
+                       <button type="button" class="btn form-check-clear-button"
+                       name="clearDetails"
+                       id="clearDetails">Clear</button>
+                     </div>
+
+                   </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="confirm-modal" data-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="modal_title">
+             Confirm adding new doctor</h5>
+           <button type="button" 
+                   class="close" 
+                   data-dismiss="modal" 
+                   aria-label="Close"
+                   id="modalClose">
+               <span aria-hidden="true">
+                 x</span>
+           </button>
+       </div>
+       <div class="modal-body-confirm modal-body">
+         
+         <div id="confirm-modal-body-id-wrapper">
+           
+         </div>
+         <br>
+         <button type="button" class="btn form-check-for-button"
+                             data-toggle="modal" 
+                             data-dismiss="modal"
+                             name="confirm"
+                             id="confirm">Confirm</button>
+         <button type="button" class="form-check-clear-button"
+                             data-toggle="modal" 
+                             data-dismiss="modal"
+                             name="cancel"
+                             id="cancel">Cancel</button>
+         </div> 
+         <br>                   
+       </div>
+      </div>
+      </div>
+
+
+    <div class="modal fade"
+    id="updateDoc-modal" data-backdrop="static" data-bs-keyboard="false">
+   <div class="modal-dialog modal-dialog-centered">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title" id="modal_title">
+                Update Doctor</h5>
+               <button type="button" 
+                       class="close" 
+                       data-dismiss="modal" 
+                       aria-label="Close"
+                        id="modalClose">
+                   <span aria-hidden="true">
+                     x</span>
+               </button>
+           </div>
+           <div class="modal-body">
+               <form>
+                  <div class="row">
+                    <div class="col">
+                      <!-- <input type="text" class="form-control" name="docID" id="docID" placeholder="Doctor ID"> -->
+                      <select name="docID" id="docID1" class="form-select form-select-lg mb-3">
+                        <option selected disabled value="">Choose a Doctor ID</option>
+                        
+                        {%for a_tuple in docids%}
+                        <option value="{{a_tuple[0]}}">{{a_tuple[0]}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <br>
+                  <div class="row">
+                   <div class="col">
+                     <input type="text" class="form-control" name="Fname" id="Fname1" placeholder="First name">
+                   </div>
+                   <div class="col">
+                     <input type="text" class="form-control" name="Lname" id="Lname1"placeholder="Last name">
+                   </div>
+                 </div>
+                  <br>
+                  
+                  <div class="row">
+                   <div class="col">
+                     <input type="text" class="form-control" name="spec" id="spec1" placeholder="Specialization">
+                   </div>
+                   <div class="col">
+                     <input type="text" class="form-control" id="inputExp1" placeholder="Experience">
+                   </div>
+                 </div>
+                 
+                 <br>
+
+                  <div class="form-row">
+                  <div class="col">
+                    <input type="text" class="form-control" id="inputEdu1" placeholder="Education">
+                  </div>
+                  <div class="col">
+                  <select class="form-select" id="inputGender1">
+                    <option hidden value="">Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>                            
+                    <option value="Others">Others</option>
+                  </select>
+                </div>
+            </div>
+                <br>
+                <div style="text-align: center;">
+                  <button type="button" class="btn form-check-for-button"
+                  data-toggle="modal" 
+                  data-dismiss="modal"
+                  name="updateDocbutton"
+                  id="updateDocbutton"
+                  data-target="#confirm-modal1">Next</button>
+                </div>
+
+              </form>
+           </div>
+           
+       </div>
+   </div>
+</div>
+
+
+    
+
+      <div class="modal fade" id="confirm-modal1" data-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title" id="modal_title">
+               Confirm updating doctor</h5>
+             <button type="button" 
+                     class="close" 
+                     data-dismiss="modal" 
+                     aria-label="Close"
+                     id="modalClose">
+                 <span aria-hidden="true">
+                   x</span>
+             </button>
+         </div>
+         <div class="modal-body-confirm modal-body">
+           
+           <div id="confirm-modal-body-id-wrapper1">
+             
+           </div>
+           <br>
+           <button type="button" class="btn form-check-for-button"
+                               data-toggle="modal" 
+                               data-dismiss="modal"
+                               name="confirm"
+                               id="confirm1">Confirm</button>
+           <button type="button" class="form-check-clear-button"
+                               data-toggle="modal" 
+                               data-dismiss="modal"
+                               name="cancel"
+                               id="cancel1">Cancel</button>
+           </div> 
+           <br>                   
+         </div>
+        </div>
+        </div>
+      
+        <div class="modal fade"
+        id="deleteDoc-modal" data-backdrop="static" data-bs-keyboard="false">
+       <div class="modal-dialog modal-dialog-centered">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" id="modal_title">
+                    Delete Doctor</h5>
+                   <button type="button" 
+                           class="close" 
+                           data-dismiss="modal" 
+                           aria-label="Close"
+                            id="modalClose">
+                       <span aria-hidden="true">
+                         x</span>
+                   </button>
+               </div>
+               <div class="modal-body">
+                   <form>
+                      <div class="row">
+                        <div class="col">
+                          <!-- <input type="text" class="form-control" name="docID" id="docID" placeholder="Doctor ID"> -->
+                          <select name="docID" id="docID2" class="form-select form-select-lg mb-3">
+                            <option selected disabled value="">Choose a Doctor ID</option>
+                            
+                            {%for a_tuple in docids%}
+                            <option value="{{a_tuple[0]}}">{{a_tuple[0]}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <br>
+                      <div class="row">
+                       <div class="col">
+                         <input type="text" class="form-control" name="Fname" id="Fname2" placeholder="First name">
+                       </div>
+                       <div class="col">
+                         <input type="text" class="form-control" name="Lname" id="Lname2"placeholder="Last name">
+                       </div>
+                     </div>
+                      <br>
+                      
+                      <div class="row">
+                       <div class="col">
+                         <input type="text" class="form-control" name="spec" id="spec2" placeholder="Specialization">
+                       </div>
+                       <div class="col">
+                         <input type="text" class="form-control" id="inputExp2" placeholder="Experience">
+                       </div>
+                     </div>
+                     
+                     <br>
+    
+                      <div class="form-row">
+                      <div class="col">
+                        <input type="text" class="form-control" id="inputEdu2" placeholder="Education">
+                      </div>
+                      <div class="col">
+                      <select class="form-select" id="inputGender2">
+                        <option hidden value="">Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>                            
+                        <option value="Others">Others</option>
+                      </select>
+                    </div>
+                </div>
+                    <br>
+                    <div style="text-align: center;">
+                      <button type="button" class="btn form-check-for-button"
+                      data-toggle="modal" 
+                      data-dismiss="modal"
+                      name="deleteDocbutton"
+                      id="deleteDocbutton"
+                      data-target="#confirm-modal2">Next</button>
+                    </div>
+    
+                  </form>
+               </div>
+               
+           </div>
+       </div>
+    </div>
+    
+    
+        
+    
+          <div class="modal fade" id="confirm-modal2" data-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h5 class="modal-title" id="modal_title">
+                   Confirm deleting doctor</h5>
+                 <button type="button" 
+                         class="close" 
+                         data-dismiss="modal" 
+                         aria-label="Close"
+                         id="modalClose">
+                     <span aria-hidden="true">
+                       x</span>
+                 </button>
+             </div>
+             <div class="modal-body-confirm modal-body">
+               
+               <div id="confirm-modal-body-id-wrapper2">
+                 
+               </div>
+               <br>
+               <button type="button" class="btn form-check-for-button"
+                                   data-toggle="modal" 
+                                   data-dismiss="modal"
+                                   name="confirm"
+                                   id="confirm2">Confirm</button>
+               <button type="button" class="form-check-clear-button"
+                                   data-toggle="modal" 
+                                   data-dismiss="modal"
+                                   name="cancel"
+                                   id="cancel2">Cancel</button>
+               </div> 
+               <br>                   
+             </div>
+            </div>
+            </div>
+          
+
+            <div class="modal fade"
+            id="pwd-modal" data-backdrop="static" data-bs-keyboard="false">
+           <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <h5 class="modal-title" id="modal_title">
+                        Change Password</h5>
+                       <button type="button" 
+                               class="close" 
+                               data-dismiss="modal" 
+                               aria-label="Close"
+                               id="modalClose">
+                           <span aria-hidden="true">
+                             x</span>
+                       </button>
+                   </div>
+                   <form>
+                     <div class="form-group">
+                       <label for="Currentpassword">Current Password</label>
+                       <input type="text" class="form-control" id="Currentpassword" placeholder="Enter your current password">
+                       <!-- <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small> -->
+                     </div>
+                     <div class="form-group">
+                       <label for="Newpassword">New Password</label>
+                       <input type="password" class="form-control" id="Newpassword" placeholder="Enter new password">
+                     </div>
+                     <div class="form-group">
+                       <label for="Confirmpassword">Confirm Password</label>
+                       <input type="password" class="form-control" id="Confirmpassword" placeholder="Re-enter Password">
+                     </div>
+                     <!-- <div class="form-group form-check">
+                       <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                       <label class="form-check-label" for="exampleCheck1">I confirm to update these details.</label>
+                     </div> -->
+                     <div class="form-group" style="text-align: center;">
+                     <button class="btn btn-primary" name="update_at_credentials" id="update_at_credentials" >Update</button>
+                    </div>
+                    <div id="form-group-wrapper-credentials" style="text-align: center;">
+                     </div>
+                   </form>
+               </div>
+           </div>
+       </div>
   
   <!-- Testing end -->
 
@@ -368,6 +856,7 @@
   <!-- Date Picker -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js">
   </script>
+  
   <script>
     
     $(function(){
@@ -389,186 +878,259 @@
   <!-- custom js -->
   <script type="text/javascript" src="static/js/custom.js"></script>
   <!-- To send data of others -->
-  <script type="text/javascript">
-  var name_of_the_doctor_chosen,p_Fname,p_Lname,age,gender,str,date,num,slot;
-   function booked_doc(clicked_id){
-    docName = $("#"+clicked_id).val();
-    // $("#modal_body").html(str);
-    str="Appointment with <b>Dr. "+docName+"</b> is for?";
-    $("#modal_title").html(str);
-   }
 
-   $("#next_atPatient").click(function(){
-    p_Fname = $("#Fname").val();
-    p_Lname = $("#Lname").val();
-    age=$("#inputAge").val();
-    gender=$("#inputGender").val();    
-   });
-   $("#self").click(function(){
-    p_Fname = "def_Fname";
-    p_Lname = "def_Lname";
-    age="99";
-    gender="M";
-   });
+  <script>
 
-   $("#next_atdate").click(function(){
-     date = $("#datePicker").val();
-     $.ajax({
-  type: "POST",
-  url: "/process_qtc",
-  data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName},
-  success:function(data){
-    //Morning
-    var i = 0;
-    if(data=="Empty"){
-    var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper3");
-    var myHTML = '';
-    myHTML += '<br><label style="color: red;">No slots Available</label>';
-    wrapper.innerHTML=myHTML
+    var id,Fname,Lname,exp,spec,edu,gender;
 
-    //clearing if any buttons are present
-    wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
-    myHTML = '';
-    wrapper.innerHTML=myHTML
-    }
-    else{
-    // alert(data);
-    const keys = Object.keys(data);
-    // alert(keys);
-    // alert(Object.keys(data).length)
-    // num=Object.keys(data).length;
-    var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
-    var myHTML = '';
-   for (; i < 12; i++) {
-     if(data[keys[i]]==0){
-    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button"  data-toggle="modal" data-dismiss="modal" data-target="#confirm-modal" onclick="time(this.id)" id="'+keys[i]+'">'+keys[i]+'</button></div>';}
-    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
-    else{
-    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+'</button></div>';}
-    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
-    }
-    wrapper.innerHTML=myHTML
-    //clearing if any buttons are present
-    wrapper = document.getElementById("slot-modal-body-id-mor-wrapper3");
-    myHTML = '';
-    wrapper.innerHTML=myHTML
-    }
-    
-
-    //Evening
-    if(data=="Empty"){
-    var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper3");
-    var myHTML = '';
-    myHTML += '<br><label style="color: red;">No slots Available</label>';
-    wrapper.innerHTML=myHTML
-
-    //clearing if any buttons are present
-    wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
-    myHTML = '';
-    wrapper.innerHTML=myHTML
-    }
-    else{
-    // alert(data);
-    const keys = Object.keys(data);
-    // alert(keys);
-    // alert(Object.keys(data).length)
-    // num=Object.keys(data).length;
-    var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
-    var myHTML = '';
-   for (; i < 24; i++) {
-     if(data[keys[i]]==0){
-          
-    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" data-toggle="modal" data-dismiss="modal" data-target="#confirm-modal" onclick="time(this.id)" id="'+keys[i]+'">'+keys[i]+'</button></div>';}
-    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" id="'+keys[i]+'">'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
-    else{
-    myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+'</button></div>';}
-    // myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>'+keys[i]+"-"+data[keys[i]]+'</button></div>';}
-    }
-    wrapper.innerHTML=myHTML
-    //clearing if any buttons are present
-    wrapper = document.getElementById("slot-modal-body-id-eve-wrapper3");
-    myHTML = '';
-    wrapper.innerHTML=myHTML
-    }
+    $("#addDocbutton").click(function(){
+    id = $("#docID").val();
+    Fname = $("#Fname").val();
+    Lname = $("#Lname").val();
+    exp=$("#inputExp").val();
+    spec=$("#spec").val(); 
+    edu=$("#inputEdu").val();
+    gender=$("#inputGender").val();
 
     
-
-    
-    
-    }
-    });
-    });
-
-    
-  function time(clicked_id){
-    slot =clicked_id;
-    // $("#"+clicked_id).style.color="blue";
-    // alert(clicked_id);
     var wrapper = document.getElementById("confirm-modal-body-id-wrapper");
     var myHTML = '';
-    myHTML += '<br><p><b>Name</b>:</p>';
-    myHTML += '<p>'+p_Fname+'</p>';
+    myHTML += '<br><p><b>Doctor ID</b>:</p>';
+    myHTML += '<p>'+id+'</p>';
     
-    myHTML += '<br><p><b>Doctor</b>:</p>';    
-    myHTML += '<p>'+docName+'</p>';
+    myHTML += '<br><p><b>Doctor Name</b>:</p>';    
+    myHTML += '<p>'+Fname+' '+Lname+'</p>';
 
-    myHTML += '<br><p><b>Date</b>:</p>';    
-    myHTML += '<p>'+date+'</p>';
+    myHTML += '<br><p><b>Experience</b>:</p>';    
+    myHTML += '<p>'+exp+'</p>';
+
+    myHTML += '<br><p><b>Specialization</b>:</p>';    
+    myHTML += '<p>'+spec+'</p>';
     
-    myHTML += '<br><p><b>Slot</b>:</p>';
-    myHTML += '<p>'+slot+'</p>';
+    myHTML += '<br><p><b>Education</b>:</p>';
+    myHTML += '<p>'+edu+'</p>';
+    
+    myHTML += '<br><p><b>Gender</b>:</p>';
+    myHTML += '<p>'+gender+'</p>';
 
     wrapper.innerHTML=myHTML
+
     
+
+   });
+
+   
+   $("#confirm").click(function(){  
     $.ajax({
       type: "POST",
-      url: "/process_qtc2",
-      data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docName":docName,"slot":slot}
-
-      
-      });
+      url: "/addDoctor",
+      data: {"Fname":Fname,"Lname":Lname,"id":id,"gender":gender,"exp":exp,"edu":edu,"spec":spec},
+      success:function(data){
+      // alert(data);
+      if(data=='failed'){
+          alert('Please enter the details correctly');
+        }
+        else if(data=='failed1'){
+          alert('Enter a unique Doctor ID');
+        }
+        else if(data=='success'){
+          alert('Success');
+        }
     }
-
-    $("#confirm").click(function(){
-      alert("check");
-
-      $.ajax({
-      type: "POST",
-      url: "/process_qtc2",
-      data: {"flag":"commit"}
-
-      
-      });
-        
+    });
    });
 
-   $(".close").click(function(){
-      // alert("rollback");
-
-      $.ajax({
-      type: "POST",
-      url: "/process_qtc2",
-      data: {"flag":"rollback"}
-
+  $('#docID1').on('change', function() {
       
-      });
-        
-   });
-   $("#cancel").click(function(){
-      // alert("rollback");
-
-      $.ajax({
+    $.ajax({
       type: "POST",
-      url: "/process_qtc2",
-      data: {"flag":"rollback"}
+      url: "/updateDoctor",
+      data: {"id":this.value,"flag":'get'},
+      success:function(data){
+        // alert(data);
+        // alert(data[0][0]);
+        $("#Fname1").val(data[0][1]);
+        $("#Lname1").val(data[0][2]);
+        $("#inputExp1").val(data[0][4]);
+        $("#spec1").val(data[0][3]); 
+        $("#inputEdu1").val(data[0][6]);
+        $("#inputGender1").val(data[0][5]);
 
-      
-      });
-        
-   });
+    }
+    });
+
+    });
+
+
+   $("#updateDocbutton").click(function(){
+    id = $("#docID1").val();
+    Fname = $("#Fname1").val();
+    Lname = $("#Lname1").val();
+    exp=$("#inputExp1").val();
+    spec=$("#spec1").val(); 
+    edu=$("#inputEdu1").val();
+    gender=$("#inputGender1").val();
+
     
+    var wrapper = document.getElementById("confirm-modal-body-id-wrapper1");
+    var myHTML = '';
+    myHTML += '<br><p><b>Doctor ID</b>:</p>';
+    myHTML += '<p>'+id+'</p>';
+    
+    myHTML += '<br><p><b>Doctor Name</b>:</p>';    
+    myHTML += '<p>'+Fname+' '+Lname+'</p>';
+
+    myHTML += '<br><p><b>Experience</b>:</p>';    
+    myHTML += '<p>'+exp+'</p>';
+
+    myHTML += '<br><p><b>Specialization</b>:</p>';    
+    myHTML += '<p>'+spec+'</p>';
+    
+    myHTML += '<br><p><b>Education</b>:</p>';
+    myHTML += '<p>'+edu+'</p>';
+    
+    myHTML += '<br><p><b>Gender</b>:</p>';
+    myHTML += '<p>'+gender+'</p>';
+
+    wrapper.innerHTML=myHTML
+
+    
+
+   });
+
+   $("#confirm1").click(function(){  
+    $.ajax({
+      type: "POST",
+      url: "/updateDoctor",
+      data: {"Fname":Fname,"Lname":Lname,"id":id,"gender":gender,"exp":exp,"edu":edu,"spec":spec,"flag":'update'},
+      success:function(data){
+      // alert(data);
+      if(data=='failed'){
+          alert('Please enter the details correctly');
+        }
+        else if(data=='success'){
+          alert('Success');
+        }
+    }
+    });
+   });
+
+   $('#docID2').on('change', function() {
+      
+      $.ajax({
+        type: "POST",
+        url: "/deleteDoctor",
+        data: {"id":this.value,"flag":'get'},
+        success:function(data){
+          // alert(data);
+          // alert(data[0][0]);
+          $("#Fname2").val(data[0][1]);
+          $("#Lname2").val(data[0][2]);
+          $("#inputExp2").val(data[0][4]);
+          $("#spec2").val(data[0][3]); 
+          $("#inputEdu2").val(data[0][6]);
+          $("#inputGender2").val(data[0][5]);
+  
+      }
+      });
+  
+      });
   
   
+     $("#deleteDocbutton").click(function(){
+      id = $("#docID2").val();
+      Fname = $("#Fname2").val();
+      Lname = $("#Lname2").val();
+      exp=$("#inputExp2").val();
+      spec=$("#spec2").val(); 
+      edu=$("#inputEdu2").val();
+      gender=$("#inputGender2").val();
+      alert(id);
+      
+      var wrapper = document.getElementById("confirm-modal-body-id-wrapper2");
+      var myHTML = '';
+      myHTML += '<br><p><b>Doctor ID</b>:</p>';
+      myHTML += '<p>'+id+'</p>';
+      
+      myHTML += '<br><p><b>Doctor Name</b>:</p>';    
+      myHTML += '<p>'+Fname+' '+Lname+'</p>';
+  
+      myHTML += '<br><p><b>Experience</b>:</p>';    
+      myHTML += '<p>'+exp+'</p>';
+  
+      myHTML += '<br><p><b>Specialization</b>:</p>';    
+      myHTML += '<p>'+spec+'</p>';
+      
+      myHTML += '<br><p><b>Education</b>:</p>';
+      myHTML += '<p>'+edu+'</p>';
+      
+      myHTML += '<br><p><b>Gender</b>:</p>';
+      myHTML += '<p>'+gender+'</p>';
+  
+      wrapper.innerHTML=myHTML
+  
+      
+  
+     });
+  
+     $("#confirm2").click(function(){  
+      $.ajax({
+        type: "POST",
+        url: "/deleteDoctor",
+        data: {"Fname":Fname,"Lname":Lname,"id":id,"gender":gender,"exp":exp,"edu":edu,"spec":spec,"flag":'delete'},
+        success:function(data){
+        // alert(data);
+        if(data=='success'){
+            alert('Success');
+          }
+      }
+      });
+     });
+
+   
+   $("#clearDetails").click(function(){
+    $("#docID").val('');
+    $("#Fname").val('');
+    $("#Lname").val('');
+    $("#inputExp").val('');
+    $("#spec").val(''); 
+    $("#inputEdu").val('');
+    $("#inputGender").val('');
+   });
+  // $.ajax({
+  //     type: "POST",
+  //     url: "/addDoctor",
+  //     data: {"p_FName":p_FName,"p_LName":p_LName,"Phno":p_Phno}
+      
+  //   });
+
+  $("#update_at_credentials").click(function(){
+    CurrentPassword = $("#Currentpassword").val();
+    Newpassword = $("#Newpassword").val();
+    Confirmpassword=$("#Confirmpassword").val();
+    alert(p_CurrentPassword);
+    $.ajax({
+      type: "POST",
+      url: "/rupdateCredentials",
+      data: {"CurrentPassword":CurrentPassword,"Newpassword":Newpassword,"Confirmpassword":Confirmpassword},
+      success:function(data){
+        // alert(data);
+        if(data=='failed'){
+          alert('Entered password is incorrect');
+        }
+        else if(data=='failed1'){
+          alert('Passwords doesn\'t match');
+        }
+        else if(data=='failed2'){
+          alert('Password minimum length should be 6');
+        }
+        else if(data=='success'){
+          alert('Success');
+        }
+      }
+      });
+   });
+
   </script>
   
 
