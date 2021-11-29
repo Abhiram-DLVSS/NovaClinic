@@ -120,6 +120,7 @@ class Mysqlhandler:
 		print(rows)
 		return rows
 
+
 	def delete_old_aptmnt(self,date):
 		cursor=cnx.cursor()
 		query="delete from aptmnt where date<'{}';".format(date)
@@ -128,6 +129,7 @@ class Mysqlhandler:
 		cursor.execute(query)
 		cursor.execute("commit")
 
+   
 	def getName(self,patient_id):
 		print(patient_id)
 		cursor=cnx.cursor()	
@@ -157,6 +159,25 @@ class Mysqlhandler:
 		cursor.execute(query)
 		vari=cursor.fetchall()
 		# print(vari[0][0])
+		if(len(vari)==0):
+			# print("Account doesn't exist")
+			return 1
+		else:
+			# print("Account already exists")
+			return 0
+
+    
+	def check_receptionist(self,recep_id,password):
+		cursor=cnx.cursor()
+		# print("recep_id="+recep_id)
+		# print("password="+password)
+		query = ("select * from receptionist_credentials where recep_id='{}' and password='{}';").format(recep_id,password)
+		if(recep_id==None and password==None):
+			return -1
+		cursor.execute(query)
+		vari=cursor.fetchall()
+		# print(vari[0][0])
+
 		if(len(vari)==0):
 			# print("Account doesn't exist")
 			return 1
