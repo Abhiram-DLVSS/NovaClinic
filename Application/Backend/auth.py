@@ -279,3 +279,25 @@ def updateCredentials():
             print("FAILED")
         return 'Success'
     return 'Failed'
+
+@auth.route('/rlogin',methods=['GET','POST'])
+def rlogin():
+    if request.method == 'POST':
+
+        recep_id = request.form.get('recep_id')
+        password = request.form.get('password')
+        # print("recep_id="+recep_id)
+        # print("password="+password1)
+        
+        val=Mysqlhandler.check_receptionist(0,recep_id,password)
+        print("Val=")
+        print(val)
+        if val==0:
+            flash('Invalid Credentials. Please try again.', category='error')
+            return render_template("rlogin.html")
+        elif val==-1:    
+            return render_template("rlogin.html")
+        else:
+            return redirect('/receptionist')
+    return render_template("rlogin.html")
+
