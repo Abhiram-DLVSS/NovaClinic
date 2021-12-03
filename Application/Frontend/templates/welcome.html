@@ -26,6 +26,8 @@
 
   <link href="static/css/responsive.css" rel="stylesheet" />
 
+  <link rel="shortcut icon" href="static/images/favicon.png" type="">
+
 </head>
 
 <body>
@@ -40,15 +42,30 @@
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand" href="index.html">
+          <div class="container-fluid">
+          <a class="navbar-brand" href="homepage">
             <span>
               Nova Clinic
             </span>
           </a>
-
-        
-
-         
+          <!-- <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form> -->
+          <div class="d-flex" >
+          <a href="rlogin" style="color:white;">
+            <span>
+              Receptionist Portal
+            </span>
+          </a>
+          &nbsp;&nbsp;<p style="color: white;">|</p>&nbsp;&nbsp;
+          <a href="alogin" style="color:white;">
+            <span>
+              Admin Portal
+            </span>
+          </a>
+        </div>
+        </div>
         </nav>
       </div>
     </header>
@@ -69,7 +86,7 @@
                     </p>
                     <div class="button-cen">
                     <form method="get" action="/login">
-                      <button class="form-check-book-button" type="submit" name="book" id="book" formmethod="post">Sign In</button>
+                      <button class="form-check-signin-button" type="submit" name="book" id="book" formmethod="post">Sign In</button>
                     </form>
                    </div>
                  </div>
