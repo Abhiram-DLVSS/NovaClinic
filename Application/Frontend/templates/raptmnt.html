@@ -48,7 +48,7 @@
       <div class="container">
        <nav class="navbar navbar-expand-lg custom_nav-container ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/home">
+            <a class="navbar-brand" href="/receptionist">
                 <span>
                   Nova Clinic
                 </span>
@@ -61,11 +61,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="/receptionist">Home <span class="sr-only">(current)</span></a>
                 </li>
                 
                 <li class="nav-item">
-                  <a class="nav-link" href="logout">Logout</a>
+                  <a class="nav-link" href="rlogout">Logout</a>
                 </li>
                 
               </ul>
@@ -221,7 +221,7 @@
                     name="{{a_tuple[0]}}"
                     id="{{a_tuple[0]}}"
                     value="{{a_tuple[1]}} {{a_tuple[2]}}"
-                    data-target="#date-modal"
+                    data-target="#others-modal"
                     onclick="booked_doc(this.id,'{{a_tuple[3]}}')">
                     Book Appointment
             </button>
@@ -285,10 +285,10 @@
                      </div>
                  </div>
              </div>
-         </div>
+         </div> -->
 
          
-    <div class="modal fade"
+     <div class="modal fade"
          id="others-modal" data-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -306,7 +306,15 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                       <div class="row">
+                      <div class="row">
+                        <div class="col">
+                          <input type="text" class="form-control" name="phno" id="phno" placeholder="Phone Number">
+                        </div>
+                        <div class="col">
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
                          <div class="col">
                            <input type="text" class="form-control" name="Fname" id="Fname" placeholder="First name">
                          </div>
@@ -323,9 +331,9 @@
                        <div class="col">
                        <select class="form-select" id="inputGender">
                          <option hidden value="">Gender</option>
-                         <option value="M">Male</option>
-                         <option value="F">Female</option>                            
-                         <option value="O">Others</option>
+                         <option value="Male">Male</option>
+                         <option value="Female">Female</option>                            
+                         <option value="Others">Others</option>
                        </select>
                      </div>
                  </div>
@@ -346,7 +354,7 @@
         </div>
     </div>
 
-     -->
+     
 
     <div class="modal fade"
     id="date-modal" data-backdrop="static" data-bs-keyboard="false">
@@ -478,11 +486,9 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
    <div class="modal-header">
      <h5 class='col-12 modal-title text-center' style="font-size:30px;" id="modal_title">
        Appointment Successful!</h5>
-       <!-- <button type="button" onclick="location.href='home'" class="btn btn-primary">Ok -->
-               <!-- </button> -->
    </div>
  <div class="modal-body">
-   <button type="button" class="btn form-check-for-button" onclick="location.href='home'"
+   <button type="button" class="btn form-check-for-button" onclick="location.href='receptionist'"
      name="next_attq"
      id="next_attq">Ok</button>
    </div>                        
@@ -542,48 +548,70 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
     docID =clicked_id;
     docName=$("#"+clicked_id).val();
     speciality=speciality1;
+    // alert(docID);
+    // alert(docName);
+    // $("#modal_body").html(str);
     $.ajax({
       type: "POST",
       url: "/process_qtc2",
       data: {"flag":"rollback"}      
       });
 
+    // str="Appointment with <b>Dr. "+docName+"</b> is for?";
+    // $("#for_whom").html(str);
 
-    $.ajax({
-      type: "POST",
-      url: "/userName",
-      success:function(data){
-        const keys = Object.keys(data);
-        p_Fname = data[keys[0]];
-        p_Lname = data[keys[1]];
-      }
+    // $.ajax({
+    //   type: "POST",
+    //   url: "/userName",
+    //   success:function(data){
+    //     // alert(data);
+    //     const keys = Object.keys(data);
+    //     p_Fname = data[keys[0]];
+    //     p_Lname = data[keys[1]];
+    //   }
           
-      });
+    //   });
    }
 
-  //  $("#next_atPatient").click(function(){
-  //   p_Fname = $("#Fname").val();
-  //   p_Lname = $("#Lname").val();
-  //   age=$("#inputAge").val();
-  //   gender=$("#inputGender").val();    
-  //  });
-   $("#self").click(function(){
-    $.ajax({
-      type: "POST",
-      url: "/userName",
-      success:function(data){
-        const keys = Object.keys(data);
-        p_Fname = data[keys[0]];
-        p_Lname = data[keys[1]];
-      }
+  //  if($("#Fname").val()=='' || $("#Lname").val()==''||$("#inputAge").val()==''||$("#phno").val()==''||$("#inputGender").val()=='Gender'){
+  //   $("#next_atPatient").prop( "disabled", true );
+  //  }
+  //  if($("#Fname").val()!='' && $("#Lname").val()!=''&&$("#inputAge").val()!=''&&$("#phno").val()!=''&&$("#inputGender").val()!='Gender'){
+  //   $("#next_atPatient").prop( "disabled", false );
+  //  }
+
+   $("#next_atPatient").click(function(){
+    
+    phno=$("#phno").val(); 
+    if($("#Fname").val()=='' || $("#Lname").val()==''||$("#inputAge").val()==''||$("#phno").val()==''||$("#inputGender").val()=='Gender'){
+    alert("Please fill the details correctly");
+    location.reload();
+   }
+   else{
+    p_Fname = $("#Fname").val();
+    p_Lname = $("#Lname").val();
+    age=$("#inputAge").val();
+    gender=$("#inputGender").val();
+   }
+   });
+  //  $("#self").click(function(){
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "/userName",
+  //     success:function(data){
+  //       // alert(data);
+  //       const keys = Object.keys(data);
+  //       p_Fname = data[keys[0]];
+  //       p_Lname = data[keys[1]];
+  //     }
           
-      });
+  //     });
 
     
-    // p_Lname = "def_Lname";
-    age="99";
-    gender="M";
-   });
+  //   // p_Lname = "def_Lname";
+  //   age="99";
+  //   gender="M";
+  //  });
 
    $("#next_atdate").click(function(){
      date = $("#datePicker").val();
@@ -606,7 +634,11 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
     wrapper.innerHTML=myHTML
     }
     else{
+    // alert(data);
     const keys = Object.keys(data);
+    // alert(keys);
+    // alert(Object.keys(data).length)
+    // num=Object.keys(data).length;
     var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
     var myHTML = '';
    for (; i < 12; i++) {
@@ -638,7 +670,10 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
     wrapper.innerHTML=myHTML
     }
     else{
+    // alert(data);
     const keys = Object.keys(data);
+    // alert(keys);
+    // alert(Object.keys(data).length)
     // num=Object.keys(data).length;
     var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
     var myHTML = '';
@@ -669,6 +704,8 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
     
   function time(clicked_id){
     slot =clicked_id;
+    // $("#"+clicked_id).style.color="blue";
+    // alert(clicked_id);
     var wrapper = document.getElementById("confirm-modal-body-id-wrapper");
     var myHTML = '';
     myHTML += '<br><p><b>Name</b>:</p>';
@@ -691,13 +728,14 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
     $.ajax({
       type: "POST",
       url: "/process_qtc2",
-      data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot}
+      data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot,"phno":phno}
 
       
       });
     }
 
     $("#confirm").click(function(){
+      // alert("check");
 
       $.ajax({
       type: "POST",
@@ -710,6 +748,8 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
    });
 
    $(".close").click(function(){
+      // alert("rollback");
+
       $.ajax({
       type: "POST",
       url: "/process_qtc2",
@@ -720,6 +760,8 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
         
    });
    $("#cancel").click(function(){
+      // alert("rollback");
+
       $.ajax({
       type: "POST",
       url: "/process_qtc2",
