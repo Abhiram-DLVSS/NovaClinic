@@ -1004,6 +1004,67 @@ a:focus {
 }
 
 .form-group{
-  padding: 10px 10px 10px 10px;
+  padding: 20px;
 
+}
+
+.form-check-signin-button{
+  width: 90%;
+  max-width: 220px;
+  height: 45px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  
+  border: 1px solid black;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+.form-check-signin-button:hover{
+  background-color: #2EE59D;
+  font-weight: bolder;
+  letter-spacing: 1.5px;
+  /* box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4); */
+  transform: translateY(-1px);
+  border: none;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color:#62d2a241;
+ }
+ .form-check-book-button{
+  width: 90%;
+  max-width: 220px;
+  height: 45px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  
+  border: 1px solid black;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+.form-check-book-button:hover{
+  background-color: #2EE59D;
+  font-weight: bolder;
+  /* letter-spacing: 1.5px; */
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  /* color: #fff; */
+  transform: translateY(1px);
+  border: none;
 }
