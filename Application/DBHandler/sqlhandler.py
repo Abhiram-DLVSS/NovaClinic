@@ -172,7 +172,7 @@ class Mysqlhandler:
 		# print("recep_id="+recep_id)
 		# print("password="+password)
 		query = ("select * from receptionist_credentials where recep_id='{}' and password='{}';").format(recep_id,password)
-		if(recep_id==None and password==None):
+		if(recep_id=='' or password==''):
 			return -1
 		cursor.execute(query)
 		vari=cursor.fetchall()
@@ -253,3 +253,16 @@ class Mysqlhandler:
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
+
+	def check_admin(self,recep_id,password):
+		cursor=cnx.cursor()
+		query = ("select * from admin_credentials where admin_id='{}' and password=Sha2('{}',224);").format(recep_id,password)
+		if(recep_id=='' or password==''):
+			return -1
+		cursor.execute(query)
+		vari=cursor.fetchall()
+		if(len(vari)==0):
+			return 1
+		else:
+			return 0
+  
