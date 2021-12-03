@@ -426,6 +426,7 @@ a:focus {
   float:left;
   width:30%;
   max-width: 280px;
+  border: 1px solid black;
 
   color: #000;
 }
