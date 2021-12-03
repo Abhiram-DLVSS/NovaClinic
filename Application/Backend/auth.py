@@ -463,23 +463,62 @@ def rupdateCredentials():
 
 @auth.route('/rlogin',methods=['GET','POST'])
 def rlogin():
+    if "recep_id" in session:
+        recep_id=session["recep_id"]
+        return redirect('/receptionist')
+    elif "phno" in session:
+        return redirect('/home')
+    elif "admin_id" in session:
+        return redirect('/admin')
     if request.method == 'POST':
-
+        session.permanent=True
         recep_id = request.form.get('recep_id')
+        password = request.form.get('password')
+        # print("recep_id="+recep_id)
+        # print("password="+password)
+        
+        val=Mysqlhandler.check_receptionist(0,recep_id,password)
+        # print("Val=")
+        # print(val)
+        if val==-1:
+            flash('Invalid Credentials. Please try again.', category='error')
+            return render_template("rlogin.html")
+        elif val==1:    
+            flash('Incorrect Credentials. Please try again.', category='error')
+            return render_template("rlogin.html")
+        else:
+            session["recep_id"]=recep_id
+            return redirect('/receptionist')
+    return render_template("rlogin.html")
+
+@auth.route('/alogin',methods=['GET','POST'])
+def alogin():
+    if "admin_id" in session:
+        admin_id=session["admin_id"]
+        return redirect('/admin')
+    elif "phno" in session:
+        return redirect('/home')
+    elif "recep_id" in session:
+        return redirect('/receptionist')
+    if request.method == 'POST':
+        session.permanent=True
+        admin_id = request.form.get('admin_id')
         password = request.form.get('password')
         # print("recep_id="+recep_id)
         # print("password="+password1)
         
-        val=Mysqlhandler.check_receptionist(0,recep_id,password)
-        print("Val=")
-        print(val)
-        if val==0:
+        val=Mysqlhandler.check_admin(0,admin_id,password)
+        # print("Val=")
+        # print(val)
+        if val==-1:
             flash('Invalid Credentials. Please try again.', category='error')
-            return render_template("rlogin.html")
-        elif val==-1:    
-            return render_template("rlogin.html")
+            return render_template("alogin.html")
+        elif val==1:    
+            flash('Incorrect Credentials. Please try again.', category='error')
+            return render_template("alogin.html")
         else:
-            return redirect('/receptionist')
-    return render_template("rlogin.html")
+            session["admin_id"]=admin_id
+            return redirect('/admin')
+    return render_template("alogin.html")
 
 
