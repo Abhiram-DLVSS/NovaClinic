@@ -29,6 +29,8 @@
   <!-- Custom styles for this template -->
   <link href="/static/css/style_admin.css" rel="stylesheet" />
   
+  <!-- <link href="/static/css/bs-datepicker.css" rel="stylesheet" /> -->
+
   <link rel="shortcut icon" href="static/images/favicon.png" type="">
   
   <!-- AJAX -->
@@ -171,8 +173,86 @@
     
     
   
-  
-  <!-- </div> -->
+  <div class="list-container">
+    <div class="d-flex flex-row bd-highlight mb-3" style="justify-content: space-between; height: 100%;">
+      <div class="p-2 bd-highlight" style=" width: 40%; height: 100%;;">
+        <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Doctors</h4>
+        <div class="table-responsive" style="max-height: 100%; background-color: white; border: 1px solid black;  border-radius: 10px;">
+          
+          
+          <table class="table table-borderless">
+            <thead style="position: sticky; top: 0; background-color:#eee;">
+              <tr>
+                <!-- <th scope="col">S.No</th> -->
+                <th scope="col">Doctor ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Specialization</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- {% set count = 1 %} -->
+              {%for a_tuple in docids%}
+              <tr>
+                <!-- <td>{{count}}</td> -->
+                <td>{{a_tuple[0]}}</td>
+                <td>{{a_tuple[1]}} {{a_tuple[2]}}</td>
+                
+                <td>{{a_tuple[3]}}</td>
+              </tr>
+              <!-- {% set count = count + 1 %} -->
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="p-2 bd-highlight" style="width: 25%; height: 100%;">
+        <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Receptionists</h4>
+        <div class="table-responsive" style="max-height: 95%; background-color:white; border: 1px solid black; border-radius: 10px;">
+          <table class="table table-borderless">
+            <thead style="background-color: #eee;">
+              <tr>
+                <!-- <th scope="col">S.No</th> -->
+                <th scope="col">Receptionist ID</th>
+                <th scope="col">Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for a_tuple in recepids%}
+              <tr>
+                <!-- <td>{{count}}</td> -->
+                <td>{{a_tuple[0]}}</td>
+                <td>{{a_tuple[1]}} {{a_tuple[2]}}</td>
+              </tr>
+              <!-- {% set count = count + 1 %} -->
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="p-2 bd-highlight" style="width: 20%; height: 100%;">
+        <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Adminstrators</h4>
+        <div class="table-responsive" style="max-height: 95%;  background-color:white; border: 1px solid black;  border-radius: 10px; text-align: center;">
+          <table class="table table-borderless ">
+            <thead style="background-color: #eee;">
+              <tr>
+                <!-- <th scope="col">S.No</th> -->
+                <th scope="col" >Admin ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for a_tuple in adminids%}
+              <tr>
+                <td>{{a_tuple[0]}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    </div> -->
+  </div>
 
 
 
@@ -793,7 +873,28 @@
   <!-- moment js -->
   <script type="text/javascript" src="static/js/moment.min.js"></script>
 
+  <!-- Date Picker -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js">
+  </script>
   
+  <script>
+    
+    $(function(){
+        let datePicker = document.getElementById('datePicker');
+        let picker = new Litepicker({
+            element: datePicker,
+            format: 'YYYY-MM-DD',
+            minDate:moment().format('YYYY-MM-DD'),
+            maxDate:moment().add(14, 'day').format('YYYY-MM-DD'),
+            lockDaysFilter: (day) => {//to not include Sundays
+              const d = day.getDay();
+              return [0].includes(d);
+            } 
+            //inlineMode:true
+            
+        });
+    });
+  </script>
   <!-- custom js -->
   <script type="text/javascript" src="static/js/custom.js"></script>
   <!-- To send data of others -->
