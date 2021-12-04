@@ -54,10 +54,13 @@
                 </span>
               </a>
           <div class="d-flex">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          
+            <div class="d-flex flex-column bd-highlight mb-3">
+              <div class="p-2 bd-highlight" style="text-align: right;">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              </div>
+              <div class="p-2 bd-highlight">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
@@ -72,6 +75,7 @@
               
               </form>
             </div>
+          </div>
           </div>
         </div>
           </nav>
@@ -322,7 +326,7 @@
                        </div>
                        <div class="col">
                        <select class="form-select" id="inputGender">
-                         <option hidden value="">Gender</option>
+                         <option hidden value="Gender">Gender</option>
                          <option value="M">Male</option>
                          <option value="F">Female</option>                            
                          <option value="O">Others</option>
@@ -367,7 +371,7 @@
            <div class="modal-body date-modal-body">
              <br>
              <div class="modal-body-date" >
-               <input type="text" class="form-control" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 275px; text-align: center;">
+               <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="datecheck()" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 275px; text-align: center;">
              </div>
              <br>
              <div  style="text-align: center;">
@@ -427,7 +431,15 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
        </div>
        <!-- <br>
        <label style="color: red;">No slots Available</label> -->
-       
+       <br>
+       <div style="width: 100%; text-align: left;">
+        <button class="form-check-clear-button" data-toggle="modal" 
+        
+        data-dismiss="modal" 
+        name="back_at_slot"
+        id="back_at_slot"
+        data-target="#date-modal">Back</button>
+      </div>
       </div>
       
   </div>
@@ -527,8 +539,12 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
             lockDaysFilter: (day) => {//to not include Sundays
               const d = day.getDay();
               return [0].includes(d);
-            } 
-            //inlineMode:true
+            },
+            setup: (picker) => {
+            picker.on('selected', (date1, date2) => {
+              datecheck();
+          });
+          }
             
         });
     });
@@ -542,11 +558,7 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
     docID =clicked_id;
     docName=$("#"+clicked_id).val();
     speciality=speciality1;
-    $.ajax({
-      type: "POST",
-      url: "/process_qtc2",
-      data: {"flag":"rollback"}      
-      });
+    
 
 
     $.ajax({
@@ -567,23 +579,49 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
   //   age=$("#inputAge").val();
   //   gender=$("#inputGender").val();    
   //  });
-   $("#self").click(function(){
-    $.ajax({
-      type: "POST",
-      url: "/userName",
-      success:function(data){
-        const keys = Object.keys(data);
-        p_Fname = data[keys[0]];
-        p_Lname = data[keys[1]];
-      }
+  //  $("#self").click(function(){
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "/userName",
+  //     success:function(data){
+  //       const keys = Object.keys(data);
+  //       p_Fname = data[keys[0]];
+  //       p_Lname = data[keys[1]];
+  //     }
           
-      });
+  //     });
 
     
-    // p_Lname = "def_Lname";
-    age="99";
-    gender="M";
-   });
+  //   // p_Lname = "def_Lname";
+  //   age="99";
+  //   gender="M";
+  //  });
+
+  // const input = document.querySelector('input');
+  // input.addEventListener('change', enable);
+  // const test = document.getElementById('datePicker');
+  function datecheck(){
+    if($('#datePicker').val().length==10){
+    $('#next_atdate').prop('disabled', false);}
+    else{
+      
+    $('#next_atdate').prop('disabled', true);
+    }
+  }
+  if($('#datePicker').val()==''){
+    $('#next_atdate').prop('disabled', true);
+  }
+//   const myInput = document.querySelector('#datePicker');
+//   myInput.addEventListener("change", (e) => {
+//   // here we do something
+//   $('#next_atdate').prop('disabled', false);
+// });
+
+  // $('#datePicker').on('change', function() {
+  //   // if($('#datePicker').val()!=''){
+  //   $('#next_atdate').prop('disabled', false);
+  //   // }  
+  // });
 
    $("#next_atdate").click(function(){
      date = $("#datePicker").val();
@@ -728,6 +766,10 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
       
       });
         
+   });
+   
+   $("#back_at_slot").click(function(){
+    $('#datePicker').val()=date
    });
     
   
