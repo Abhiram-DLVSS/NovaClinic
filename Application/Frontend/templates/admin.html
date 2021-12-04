@@ -67,10 +67,13 @@
                 </span>
               </a>
             <div class="d-flex">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          
+              <div class="d-flex flex-column bd-highlight mb-3">
+              <div class="p-2 bd-highlight" style="text-align: right;">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              </div>
+              <div class="p-2 bd-highlight">
             <div class="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul class="navbar-nav mr-auto">
                 
@@ -129,6 +132,8 @@
                     Account
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <h6 class='dropdown-item' style="pointer-events: none;"><i><small>Signed in as</i></small><br><b>{{Fname}} {{Lname}}</b></h6>
+                    <div class="dropdown-divider"></div>
                     <!-- <a class="dropdown-item" href="Edit">Edit Details</a> -->
                     <!-- <button type="button" 
                     class="btn dropdown-item" 
@@ -153,6 +158,7 @@
               
               </form>
             </div>
+          </div>
           </div>
         </div>
           </nav>
@@ -181,7 +187,7 @@
           
           
           <table class="table table-borderless">
-            <thead style="position: sticky; top: 0; background-color:#eee;">
+            <thead style="position: sticky; top: 0; background-color:#62d2a241;">
               <tr>
                 <!-- <th scope="col">S.No</th> -->
                 <th scope="col">Doctor ID</th>
@@ -209,7 +215,7 @@
         <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Receptionists</h4>
         <div class="table-responsive" style="max-height: 95%; background-color:white; border: 1px solid black; border-radius: 10px;">
           <table class="table table-borderless">
-            <thead style="background-color: #eee;">
+            <thead style="background-color: #62d2a241;">
               <tr>
                 <!-- <th scope="col">S.No</th> -->
                 <th scope="col">Receptionist ID</th>
@@ -230,10 +236,10 @@
         </div>
       </div>
       <div class="p-2 bd-highlight" style="width: 20%; height: 100%;">
-        <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Adminstrators</h4>
+        <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Admins</h4>
         <div class="table-responsive" style="max-height: 95%;  background-color:white; border: 1px solid black;  border-radius: 10px; text-align: center;">
           <table class="table table-borderless ">
-            <thead style="background-color: #eee;">
+            <thead style="background-color: #62d2a241;">
               <tr>
                 <!-- <th scope="col">S.No</th> -->
                 <th scope="col" >Admin ID</th>
@@ -277,7 +283,7 @@
                     <form>
                        <div class="row">
                          <div class="col">
-                           <input type="text" class="form-control" name="docID" id="docID" placeholder="Doctor ID">
+                           <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()" name="docID" id="docID" placeholder="Doctor ID">
                          </div>
                          <div class="col">
                          </div>
@@ -286,20 +292,20 @@
                        <br>
                        <div class="row">
                         <div class="col">
-                          <input type="text" class="form-control" name="Fname" id="Fname" placeholder="First name">
+                          <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()"name="Fname" id="Fname" placeholder="First name">
                         </div>
                         <div class="col">
-                          <input type="text" class="form-control" name="Lname" id="Lname"placeholder="Last name">
+                          <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()"name="Lname" id="Lname"placeholder="Last name">
                         </div>
                       </div>
                        <br>
                        
                        <div class="row">
                         <div class="col">
-                          <input type="text" class="form-control" name="spec" id="spec" placeholder="Specialization">
+                          <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()"name="spec" id="spec" placeholder="Specialization">
                         </div>
                         <div class="col">
-                          <input type="text" class="form-control" id="inputExp" placeholder="Experience">
+                          <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()"id="inputExp" placeholder="Experience">
                         </div>
                       </div>
                       
@@ -307,11 +313,11 @@
 
                        <div class="form-row">
                        <div class="col">
-                         <input type="text" class="form-control" id="inputEdu" placeholder="Education">
+                         <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()"id="inputEdu" placeholder="Education">
                        </div>
                        <div class="col">
-                       <select class="form-select" id="inputGender">
-                         <option hidden value="">Gender</option>
+                       <select class="form-select" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()" id="inputGender">
+                         <option hidden value="Gender">Gender</option>
                          <option value="Male">Male</option>
                          <option value="Female">Female</option>
                        </select>
@@ -434,7 +440,7 @@
                   </div>
                   <div class="col">
                   <select class="form-select" id="inputGender1">
-                    <option hidden value="">Gender</option>
+                    <option hidden value="Gender">Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>                            
                     <option value="Others">Others</option>
@@ -556,7 +562,7 @@
                       </div>
                       <div class="col">
                       <select class="form-select" id="inputGender2" disabled>
-                        <option hidden value="">Gender</option>
+                        <option hidden value="Gender">Gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>                            
                         <option value="Others">Others</option>
@@ -639,23 +645,23 @@
                    <form>
                      <div class="form-group">
                        <label for="Currentpassword">Current Password</label>
-                       <input type="password" class="form-control" id="Currentpassword" placeholder="Enter your current password">
+                       <input type="password" class="form-control" id="Currentpassword" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" placeholder="Enter your current password">
                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small> -->
                      </div>
                      <div class="form-group">
                        <label for="Newpassword">New Password</label>
-                       <input type="password" class="form-control" id="Newpassword" placeholder="Enter new password">
+                       <input type="password" class="form-control" id="Newpassword" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" placeholder="Enter new password">
                      </div>
                      <div class="form-group">
                        <label for="Confirmpassword">Confirm Password</label>
-                       <input type="password" class="form-control" id="Confirmpassword" placeholder="Re-enter Password">
+                       <input type="password" class="form-control" id="Confirmpassword" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" placeholder="Re-enter Password">
                      </div>
                      <!-- <div class="form-group form-check">
                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
                        <label class="form-check-label" for="exampleCheck1">I confirm to update these details.</label>
                      </div> -->
                      <div class="form-group" style="text-align: center;">
-                     <button class="btn btn-primary" name="update_at_credentials" id="update_at_credentials" >Update</button>
+                     <button class="btn form-check-apply-button" name="update_at_credentials" id="update_at_credentials" >Update</button>
                     </div>
                     <div id="form-group-wrapper-credentials" style="text-align: center;">
                      </div>
@@ -685,7 +691,7 @@
                 <form>
                    <div class="row">
                      <div class="col">
-                       <input type="text" class="form-control" name="RecepID" id="RecepID" placeholder="Receptionist ID">
+                       <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="recepcheck()"  name="RecepID" id="RecepID" placeholder="Receptionist ID">
                      </div>
                      <div class="col">
                      </div>
@@ -694,10 +700,10 @@
                    <br>
                    <div class="row">
                     <div class="col">
-                      <input type="text" class="form-control" name="Fname" id="RecepFname" placeholder="First name">
+                      <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="recepcheck()" name="Fname" id="RecepFname" placeholder="First name">
                     </div>
                     <div class="col">
-                      <input type="text" class="form-control" name="Lname" id="RecepLname"placeholder="Last name">
+                      <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="recepcheck()" name="Lname" id="RecepLname"placeholder="Last name">
                     </div>
                   </div>
                  <br>
@@ -709,8 +715,8 @@
                    id="addRecepbutton"
                    data-target="#Recep-confirm-modal">Add</button>
                    <button type="button" class="btn form-check-clear-button"
-                   name="clearDetails"
-                   id="clearDetails">Clear</button>
+                   name="clearDetailsRecep"
+                   id="clearDetailsRecep">Clear</button>
                  </div>
 
                </form>
@@ -900,6 +906,16 @@
   <!-- To send data of others -->
 
   <script>
+
+  function doctorcheck(){
+    if($('#docID').val()==''|| $('#Fname').val()==''|| $('#Lname').val()==''|| $('#inputExp').val()==''|| $('#spec').val()==''|| $('#inputEdu').val()==''|| $('#inputGender').val()=='Gender'){
+    $('#addDocbutton').prop('disabled', true);}
+    else{
+      
+    $('#addDocbutton').prop('disabled', false);
+    }
+  }
+  $('#addDocbutton').prop('disabled', true);
 
     var id,Fname,Lname,exp,spec,edu,gender;
     var Recepid,RecepFname,RecepLname;
@@ -1112,6 +1128,7 @@
     $("#spec").val(''); 
     $("#inputEdu").val('');
     $("#inputGender").val('');
+    $('#addDocbutton').prop('disabled', true);
    });
   // $.ajax({
   //     type: "POST",
@@ -1122,6 +1139,15 @@
 
   //Receptionists
 
+  function recepcheck(){
+    if($('#RecepID').val()==''|| $('#RecepFname').val()==''|| $('#RecepLname').val()==''){
+    $('#addRecepbutton').prop('disabled', true);}
+    else{
+      
+    $('#addRecepbutton').prop('disabled', false);
+    }
+  }
+  $('#addRecepbutton').prop('disabled', true);
   
   $("#addRecepbutton").click(function(){
     Recepid = $("#RecepID").val();
@@ -1213,6 +1239,23 @@
       }
       });
      });
+     
+   $("#clearDetailsRecep").click(function(){
+    $("#RecepID").val('');
+    $("#RecepFname").val('');
+    $("#RecepLname").val('');
+    $('#addRecepbutton').prop('disabled', true);
+   });
+
+   function detailscheck(){
+    if($('#Confirmpassword').val().length==0|| $('#Currentpassword').val().length==0|| $('#Newpassword').val().length==0){
+    $('#update_at_credentials').prop('disabled', true);}
+    else{
+      
+    $('#update_at_credentials').prop('disabled', false);
+    }
+  }
+  $('#update_at_credentials').prop('disabled', true);
 
   $("#update_at_credentials").click(function(){
     CurrentPassword = $("#Currentpassword").val();
