@@ -1,9 +1,13 @@
 import mysql.connector
-from .python_mysql_dbconfig import read_db_config
+# from .python_mysql_dbconfig import read_db_config
+import os
 
-db=read_db_config()
-cnx=mysql.connector.connect(user=db['user'],password=db['password'],database=db['database'])
+# db=read_db_config()
+# cnx=mysql.connector.connect(user=db['user'],password=db['password'],database=db['database'])
 # cnx=mysql.connector.connect(user='root',password='sqlpassword',database='testdb')
+
+DB_URL = os.environ.get('CLEARDB_DATABASE_URL')
+cnx=mysql.connector.connect(user=DB_URL[9:22],password=DB_URL[23:31],database=DB_URL[60:82])
 
 class Mysqlhandler:	
 	
