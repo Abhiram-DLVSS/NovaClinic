@@ -112,7 +112,7 @@ def user_info():
 @auth.route('/userName', methods=['POST', 'GET'])
 def userName():    
     phno=session["phno"]
-    result=Mysqlhandler.getName(0,phno)
+    result=Mysqlhandler.getNameofUser(0,phno)
     # print(result[0][0])
     data={
                 "FName":result[0][0],
@@ -128,7 +128,7 @@ def home():
     elif "phno" in session:
         phno=session["phno"]
         result=Mysqlhandler.show_aptmnt_for_patient(0,phno)
-        name=Mysqlhandler.getName(0,phno)
+        name=Mysqlhandler.getNameofUser(0,phno)
         # print("Date:")
         # print(todaysdate)
         Mysqlhandler.delete_old_aptmnt(0,todaysdate)
@@ -259,6 +259,7 @@ def aptmnt():
 def process_qt_calculation1():
     # print("workin")
     if request.method == "POST":
+        Mysqlhandler.rollback()
         p_Lname = request.form.get('p_Lname')
         p_Fname = request.form.get('p_Fname')
         age = request.form.get('age')
@@ -394,8 +395,10 @@ def receptionist():
     docids=Mysqlhandler.showDoctors(0)
     if "recep_id" in session:
         recep_id=session["recep_id"]
-        # print("Date:")
-        # print(todaysdate)
+        name=Mysqlhandler.getNameofReceptionist(0,recep_id)
+        if name!=None:
+            Fname=name[0][0]
+            Lname=name[0][1]
         Mysqlhandler.delete_old_aptmnt(0,todaysdate)
     else:
         return redirect('/rlogin')
@@ -414,24 +417,24 @@ def receptionist():
             speciality=None
         elif speciality==None and date==None:
             result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,0)
-            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids,Fname=Fname,Lname=Lname)
         
         elif speciality!=None and date==None:
             
             result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,1)
-            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids,Fname=Fname,Lname=Lname)
         elif speciality==None and date!=None:
             
             result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,2)
-            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids,Fname=Fname,Lname=Lname)
         elif speciality!=None and date!=None:
             
             result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,3)
-            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids,Fname=Fname,Lname=Lname)
         
         
     result=Mysqlhandler.show_aptmnt_for_recep(0,None,None,0)
-    return render_template("receptionist.html",result=result,docids=docids)
+    return render_template("receptionist.html",result=result,docids=docids,Fname=Fname,Lname=Lname)
 
 
 @auth.route('/raptmnt',methods=['GET','POST'])
@@ -551,9 +554,6 @@ def admin():
     if "recep_id" in session:
         return redirect('/receptionist')
     
-    if "admin_id" not in session:
-        return redirect('/alogin')
-    
     docids=Mysqlhandler.showDoctors(0)
     # print(docids)
     recepids=Mysqlhandler.showReceptionists(0)
@@ -561,6 +561,10 @@ def admin():
     adminids=Mysqlhandler.showAdmins(0)
     if "admin_id" in session:
         admin_id=session["admin_id"]
+        name=Mysqlhandler.getNameofAdmin(0,admin_id)
+        if name!=None:
+            Fname=name[0][0]
+            Lname=name[0][1]
     else:
         return redirect('/alogin')
 
@@ -579,24 +583,24 @@ def admin():
             speciality=None
         elif speciality==None and date==None:
             result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,0)
-            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids)
+            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
         
         elif speciality!=None and date==None:
             
             result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,1)
-            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids)
+            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
         elif speciality==None and date!=None:
             
             result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,2)
-            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids)
+            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
         elif speciality!=None and date!=None:
             
             result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,3)
-            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids)
+            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
         
         
     result=Mysqlhandler.show_aptmnt_for_recep(0,None,None,0)
-    return render_template("admin.html",result=result,docids=docids,recepids=recepids,adminids=adminids)
+    return render_template("admin.html",result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
 
 @auth.route('/addDoctor', methods=['POST', 'GET'])
 def addDoctor():

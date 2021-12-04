@@ -121,9 +121,23 @@ class Mysqlhandler:
 		cursor.execute("commit")
 
    
-	def getName(self,patient_id):
+	def getNameofUser(self,patient_id):
 		cursor=cnx.cursor()	
 		query="select firstname, lastname from user_info where phno='{}';".format(patient_id)
+		cursor.execute(query)
+		rows=cursor.fetchall()
+		return rows
+
+	def getNameofReceptionist(self,recep_id):
+		cursor=cnx.cursor()	
+		query="select FName, LName from receptionists where recep_id='{}';".format(recep_id)
+		cursor.execute(query)
+		rows=cursor.fetchall()
+		return rows
+	
+	def getNameofAdmin(self,admin_id):
+		cursor=cnx.cursor()	
+		query="select FName, LName from admin_credentials where admin_id='{}';".format(admin_id)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows

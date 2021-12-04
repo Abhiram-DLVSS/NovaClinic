@@ -94,6 +94,8 @@
                     Edit Details
                     </button> -->
                     <!--a class="dropdown-item" href="#">Change Password</a>-->
+                    <h6 class='dropdown-item' style="pointer-events: none;"><i><small>Signed in as</i></small><br><b>{{Fname}} {{Lname}}</b></h6>
+                    <div class="dropdown-divider"></div>
                     <button type="button" 
                     class="btn dropdown-item" 
                     data-toggle="modal"
@@ -228,7 +230,7 @@
             <table class="table">
               <thead >
                 <tr>
-                  <th>#</th>
+                  <th>Appointment ID</th>
                   <th>Doctor ID</th>
                   <th>Doctor Name</th>                  
                   <th>Specialization</th>
@@ -296,20 +298,20 @@
                    <form>
                      <div class="form-group">
                        <label for="Currentpassword">Current Password</label>
-                       <input type="password" class="form-control" id="Currentpassword" placeholder="Enter your current password">
+                       <input type="password" class="form-control" id="Currentpassword" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" placeholder="Enter your current password">
                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small> -->
                      </div>
                      <div class="form-group">
                        <label for="Newpassword">New Password</label>
-                       <input type="password" class="form-control" id="Newpassword" placeholder="Enter new password">
+                       <input type="password" class="form-control" id="Newpassword" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" placeholder="Enter new password">
                      </div>
                      <div class="form-group">
                        <label for="Confirmpassword">Confirm Password</label>
-                       <input type="password" class="form-control" id="Confirmpassword" placeholder="Re-enter Password">
+                       <input type="password" class="form-control" id="Confirmpassword" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" placeholder="Re-enter Password">
                      </div>
                      
                      <div class="form-group" style="text-align: center;">
-                     <button class="btn btn-primary" name="update_at_credentials" id="update_at_credentials" >Update</button>
+                     <button class="btn form-check-apply-button" name="update_at_credentials" id="update_at_credentials">Update</button>
                     </div>
                     <div id="form-group-wrapper-credentials" style="text-align: center;">
                      </div>
@@ -361,6 +363,15 @@
   <!-- To send data of others -->
 
   <script>
+    function detailscheck(){
+    if($('#Confirmpassword').val().length==0|| $('#Currentpassword').val().length==0|| $('#Newpassword').val().length==0){
+    $('#update_at_credentials').prop('disabled', true);}
+    else{
+      
+    $('#update_at_credentials').prop('disabled', false);
+    }
+  }
+  $('#update_at_credentials').prop('disabled', true);
 
   $("#update_at_credentials").click(function(){
     CurrentPassword = $("#Currentpassword").val();
