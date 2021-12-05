@@ -87,10 +87,10 @@
     <form method="POST">
     <div class="testing-wrapper">
     <br>
-      <div class="testing-web">
+      <div class="testing-web d-flex flex-row bd-highlight mb-3">
         
       
-      <div class="testing-web-left" id="left">
+      <div class="testing-web-left p-2 bd-highlight" id="left">
         <div class="filters" style="text-align: center; font-weight: bold; font-size: 20px;">
           <label class="form-check-label" >
               Filters
@@ -102,10 +102,10 @@
             <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="desc" checked>
             {%endif%}
             <label class="form-check-label" for="flexRadioDefault1">
-              Sort by: High-Low Experience
+              Sort by experience
             </label>
           </div>
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input class="form-check-input" type="radio" name="high" id="flexRadioDefault2" value="asc">
             
             {% if high=="asc"%}
@@ -114,7 +114,7 @@
             <label class="form-check-label" for="flexRadioDefault2">
               Sort by: Low-High Experience
             </label>
-          </div>
+          </div> -->
         <hr class="solid" color="white">
       
       <div class="form-check">
@@ -197,7 +197,7 @@
 
     </div>
     <!-- right half -->
-    <div class="testing-web-right" id="right">
+    <div class="testing-web-right p-2 bd-highlight" id="right">
       <div class="d-flex flex-column bd-highlight mb-3">
         {% if result%}
         {%for a_tuple in result%}
@@ -494,9 +494,7 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
                <!-- </button> -->
    </div>
  <div class="modal-body">
-   <button type="button" class="btn form-check-for-button" onclick="location.href='home'"
-     name="next_attq"
-     id="next_attq">Ok</button>
+   <button type="button" class="btn form-check-for-button" name="next_attq" id="next_attq" data-dismiss="modal">Ok</button>
    </div>                        
  </div>
 </div>
@@ -627,8 +625,10 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
      date = $("#datePicker").val();
      $.ajax({
   type: "POST",
-  url: "/process_qtc",
-  data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"docName":docName},
+  url: "/getslotsinfo",
+  // data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"docName":docName},
+
+  data: {"date":date,"docID":docID},
   success:function(data){
     //Morning
     var i = 0;
@@ -726,21 +726,22 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
 
     wrapper.innerHTML=myHTML
     
-    $.ajax({
-      type: "POST",
-      url: "/process_qtc2",
-      data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot}
-
-      
-      });
+    
     }
 
     $("#confirm").click(function(){
 
+      // $.ajax({
+      // type: "POST",
+      // url: "/confirmaptmnt",
+      // data: {"flag":"commit"}
+
+      
+      // });
       $.ajax({
       type: "POST",
-      url: "/process_qtc2",
-      data: {"flag":"commit"}
+      url: "/confirmaptmnt",
+      data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot}
 
       
       });
@@ -748,28 +749,32 @@ id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
    });
 
    $(".close").click(function(){
-      $.ajax({
-      type: "POST",
-      url: "/process_qtc2",
-      data: {"flag":"rollback"}
+      // $.ajax({
+      // type: "POST",
+      // url: "/confirmaptmnt",
+      // data: {"flag":"rollback"}
 
       
-      });
+      // });
         
    });
    $("#cancel").click(function(){
-      $.ajax({
-      type: "POST",
-      url: "/process_qtc2",
-      data: {"flag":"rollback"}
+      // $.ajax({
+      // type: "POST",
+      // url: "/confirmaptmnt",
+      // data: {"flag":"rollback"}
 
       
-      });
+      // });
         
    });
    
    $("#back_at_slot").click(function(){
     $('#datePicker').val()=date
+   });
+   
+   $("#next_attq").click(function(){
+    window.location.href = 'home';
    });
     
   

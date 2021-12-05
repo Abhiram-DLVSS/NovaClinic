@@ -402,12 +402,10 @@ a:focus {
 }
 .testing-web{
 
-  margin: auto auto;
-  width: 95%;
+  /* margin: auto auto; */
+  width: 100%;
+  justify-content: space-around;
   
-  padding-left: 10%;
-  padding-right: 10%;
-  padding-top: 10px;
   /* width: 1800px;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -422,9 +420,9 @@ a:focus {
   padding-left: 10px;
   padding-right: 10px;
   border-radius:20px;
-  
-  float:left;
-  width:30%;
+  height: fit-content;
+  /* float:left; */
+  width:fit-content;
   max-width: 280px;
   border: 1px solid black;
 
@@ -437,11 +435,12 @@ a:focus {
   padding-left: 0%;
   color: #ffffff;
   
-  padding-left: 30%;
+  /* padding-left: 30%; */
   width: 65%;
+  max-width: 400px;
   
   
-  float:left;
+  /* float:left; */
 }
 .button-cen{
   /* border: 2px solid black; */
