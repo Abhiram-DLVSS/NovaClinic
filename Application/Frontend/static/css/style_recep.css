@@ -395,29 +395,31 @@ a:focus {
   
   width: 100%;
   height: 100%;
-  padding: 2% 2% 2% 2%;
+  padding: 10px;
   display: flex;
   justify-content: center;
   /* overflow-x: auto;
   overflow-y: auto; */
 }
-/* .testing-web{
 
-  margin: auto auto;
-  width: 95%;
+.testing-web{
+
+  /* margin: auto auto; */
+  width: 100%;
   
-  padding-left: 10%;
-  padding-right: 10%;
+  justify-content:space-around;
+  padding-left: 5px;
+  padding-right: 5px;
   padding-top: 10px;
-}*/
+}
 
-.flex-container {
+/* .flex-container {
   display: flex;
   flex-direction: row;
   margin: auto auto;
   width: 95%;
   gap: 50px;
-}
+} */
 .testing-web-left{
   
   background-color: #ffff;
@@ -429,10 +431,10 @@ a:focus {
   height:fit-content;
   border: 1px solid black;
   /* float:left; */
-  width:30%;
+  width:fit-content;
   max-width: 280px;
-  flex-basis: 180px;
-  flex-grow: 8;
+  /* flex-basis: 180px; */
+  /* flex-grow: 8; */
 
   color: #000;
 }
@@ -441,11 +443,11 @@ a:focus {
   border-radius:20px;
   /* padding-left: 0%; */
   color: #ffffff;
-  flex-basis: 800px;
+  /* flex-basis: 800px; */
   
   /* padding-left: 30%; */
   
-  flex-grow: 1;
+  /* flex-grow: 1; */
   /* width: 70%; */
   
   
@@ -539,16 +541,27 @@ a:focus {
  
 }
 .table thead tr th,
-.table thead tr td,
+.table thead tr td{
+	vertical-align: middle;
+	border: none;
+  background-color: #ffffff;
+	/* box-shadow: 0 2px 10px rgba(212, 9, 9, 0.1); */
+}
+
+.table thead{
+	vertical-align: middle;
+	border: none;
+  background-color: #ffffff;
+	box-shadow: 0 2px 10px rgba(0, 255, 64, 0.493);
+}
+
 .table tbody tr th,
 .table tbody tr td {
 	vertical-align: middle;
 	border: none;
-  background-color: #ffffff;
-  
-  
-  
+  background-color: white; 
 }
+
 .table thead tr th:nth-last-child(1),
 .table thead tr td:nth-last-child(1),
 .table tbody tr th:nth-last-child(1),
@@ -556,8 +569,10 @@ a:focus {
 	text-align: center;
 }
 .table tbody tr{
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.301);
 	border-radius: 5px;
+  
+  border: 1px solid black;
 }
 .table tr{
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
