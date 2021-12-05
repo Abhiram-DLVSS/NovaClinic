@@ -200,10 +200,10 @@ a:focus {
   padding: 15px 0;
 }
 
-.header_section .container-fluid {
+/* .header_section .container-fluid {
   padding-right: 25px;
   padding-left: 25px;
-}
+} */
 
 .navbar-brand span {
   font-weight: bold;

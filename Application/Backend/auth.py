@@ -4,7 +4,6 @@ from flask import Blueprint,render_template,request,flash,jsonify,redirect, sess
 
 
 auth = Blueprint('auth',__name__)
-# auth.secret_key="secretKEY"
 auth.permanent_session_lifetime=timedelta(days=14)
 
 todaysdate=date.today()
@@ -137,7 +136,7 @@ def home():
         # print(date.today())
         # print("Name=")
         # print(name)
-        if name!=None:
+        if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
     else:
@@ -158,8 +157,6 @@ def home():
             else:
                  #send user to the database            
                 flash('Message Sent.',category='success')
-                # print(spec)
-                Mysqlhandler.add_greviance(0,name,docname,spec,message)
     return render_template("home.html",result=result,phno=phno,Fname=Fname,Lname=Lname)
 
 
@@ -177,7 +174,10 @@ def updateInfo():
             return 'failed1'
         else:
             # print(FName)
-            Mysqlhandler.update_user_info(0,FName,LName,NewPhno,phno)
+            Mysqlhandler.update_user_info(0,FName,LName,NewPhno,phno)        
+            if NewPhno!=phno:    
+                return 'success1'
+
             return 'success'
 
 
@@ -255,26 +255,29 @@ def aptmnt():
         return render_template("aptmnt.html",result=result,phno=phno)
         
 
-@auth.route('/process_qtc', methods=['POST', 'GET'])
-def process_qt_calculation1():
+@auth.route('/getslotsinfo', methods=['POST', 'GET'])
+def getslotsinfo():
     # print("workin")
     if request.method == "POST":
-        Mysqlhandler.rollback()
-        p_Lname = request.form.get('p_Lname')
-        p_Fname = request.form.get('p_Fname')
-        age = request.form.get('age')
-        gender = request.form.get('gender')
+        # Mysqlhandler.aptmntrollback()
+        # p_Lname = request.form.get('p_Lname')
+        # p_Fname = request.form.get('p_Fname')
+        # age = request.form.get('age')
+        # gender = request.form.get('gender')
         date = request.form.get('date')
         docID = request.form.get('docID')
-        results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID}
-
+        # results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID}
+        # print(date)
+        # print(docID)
         result=Mysqlhandler.getSlot(0,docID,date)
+        # print(result)
 
         if not result:
             Mysqlhandler.addSlot(0,docID,date)
             
 
         result=Mysqlhandler.getSlot(0,docID,date)
+        # print(result)
             
         if not result:#if result is empty
             # print("Empty")
@@ -312,19 +315,22 @@ def process_qt_calculation1():
         # data=[["date",result[0][0]],["doctorid",result[0][]]]
         # print("woah")
         # print(results)
+        # print(data)
         return data
 
-@auth.route('/process_qtc2', methods=['POST', 'GET'])
-def process_qt_calculation2():
+@auth.route('/confirmaptmnt', methods=['POST', 'GET'])
+def confirmaptmnt():
     if "phno" in session:
         phno=session["phno"]
     if request.method == "POST":
         if(request.form.get('flag')=="commit"):
-            Mysqlhandler.commit()
+            # Mysqlhandler.aptmntcommit()
             return "test"
         if(request.form.get('flag')=="rollback"):
-            Mysqlhandler.rollback()
+            # Mysqlhandler.aptmntrollback()
             return "test"
+        
+        
             
         p_Lname = request.form.get('p_Lname')
         p_Fname = request.form.get('p_Fname')
@@ -334,8 +340,14 @@ def process_qt_calculation2():
         docID = request.form.get('docID')
         slot = request.form.get('slot')
         if "recep_id" in session:
-            phno=request.form.get('phno')
-            Mysqlhandler.addTempUser(0,p_Fname,p_Lname,date,gender,phno,slot)
+            pphno=request.form.get('phno')
+            print("PHNO:")
+            print(pphno)
+            Mysqlhandler.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot)
+            sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
+            Mysqlhandler.updateSlot(0,sqlslot,docID,date)
+            Mysqlhandler.insertAptmnt(0,pphno,docID,date,slot)
+            return "Test"
         results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot}
         sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
         Mysqlhandler.updateSlot(0,sqlslot,docID,date)
@@ -350,7 +362,7 @@ def logout():
     session.pop("phno",None)
     return redirect('/login')
 
-#USER END
+#USER 
 
 # RECEPTIONIST
 
@@ -399,7 +411,7 @@ def receptionist():
         if name!=None:
             Fname=name[0][0]
             Lname=name[0][1]
-        Mysqlhandler.delete_old_aptmnt(0,todaysdate)
+        # Mysqlhandler.delete_old_aptmnt(0,todaysdate)
     else:
         return redirect('/rlogin')
 
@@ -626,7 +638,6 @@ def addDoctor():
             return 'failed1'
         else:
             Mysqlhandler.addDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
-            Mysqlhandler.commit()
             return 'success'
         return "Test"
 
@@ -652,7 +663,6 @@ def updateDoctor():
                 return 'failed'
             else:
                 Mysqlhandler.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
-                Mysqlhandler.commit()
                 return 'success'
 
 @auth.route('/deleteDoctor', methods=['POST', 'GET'])
@@ -666,7 +676,6 @@ def deleteDoctor():
         elif flag=='delete':
             id = request.form.get('id')
             Mysqlhandler.deleteDoc(0,id)
-            Mysqlhandler.commit()
             return 'success'
 
 @auth.route('/addReceptionist', methods=['POST', 'GET'])
@@ -687,7 +696,6 @@ def addReceptionist():
             return 'failed1'
         else:
             Mysqlhandler.addReceptionist(0,id,Fname,Lname,admin_id)
-            Mysqlhandler.commit()
             return 'success'
         return "Test"
 
@@ -702,7 +710,6 @@ def deleteReceptionist():
         elif flag=='delete':
             id = request.form.get('id')
             Mysqlhandler.deleteReceptionist(0,id)
-            Mysqlhandler.commit()
             return 'success'
 
 @auth.route('/aupdateCredentials',methods=['GET','POST'])

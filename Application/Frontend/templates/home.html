@@ -67,7 +67,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                       <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                          <a class="nav-link" href="aptmnt">Appointments</a>
+                          <a class="nav-link" href="aptmnt">Appointment</a>
                         </li>
         
                         <!-- <li class="nav-item">
@@ -223,16 +223,16 @@
                    <form>
                      <div class="form-group">
                        <label for="Currentpassword">Current Password</label>
-                       <input type="password" class="form-control" id="Currentpassword" placeholder="Enter your current password">
+                       <input type="password" class="form-control" id="Currentpassword" onchange onpropertychange onkeyuponpaste oninput="updateCredentialsCheck()" placeholder="Enter your current password">
                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never disclose your personal info with anyone else.</small> -->
                      </div>
                      <div class="form-group">
                        <label for="Newpassword">New Password</label>
-                       <input type="password" class="form-control" id="Newpassword" placeholder="Enter new password">
+                       <input type="password" class="form-control" id="Newpassword" onchange onpropertychange onkeyuponpaste oninput="updateCredentialsCheck()" placeholder="Enter new password">
                      </div>
                      <div class="form-group">
                        <label for="Confirmpassword">Confirm Password</label>
-                       <input type="password" class="form-control" id="Confirmpassword" placeholder="Re-enter Password">
+                       <input type="password" class="form-control" id="Confirmpassword" onchange onpropertychange onkeyuponpaste oninput="updateCredentialsCheck()" placeholder="Re-enter Password">
                      </div>
                      <!-- <div class="form-group form-check">
                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -275,6 +275,7 @@
         
       <div class="form-group" id="tablediv">
         <h2>Your Appointments</h2>
+        <div class=" table-responsive">
       <table class="table-striped">
         <tr>
           <th>Appointment ID</th>
@@ -298,6 +299,7 @@
         {% endfor %}
         
       </table>
+      </div>
     </div>
     {% endif %}
       </body>
@@ -487,6 +489,11 @@
         }
         else if(data=='success'){
           alert('Success');
+          window.location.href = 'home';
+        }        
+        else if(data=='success1'){
+          alert('Please login again as you changed your Phone Number');
+          window.location.href = 'logout';
         }
       }
       });
@@ -513,6 +520,7 @@
         }
         else if(data=='success'){
           alert('Success');
+          window.location.href = 'home';
         }
       }
       });
@@ -536,7 +544,8 @@
   
   function updateCredentialsCheck(){
     if($('#Currentpassword').val()!=''&&$('#Newpassword').val()!=''&&$('#Confirmpassword').val()!=''){
-    $('#update_atPatient_credentials').prop('disabled', false);}
+    $('#update_atPatient_credentials').prop('disabled', false);
+  }
     else{
       
     $('#update_atPatient_credentials').prop('disabled', true);

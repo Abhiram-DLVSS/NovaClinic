@@ -134,10 +134,10 @@
     <form method="POST">
     <div class="testing-wrapper">
     <br>
-      <div class="flex-container">
+      <div class="testing-web d-flex flex-row bd-highlight mb-3">
         
       
-      <div class="testing-web-left" id="left" >
+      <div class="testing-web-left  p-2 bd-highlight" id="left" >
         <div class="filters" style="text-align: center; font-weight: bold; font-size: 20px;">
         <label class="form-check-label" >
             Filters
@@ -204,7 +204,7 @@
       <hr class="solid" color="white">
 
       <div class="form-check">
-        <input type="text" class="form-control" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 95%; text-align: center;" value={{date}}>
+        <input type="text" class="form-control" name="datePicker" id="datePicker" placeholder="Date" style="width: 95%; text-align: center;" value={{date}}>
         </div>
 
         <hr class="solid" color="white">
@@ -223,10 +223,10 @@
 
     </div>
     <!-- right half -->
-    <div class="testing-web-right" id="right" >
+    <div class="testing-web-right p-2 bd-highlight" id="right" >
       <div class="d-flex flex-column bd-highlight mb-3">
-        <section class="main-content">
-          <div class="container">
+        <section class="main-content" style="background-color: white; border-radius: 5px; border: 1px solid black;">
+          <div class="container table-responsive">
             <table class="table">
               <thead >
                 <tr>
@@ -235,7 +235,7 @@
                   <th>Doctor Name</th>                  
                   <th>Specialization</th>
                   <th>Patient Name</th>
-                  <th>Patient Phone Number</th>
+                  <th>Patient Number</th>
                   <th>Date</th>
                   <th>Time</th>
                 </tr>
@@ -377,7 +377,6 @@
     CurrentPassword = $("#Currentpassword").val();
     Newpassword = $("#Newpassword").val();
     Confirmpassword=$("#Confirmpassword").val();
-    alert(CurrentPassword);
     $.ajax({
       type: "POST",
       url: "/rupdateCredentials",
