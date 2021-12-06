@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
 html,body{
-background-image: url("/static/images/loginBG.jpg");
+background-image: url("/static/images/Login.jpg");
 background-size: cover;
 background-repeat: no-repeat;
 height: 100%;
@@ -193,26 +193,6 @@ background-color: #40beaf;
   padding: 10px 10px;
   margin: 15px -10px;
 }
-/* .login > button {
-  font-family: "Asap", sans-serif;
-  cursor: pointer;
-  color: #000;
-  font-size: 16px;
-  text-transform: uppercase;
-  width: 80px;
-  border: 0;
-  padding: 10px 0;
-  margin-top: 10px;
-  margin-left: -5px;
-  border-radius: 5px;
-  background-color: #74d6cb;
-  -webkit-transition: background-color 300ms;
-  -moz-transition: background-color 300ms;
-  transition: background-color 300ms;
-}
-.login > button:hover {
-  background-color: #46cfbf;
-} */
 
 @-webkit-keyframes wawes {
   from {
@@ -246,16 +226,8 @@ background-color: #40beaf;
     transform: rotate(360deg);
   }
 }
-/* a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.6);
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  font-size: 12px;
-} */
+
 .btn-center{
-  /* background-color: #000; */
   text-align:center;
   width: fit-content;
 }
@@ -265,7 +237,6 @@ background-color: #40beaf;
 .header_section {
   padding: 15px 0;
 }
-
 
 .navbar-brand span {
   font-weight: bold;
