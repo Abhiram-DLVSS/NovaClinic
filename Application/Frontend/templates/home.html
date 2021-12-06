@@ -369,7 +369,6 @@
           url: "/updateCredentials",
           data: {"p_CurrentPassword":p_CurrentPassword,"p_Newpassword":p_Newpassword,"p_Confirmpassword":p_Confirmpassword},
           success:function(data){
-            // alert(data);
             if(data=='failed'){
               alert('Entered password is incorrect');
             }

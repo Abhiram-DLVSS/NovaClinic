@@ -124,9 +124,19 @@ class Appointment:
 	def updateSlot(self,sqlslot,docID,date):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
+		
+		query="select {} from slots where doctor_id='{}' and date='{}';".format(sqlslot,docID,date)
+		cursor.execute(query)
+		rows=cursor.fetchall()
+			
+		if rows[0][0]==1:
+			return -1
+		
+
 		query="update slots set {}=1 where doctor_id='{}' and date='{}';".format(sqlslot,docID,date)
 		cursor.execute(query)
 		cursor.execute("commit")
+		return 0
 	
 	def insertAptmnt(self,phno,docID,date,slot):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)

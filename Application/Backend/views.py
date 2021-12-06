@@ -71,7 +71,7 @@ def user_info():
             flash('An account already exists with the given phone number', category='error')
         elif len(firstname) <=0 or len(lastname) <=0:
             flash('Please enter your details correctly', category='error')
-        elif gender=='Gender' or dob=='' or len(dob)!=10:
+        elif gender=='Gender' or gender==None or dob=='' or len(dob)!=10:
             flash('Please enter your details correctly', category='error')
         elif len(phno) != 10:
             flash('Please check your Phone Number.', category='error')
@@ -272,15 +272,22 @@ def confirmaptmnt():
         slot = request.form.get('slot')
         if "recep_id" in session:
             pphno=request.form.get('phno')
+            if User.check_new_phno(0,pphno)==0:
+                return "failed"          
             Appointment.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot)
             sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
-            Appointment.updateSlot(0,sqlslot,docID,date)
+            slotchk=Appointment.updateSlot(0,sqlslot,docID,date)
+            if slotchk==-1:
+                return "failed1"
             Appointment.insertAptmnt(0,pphno,docID,date,slot)
-            return 0
-        sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
-        Appointment.updateSlot(0,sqlslot,docID,date)
-        Appointment.insertAptmnt(0,phno,docID,date,slot)
-        return 0
+            return "Success"
+        else:
+            sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
+            slotchk=Appointment.updateSlot(0,sqlslot,docID,date)
+            if slotchk==-1:
+                return "failed1"
+            Appointment.insertAptmnt(0,phno,docID,date,slot)
+            return "Success"
     #APPPOINTMENT END
 
 @views.route('/logout')
@@ -325,8 +332,7 @@ def receptionist():
         return redirect('/home')
     elif "admin_id" in session:
         return redirect('/admin')
-
-    if "recep_id" in session:
+    elif "recep_id" in session:
         recep_id=session["recep_id"]
         name=Receptionist.getName(0,recep_id)
         if name!=None:
