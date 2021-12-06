@@ -121,35 +121,35 @@
       <div class="d-flex flex-row bd-highlight mb-3" style="justify-content: space-between; height: 100%;">
       <div class="p-2 bd-highlight" style=" width: 40%; height: 100%;;">
       <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Doctors</h4>
-      <div class="table-responsive" style="max-height: 100%; background-color: white; border: 1px solid black;  border-radius: 10px;">
-      <table class="table table-borderless">
-      <thead style="position: sticky; top: 0; background-color:#62d2a241;">
-      <tr>
-      <th scope="col">Doctor ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Specialization</th>
-      </tr>
-      </thead>
-      <tbody>
-      {%for a_tuple in docids%}
-      <tr>
-      <td>{{a_tuple[0]}}</td>
-      <td>{{a_tuple[1]}} {{a_tuple[2]}}</td>
-      <td>{{a_tuple[3]}}</td>
-      </tr>
-      {% endfor %}
-      </tbody>
-      </table>
+      <div class="table-responsive" style="max-height: 90%; background-color: white; border: 1px solid black;  border-radius: 10px;">
+         <table class="table table-borderless">
+            <thead style="position: sticky; top: 0; background-color:#ffff;">
+               <tr>
+               <th scope="col" style="background-color:#62d2a241;">Doctor ID</th>
+               <th scope="col" style="background-color:#62d2a241;">Name</th>
+               <th scope="col" style="background-color:#62d2a241;">Specialization</th>
+               </tr>
+            </thead>
+            <tbody>
+               {%for a_tuple in docids%}
+               <tr>
+               <td>{{a_tuple[0]}}</td>
+               <td>{{a_tuple[1]}} {{a_tuple[2]}}</td>
+               <td>{{a_tuple[3]}}</td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
       </div>
       </div>
       <div class="p-2 bd-highlight" style="width: 25%; height: 100%;">
       <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Receptionists</h4>
-      <div class="table-responsive" style="max-height: 95%; background-color:white; border: 1px solid black; border-radius: 10px;">
+      <div class="table-responsive" style="max-height: 90%; background-color:white; border: 1px solid black; border-radius: 10px;">
       <table class="table table-borderless">
-      <thead style="background-color: #62d2a241;">
+      <thead style="position: sticky; top: 0; background-color: #ffff;">
       <tr>
-      <th scope="col">Receptionist ID</th>
-      <th scope="col">Name</th>
+      <th scope="col" style="background-color:#62d2a241;">Receptionist ID</th>
+      <th scope="col" style="background-color:#62d2a241;">Name</th>
       </tr>
       </thead>
       <tbody>
@@ -165,11 +165,11 @@
       </div>
       <div class="p-2 bd-highlight" style="width: 20%; height: 100%;">
       <h4 style="text-align: center; color: black; background-color: white; border-radius: 10px;">Admins</h4>
-      <div class="table-responsive" style="max-height: 95%;  background-color:white; border: 1px solid black;  border-radius: 10px; text-align: center;">
+      <div class="table-responsive" style="max-height: 90%;  background-color:white; border: 1px solid black;  border-radius: 10px; text-align: center;">
       <table class="table table-borderless ">
-      <thead style="background-color: #62d2a241;">
+      <thead style="position: sticky; top: 0; background-color: #ffff;">
       <tr>
-      <th scope="col" >Admin ID</th>
+      <th scope="col" style="background-color:#62d2a241;" >Admin ID</th>
       </tr>
       </thead>
       <tbody>
