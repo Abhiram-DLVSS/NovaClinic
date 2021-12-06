@@ -222,7 +222,7 @@
          <form>
          <div class="row">
          <div class="col">
-         <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" name="phno" id="phno" placeholder="Phone Number">
+         <input type="tel" class="form-control" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" name="phno" id="phno" placeholder="Phone Number">
          </div>
          <div class="col">
          </div>
@@ -230,16 +230,16 @@
          <br>
          <div class="row">
          <div class="col">
-         <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" name="Fname" id="Fname" placeholder="First name">
+         <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" name="Fname" id="Fname" placeholder="First name" maxlength="20">
          </div>
          <div class="col">
-         <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" name="Lname" id="Lname"placeholder="Last name">
+         <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" name="Lname" id="Lname"placeholder="Last name" maxlength="20">
          </div>
          </div>
          <br>
          <div class="form-row">
          <div class="col">
-         <input type="text" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" class="form-control" name="inputAge" id="inputAge" placeholder="Age">
+         <input type="int" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" class="form-control" name="inputAge" id="inputAge" placeholder="Age" max="100">
          </div>
          <div class="col">
          <select class="form-select" name="inputGender" id="inputGender" onchange onpropertychange onkeyuponpaste oninput="detailscheck()" >
@@ -284,7 +284,7 @@
                   <div class="modal-body date-modal-body">
                      <br>
                      <div class="modal-body-date" >
-                        <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="datecheck()" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 275px; text-align: center;">
+                        <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="datecheck()" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 275px; text-align: center;" maxlength="10">
                      </div>
                      <br>
                      <div  style="text-align: center;">
@@ -367,11 +367,8 @@
                      </div>
                      <br>
                      <button type="button" class="btn form-check-for-button"
-                        data-toggle="modal" 
-                        data-dismiss="modal"
                         name="confirm"
-                        id="confirm"
-                        data-target="#tq-modal">Confirm</button>
+                        id="confirm">Confirm</button>
                      <button type="button" class="form-check-clear-button"
                         data-toggle="modal" 
                         data-dismiss="modal"
@@ -391,7 +388,7 @@
                      </h5>
                   </div>
                   <div class="modal-body">
-                     <button type="button" class="btn form-check-for-button" onclick="location.href='receptionist'"
+                     <button type="button" class="btn form-check-for-button"
                         name="next_attq"
                         id="next_attq">Ok</button>
                   </div>
@@ -442,6 +439,13 @@
            docID =clicked_id;
            docName=$("#"+clicked_id).val();
            speciality=speciality1;
+
+           
+           $("#Fname").val()='';
+           $("#Lname").val()='';
+           $("#inputAge").val()='';
+           $("#inputGender").val();
+           $("#phno").val()='';
           }
          
           $("#next_atPatient").click(function(){
@@ -495,7 +499,6 @@
            wrapper.innerHTML=myHTML
            }
            else{
-           // alert(data);
            const keys = Object.keys(data);
            var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
            var myHTML = '';
@@ -558,6 +561,9 @@
            var myHTML = '';
            myHTML += '<br><p><b>Name</b>:</p>';
            myHTML += '<p>'+p_Fname+' '+p_Lname+'</p>';
+
+           myHTML += '<br><p><b>Phone Number</b>:</p>';
+           myHTML += '<p>'+phno+'</p>';
            
            myHTML += '<br><p><b>Doctor</b>:</p>';    
            myHTML += '<p>'+docName+'</p>';
@@ -572,22 +578,31 @@
            myHTML += '<p>'+slot+'</p>';
          
            wrapper.innerHTML=myHTML
-           alert(phno);
-           $.ajax({
-             type: "POST",
-             url: "/confirmaptmnt",
-             data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot,"phno":phno}
-             });
+           
            }
          
            $("#confirm").click(function(){
-             $.ajax({
+            $.ajax({
              type: "POST",
              url: "/confirmaptmnt",
-             data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot}
-         
-             
+             data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot,"phno":phno},
+             success:function(data){
+                if(data=="failed"){
+                  $('#tq-modal').modal('hide');
+                   alert("Appointment Failed: An account already exists with the given phone number.");
+                }
+                else if(data=="failed1"){
+                  // $('#tq-modal').modal('hide');
+                   alert("Appointment Failed: The choosen slot is already taken.");
+                }
+                else{
+                  $('#confirm-modal').modal('hide');
+                  $('#tq-modal').modal('show');
+                }
+             }
              });
+
+
                
           });
          
@@ -598,7 +613,9 @@
           $("#back_at_slot").click(function(){
            $('#datePicker').val()=date
           });
-           
+          $("#next_attq").click(function(){
+           window.location.href = 'receptionist';
+          });
          
          
       </script>

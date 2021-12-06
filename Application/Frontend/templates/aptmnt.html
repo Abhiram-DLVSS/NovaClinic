@@ -224,7 +224,7 @@
       <div class="modal-body date-modal-body">
       <br>
       <div class="modal-body-date" >
-      <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="datecheck()" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 275px; text-align: center;">
+      <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="datecheck()" name="datePicker" id="datePicker" placeholder="Choose Date" style="width: 275px; text-align: center;" maxlength="10">
       </div>
       <br>
       <div  style="text-align: center;">
@@ -285,6 +285,7 @@
       </div>
       </div>
       </div>
+
       <div class="modal fade" id="confirm-modal" data-backdrop="static" data-bs-keyboard="false">
       <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -305,11 +306,8 @@
       </div>
       <br>
       <button type="button" class="btn form-check-for-button"
-         data-toggle="modal" 
-         data-dismiss="modal"
          name="confirm"
-         id="confirm"
-         data-target="#tq-modal">Confirm</button>
+         id="confirm">Confirm</button>
       <button type="button" class="form-check-clear-button"
          data-toggle="modal" 
          data-dismiss="modal"
@@ -511,7 +509,21 @@
              $.ajax({
              type: "POST",
              url: "/confirmaptmnt",
-             data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot}
+             data: {"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot},
+             success:function(data){
+                if(data=="failed"){
+                  $('#tq-modal').modal('hide');
+                   alert("Appointment Failed: An account already exists with the given phone number.");
+                }
+                else if(data=="failed1"){
+                  // $('#tq-modal').modal('hide');
+                   alert("Appointment Failed: The choosen slot is already taken.");
+                }
+                else{
+                  $('#confirm-modal').modal('hide');
+                  $('#tq-modal').modal('show');
+                }
+             }
          
              
              });

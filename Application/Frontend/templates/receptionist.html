@@ -131,7 +131,7 @@
                      </div>
                      <hr class="solid" color="white">
                      <div class="form-check">
-                        <input type="text" class="form-control" name="datePicker" id="datePicker" placeholder="Date" style="width: 95%; text-align: center;" value={{date}}>
+                        <input type="text" class="form-control" name="datePicker" id="datePicker" placeholder="YYYY-MM-DD" style="width: 95%; text-align: center;" value={{date}} maxlength="10">
                      </div>
                      <hr class="solid" color="white">
                      <div class="button-cen">
@@ -144,9 +144,9 @@
                   <!-- right half -->
                   <div class="testing-web-right p-2 bd-highlight" id="right" >
                      <div class="d-flex flex-column bd-highlight mb-3">
-                        <section class="main-content" style="background-color: white; border-radius: 5px; border: 1px solid black;">
-                           <div class="container table-responsive">
-                              <table class="table">
+                        <section class="main-content" style="background-color: white; border-radius: 5px; border: 1px solid black; max-height: fit-content;">
+                           <div class="container table-responsive" style="max-height: 100%;">
+                              <table class="table" >
                                  <thead >
                                     <tr>
                                        <th>Appointment ID</th>
@@ -279,7 +279,6 @@
            url: "/rupdateCredentials",
            data: {"CurrentPassword":CurrentPassword,"Newpassword":Newpassword,"Confirmpassword":Confirmpassword},
            success:function(data){
-             // alert(data);
              if(data=='failed'){
                alert('Entered password is incorrect');
              }
