@@ -1,1 +1,1 @@
-from .sqlhandler import Mysqlhandler
+from .sqlhandler import User,Admin,Receptionist,Appointment
