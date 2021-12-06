@@ -341,8 +341,7 @@ def receptionist():
     else:
         return redirect('/rlogin')
 
-    if request.method=="POST":
-        
+    if request.method=="POST":        
         date = request.form.get('datePicker')
         speciality = request.form.get('speciality')
         if date=='':
@@ -354,8 +353,7 @@ def receptionist():
             result=Receptionist.show_aptmnts(0,date,speciality,0)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         
-        elif speciality!=None and date==None:
-            
+        elif speciality!=None and date==None:           
             result=Receptionist.show_aptmnts(0,date,speciality,1)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality==None and date!=None:
@@ -369,7 +367,7 @@ def receptionist():
         
         
     result=Receptionist.show_aptmnts(0,None,None,0)
-    return render_template("receptionist.html",result=result,Fname=Fname,Lname=Lname)
+    return render_template("receptionist.html",date=None,speciality=None,result=result,Fname=Fname,Lname=Lname)
 
 
 @views.route('/raptmnt',methods=['GET','POST'])
