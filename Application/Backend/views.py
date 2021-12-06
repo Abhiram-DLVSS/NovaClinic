@@ -1,13 +1,13 @@
 from datetime import timedelta,date
-from Application.DBHandler import Mysqlhandler
-from flask import Blueprint,render_template,request,flash,jsonify,redirect, sessions,url_for,session
+from Application.DBHandler import User,Receptionist,Admin,Appointment
+from flask import Blueprint,render_template,request,flash,jsonify,redirect,session
 
 
-auth = Blueprint('auth',__name__)
-auth.permanent_session_lifetime=timedelta(days=14)
+views = Blueprint('views',__name__)
+views.permanent_session_lifetime=timedelta(days=14)
 
 todaysdate=date.today()
-@auth.route('/')
+@views.route('/')
 def welcome():
     if "phno" in session:
         return redirect('/home')
@@ -18,15 +18,10 @@ def welcome():
     
     return render_template("welcome.html")
 
-
-
-
-
-
 #USER
 
     #SIGN IN
-@auth.route('/login',methods=['GET','POST'])
+@views.route('/login',methods=['GET','POST'])
 def login():
     if "phno" in session:
         phno=session["phno"]
@@ -39,12 +34,7 @@ def login():
         session.permanent=True
         phno = request.form.get('phno')
         password1 = request.form.get('password1')
-        # print("phno="+phno)
-        # print("password="+password1)
-        
-        val=Mysqlhandler.check_user(0,phno,password1)
-        # print("Val=")
-        # print(val)
+        val=User.verify(0,phno,password1)
         if val==0:
             flash('The Phone Number or Password you entered is incorrect', category='error')
             return render_template("login.html")
@@ -60,7 +50,7 @@ def login():
         else:
             return render_template("login.html")
 
-@auth.route('/signup',methods=['GET','POST'])
+@views.route('/signup',methods=['GET','POST'])
 def user_info():
     if "phno" in session:
         phno=session["phno"]
@@ -77,15 +67,7 @@ def user_info():
         phno = request.form.get('phno')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        # print("signup")
-        # print(firstname)
-        # print(lastname)
-        # print(dob)
-        # print(gender)
-        # print(phno)
-        # print(password1)
-        # print(password2)
-        if Mysqlhandler.check_new_phno(0,phno)!=1:
+        if User.check_new_phno(0,phno)!=1:
             flash('An account already exists with the given phone number', category='error')
         elif len(firstname) <=0 or len(lastname) <=0:
             flash('Please enter your details correctly', category='error')
@@ -99,8 +81,8 @@ def user_info():
             flash('Password is too short(minimum is 6 characters)', category='error')
         else:
             # flash('Account Created!', category='success')
-            Mysqlhandler.add_user_info(0,firstname,lastname,dob,gender,phno)
-            Mysqlhandler.add_user_credentials(0,phno,password1)
+            User.add_info(0,firstname,lastname,dob,gender,phno)
+            User.add_credentials(0,phno,password1)
             session["phno"]=phno
             return redirect('/home')
 
@@ -108,17 +90,16 @@ def user_info():
     #SIGN IN END
 
     #HOME
-@auth.route('/userName', methods=['POST', 'GET'])
+@views.route('/userName', methods=['POST', 'GET'])
 def userName():    
     phno=session["phno"]
-    result=Mysqlhandler.getNameofUser(0,phno)
-    # print(result[0][0])
+    result=User.getName(0,phno)
     data={
-                "FName":result[0][0],
-                "LName":result[0][1]}
+        "FName":result[0][0],
+        "LName":result[0][1]}
     return data
 
-@auth.route('/home',methods=['GET','POST'])
+@views.route('/home',methods=['GET','POST'])
 def home():
     if "admin_id" in session:
         return redirect('/admin')
@@ -126,16 +107,9 @@ def home():
         return redirect('/receptionist')
     elif "phno" in session:
         phno=session["phno"]
-        result=Mysqlhandler.show_aptmnt_for_patient(0,phno)
-        name=Mysqlhandler.getNameofUser(0,phno)
-        # print("Date:")
-        # print(todaysdate)
-        Mysqlhandler.delete_old_aptmnt(0,todaysdate)
-        # print("Result")
-        # print(result)
-        # print(date.today())
-        # print("Name=")
-        # print(name)
+        result=User.show_aptmnt(0,phno)
+        name=User.getName(0,phno)
+        Appointment.delete_old_aptmnt(0,todaysdate)
         if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
@@ -159,9 +133,7 @@ def home():
                 flash('Message Sent.',category='success')
     return render_template("home.html",result=result,phno=phno,Fname=Fname,Lname=Lname)
 
-
-
-@auth.route('/updateInfo',methods=['GET','POST'])
+@views.route('/updateInfo',methods=['GET','POST'])
 def updateInfo():
     if request.method=="POST":
         phno=session["phno"]
@@ -170,34 +142,28 @@ def updateInfo():
         NewPhno = request.form.get('Phno')
         if len(NewPhno)!=10 or len(FName)<=0 or len(LName)<=0:
             return 'failed'
-        elif Mysqlhandler.check_new_phno(0,NewPhno)!=1 and NewPhno!=phno:
+        elif User.check_new_phno(0,NewPhno)!=1 and NewPhno!=phno:
             return 'failed1'
         else:
-            # print(FName)
-            Mysqlhandler.update_user_info(0,FName,LName,NewPhno,phno)        
+            User.update_info(0,FName,LName,NewPhno,phno)        
             if NewPhno!=phno:    
                 return 'success1'
-
-            return 'success'
-
-
-        
+            return 'success'        
     return 'failed'
 
-@auth.route('/updateCredentials',methods=['GET','POST'])
+@views.route('/updateCredentials',methods=['GET','POST'])
 def updateCredentials():
     if request.method=="POST":        
         phno=session["phno"]
         p_CurrentPassword = request.form.get('p_CurrentPassword')
         p_Newpassword = request.form.get('p_Newpassword')
         p_Confirmpassword = request.form.get('p_Confirmpassword')
-        # print(p_Confirmpassword)
         if p_Newpassword!=p_Confirmpassword:
             return 'failed1'
         elif len(p_Newpassword)<6:
             return 'failed2'
         else:
-            if Mysqlhandler.update_user_credentials(0,p_CurrentPassword,p_Newpassword,phno)==-1:
+            if User.update_credentials(0,p_CurrentPassword,p_Newpassword,phno)==-1:
                 return 'failed'
             else:
                 return 'success'
@@ -205,7 +171,7 @@ def updateCredentials():
     #HOME END
 
     #APPPOINTMENT
-@auth.route('/aptmnt',methods=['GET','POST'])
+@views.route('/aptmnt',methods=['GET','POST'])
 def aptmnt():
     if "admin_id" in session:
         return redirect('/admin')
@@ -219,14 +185,6 @@ def aptmnt():
         high = request.form.get('high')
         speciality = request.form.get('speciality')
         gender = request.form.get('gender')
-        # print("chk")
-        # print(high)
-        # print(speciality)
-        # print(gender)
-        # print("chkend")
-        
-        # print(request.form.get('book'))
-        # print("endend")
         if request.form.get('clear')=='clear':#if clear button is pressed
             high=None
             speciality=None
@@ -248,42 +206,28 @@ def aptmnt():
         elif high!=None and speciality!=None and gender!=None:
             identifier=7
 
-        result=Mysqlhandler.aptmnt_doctors(0,identifier,speciality,gender,high)
+        result=Appointment.aptmnt_doctors(0,identifier,speciality,gender,high)
         return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno,gender=gender)
     else:
-        result=Mysqlhandler.showDoctors(0)        
+        result=Appointment.showDoctors(0)        
         return render_template("aptmnt.html",result=result,phno=phno)
         
 
-@auth.route('/getslotsinfo', methods=['POST', 'GET'])
+@views.route('/getslotsinfo', methods=['POST', 'GET'])
 def getslotsinfo():
-    # print("workin")
     if request.method == "POST":
-        # Mysqlhandler.aptmntrollback()
-        # p_Lname = request.form.get('p_Lname')
-        # p_Fname = request.form.get('p_Fname')
-        # age = request.form.get('age')
-        # gender = request.form.get('gender')
         date = request.form.get('date')
         docID = request.form.get('docID')
-        # results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID}
-        # print(date)
-        # print(docID)
-        result=Mysqlhandler.getSlot(0,docID,date)
-        # print(result)
+        result=Appointment.getSlot(0,docID,date)
 
         if not result:
-            Mysqlhandler.addSlot(0,docID,date)
+            Appointment.addSlot(0,docID,date)
             
 
-        result=Mysqlhandler.getSlot(0,docID,date)
-        # print(result)
-            
+        result=Appointment.getSlot(0,docID,date)
         if not result:#if result is empty
-            # print("Empty")
             return "Empty"
         else:
-            # print(result[0][1])
             data={
                 "date":result[0][0],
                 "doctorid":result[0][1],
@@ -312,26 +256,13 @@ def getslotsinfo():
                 "20:30-20:45":result[0][24],
                 "20:45-21:00":result[0][25]
                 }
-        # data=[["date",result[0][0]],["doctorid",result[0][]]]
-        # print("woah")
-        # print(results)
-        # print(data)
         return data
 
-@auth.route('/confirmaptmnt', methods=['POST', 'GET'])
+@views.route('/confirmaptmnt', methods=['POST', 'GET'])
 def confirmaptmnt():
     if "phno" in session:
         phno=session["phno"]
     if request.method == "POST":
-        if(request.form.get('flag')=="commit"):
-            # Mysqlhandler.aptmntcommit()
-            return "test"
-        if(request.form.get('flag')=="rollback"):
-            # Mysqlhandler.aptmntrollback()
-            return "test"
-        
-        
-            
         p_Lname = request.form.get('p_Lname')
         p_Fname = request.form.get('p_Fname')
         age = request.form.get('age')
@@ -341,23 +272,18 @@ def confirmaptmnt():
         slot = request.form.get('slot')
         if "recep_id" in session:
             pphno=request.form.get('phno')
-            print("PHNO:")
-            print(pphno)
-            Mysqlhandler.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot)
+            Appointment.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot)
             sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
-            Mysqlhandler.updateSlot(0,sqlslot,docID,date)
-            Mysqlhandler.insertAptmnt(0,pphno,docID,date,slot)
-            return "Test"
-        results={"p_Fname":p_Fname,"p_Lname":p_Lname,"age":age,"gender":gender,"date":date,"docID":docID,"slot":slot}
+            Appointment.updateSlot(0,sqlslot,docID,date)
+            Appointment.insertAptmnt(0,pphno,docID,date,slot)
+            return 0
         sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
-        Mysqlhandler.updateSlot(0,sqlslot,docID,date)
-        
-        # query="insert into aptmnt(patientid,doctorid,date,slot) values('{}','{}','{}','{}');".format(phno,docID,date,slot)
-        Mysqlhandler.insertAptmnt(0,phno,docID,date,slot)
-        return "Test"
+        Appointment.updateSlot(0,sqlslot,docID,date)
+        Appointment.insertAptmnt(0,phno,docID,date,slot)
+        return 0
     #APPPOINTMENT END
 
-@auth.route('/logout')
+@views.route('/logout')
 def logout():
     session.pop("phno",None)
     return redirect('/login')
@@ -366,7 +292,7 @@ def logout():
 
 # RECEPTIONIST
 
-@auth.route('/rlogin',methods=['GET','POST'])
+@views.route('/rlogin',methods=['GET','POST'])
 def rlogin():
     if "recep_id" in session:
         recep_id=session["recep_id"]
@@ -379,12 +305,8 @@ def rlogin():
         session.permanent=True
         recep_id = request.form.get('recep_id')
         password = request.form.get('password')
-        # print("recep_id="+recep_id)
-        # print("password="+password)
         
-        val=Mysqlhandler.check_receptionist(0,recep_id,password)
-        # print("Val=")
-        # print(val)
+        val=Receptionist.verify(0,recep_id,password)
         if val==-1:
             flash('Invalid Credentials. Please try again.', category='error')
             return render_template("rlogin.html")
@@ -396,60 +318,55 @@ def rlogin():
             return redirect('/receptionist')
     return render_template("rlogin.html")
 
-@auth.route('/receptionist',methods=['GET','POST'])
+@views.route('/receptionist',methods=['GET','POST'])
 def receptionist():
     
     if "phno" in session:
         return redirect('/home')
     elif "admin_id" in session:
         return redirect('/admin')
-    
-    docids=Mysqlhandler.showDoctors(0)
+
     if "recep_id" in session:
         recep_id=session["recep_id"]
-        name=Mysqlhandler.getNameofReceptionist(0,recep_id)
+        name=Receptionist.getName(0,recep_id)
         if name!=None:
             Fname=name[0][0]
             Lname=name[0][1]
-        # Mysqlhandler.delete_old_aptmnt(0,todaysdate)
     else:
         return redirect('/rlogin')
 
     if request.method=="POST":
-        docids=Mysqlhandler.showDoctors(0)
         
         date = request.form.get('datePicker')
         speciality = request.form.get('speciality')
         if date=='':
                 date=None
-        # print(date)
-        # print(speciality)
         if request.form.get('clear')=='clear':#if clear button is pressed
             date=None
             speciality=None
         elif speciality==None and date==None:
-            result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,0)
-            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids,Fname=Fname,Lname=Lname)
+            result=Receptionist.show_aptmnts(0,date,speciality,0)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         
         elif speciality!=None and date==None:
             
-            result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,1)
-            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids,Fname=Fname,Lname=Lname)
+            result=Receptionist.show_aptmnts(0,date,speciality,1)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality==None and date!=None:
             
-            result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,2)
-            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids,Fname=Fname,Lname=Lname)
+            result=Receptionist.show_aptmnts(0,date,speciality,2)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality!=None and date!=None:
             
-            result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,3)
-            return render_template("receptionist.html",date=date,speciality=speciality,result=result,docids=docids,Fname=Fname,Lname=Lname)
+            result=Receptionist.show_aptmnts(0,date,speciality,3)
+            return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         
         
-    result=Mysqlhandler.show_aptmnt_for_recep(0,None,None,0)
-    return render_template("receptionist.html",result=result,docids=docids,Fname=Fname,Lname=Lname)
+    result=Receptionist.show_aptmnts(0,None,None,0)
+    return render_template("receptionist.html",result=result,Fname=Fname,Lname=Lname)
 
 
-@auth.route('/raptmnt',methods=['GET','POST'])
+@views.route('/raptmnt',methods=['GET','POST'])
 def raptmnt():
     if "admin_id" in session:
         return redirect('/admin')
@@ -463,14 +380,6 @@ def raptmnt():
         high = request.form.get('high')
         speciality = request.form.get('speciality')
         gender = request.form.get('gender')
-        # print("chk")
-        # print(high)
-        # print(speciality)
-        # print(gender)
-        # print("chkend")
-        
-        # print(request.form.get('book'))
-        # print("endend")
         if request.form.get('clear')=='clear':#if clear button is pressed
             high=None
             speciality=None
@@ -492,13 +401,13 @@ def raptmnt():
         elif high!=None and speciality!=None and gender!=None:
             identifier=7
 
-        result=Mysqlhandler.aptmnt_doctors(0,identifier,speciality,gender,high)
+        result=Appointment.aptmnt_doctors(0,identifier,speciality,gender,high)
         return render_template("raptmnt.html",result=result,high=high,speciality=speciality,gender=gender)
     else:
-        result=Mysqlhandler.showDoctors(0)        
+        result=Appointment.showDoctors(0)        
         return render_template("raptmnt.html",result=result)
 
-@auth.route('/rupdateCredentials',methods=['GET','POST'])
+@views.route('/rupdateCredentials',methods=['GET','POST'])
 def rupdateCredentials():
     if request.method=="POST":
         if "recep_id" in session:
@@ -506,20 +415,19 @@ def rupdateCredentials():
         CurrentPassword = request.form.get('CurrentPassword')
         Newpassword = request.form.get('Newpassword')
         Confirmpassword = request.form.get('Confirmpassword')
-        # print(Confirmpassword)
         if Newpassword!=Confirmpassword:
             return 'failed1'
         elif len(Newpassword)<6:
             return 'failed2'
         else:
-            if Mysqlhandler.update_receptionists(0,CurrentPassword,Newpassword,recep_id)==-1:
+            if Receptionist.update_credentials(0,CurrentPassword,Newpassword,recep_id)==-1:
                 return 'failed'
             else:
                 return 'success'
 
 
 
-@auth.route('/rlogout')
+@views.route('/rlogout')
 def rlogout():
     session.pop("recep_id",None)
     return redirect('/rlogin')
@@ -528,7 +436,7 @@ def rlogout():
 
 
 #ADMIN
-@auth.route('/alogin',methods=['GET','POST'])
+@views.route('/alogin',methods=['GET','POST'])
 def alogin():
     if "admin_id" in session:
         admin_id=session["admin_id"]
@@ -541,12 +449,7 @@ def alogin():
         session.permanent=True
         admin_id = request.form.get('admin_id')
         password = request.form.get('password')
-        # print("recep_id="+recep_id)
-        # print("password="+password1)
-        
-        val=Mysqlhandler.check_admin(0,admin_id,password)
-        # print("Val=")
-        # print(val)
+        val=Admin.verify(0,admin_id,password)
         if val==-1:
             flash('Invalid Credentials. Please try again.', category='error')
             return render_template("alogin.html")
@@ -558,7 +461,7 @@ def alogin():
             return redirect('/admin')
     return render_template("alogin.html")
 
-@auth.route('/admin',methods=['GET','POST'])
+@views.route('/admin',methods=['GET','POST'])
 def admin():
     
     if "phno" in session:
@@ -566,55 +469,21 @@ def admin():
     if "recep_id" in session:
         return redirect('/receptionist')
     
-    docids=Mysqlhandler.showDoctors(0)
-    # print(docids)
-    recepids=Mysqlhandler.showReceptionists(0)
-    
-    adminids=Mysqlhandler.showAdmins(0)
+    docids=Admin.showDoctors(0)
+    recepids=Admin.showReceptionists(0)    
+    adminids=Admin.showAdmins(0)
     if "admin_id" in session:
         admin_id=session["admin_id"]
-        name=Mysqlhandler.getNameofAdmin(0,admin_id)
+        name=Admin.getName(0,admin_id)
         if name!=None:
             Fname=name[0][0]
             Lname=name[0][1]
     else:
         return redirect('/alogin')
+        
+    return render_template("admin.html",docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
 
-    if request.method=="POST":
-        # docids=Mysqlhandler.showDoctors(0)
-        # recepids=Mysqlhandler.showReceptionists(0)
-        
-        date = request.form.get('datePicker')
-        speciality = request.form.get('speciality')
-        if date=='':
-                date=None
-        # print(date)
-        # print(speciality)
-        if request.form.get('clear')=='clear':#if clear button is pressed
-            date=None
-            speciality=None
-        elif speciality==None and date==None:
-            result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,0)
-            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
-        
-        elif speciality!=None and date==None:
-            
-            result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,1)
-            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
-        elif speciality==None and date!=None:
-            
-            result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,2)
-            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
-        elif speciality!=None and date!=None:
-            
-            result=Mysqlhandler.show_aptmnt_for_recep(0,date,speciality,3)
-            return render_template("admin.html",date=date,speciality=speciality,result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
-        
-        
-    result=Mysqlhandler.show_aptmnt_for_recep(0,None,None,0)
-    return render_template("admin.html",result=result,docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
-
-@auth.route('/addDoctor', methods=['POST', 'GET'])
+@views.route('/addDoctor', methods=['POST', 'GET'])
 def addDoctor():
     if "admin_id" in session:
         admin_id=session["admin_id"]
@@ -627,21 +496,15 @@ def addDoctor():
         id = request.form.get('id')
         exp = request.form.get('exp')
         edu = request.form.get('edu')
-        # print(Lname)
-        # print(Fname)
-        # print(spec)
-        # print(edu)
-
         if len(Lname)==0 or len(Fname)==0 or len(spec)==0 or gender=='Gender' or len(id)==0 or len(edu)==0:
             return 'failed'
-        elif Mysqlhandler.check_new_docid(0,id)!=1:
+        elif Admin.check_new_docid(0,id)!=1:
             return 'failed1'
         else:
-            Mysqlhandler.addDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
+            Admin.addDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
             return 'success'
-        return "Test"
 
-@auth.route('/updateDoctor', methods=['POST', 'GET'])
+@views.route('/updateDoctor', methods=['POST', 'GET'])
 def updateDoctor():
     if "admin_id" in session:
         admin_id=session["admin_id"]
@@ -649,7 +512,7 @@ def updateDoctor():
         flag= request.form.get('flag')
         if flag=='get':
             id = request.form.get('id')
-            result=Mysqlhandler.getDoctor(0,id)
+            result=Admin.getDoctor(0,id)
             return jsonify(result)
         elif flag=='update':
             Lname = request.form.get('Lname')
@@ -662,23 +525,23 @@ def updateDoctor():
             if len(Lname)==0 or len(Fname)==0 or len(spec)==0 or gender=='Gender' or len(id)==0 or len(edu)==0:
                 return 'failed'
             else:
-                Mysqlhandler.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
+                Admin.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
                 return 'success'
 
-@auth.route('/deleteDoctor', methods=['POST', 'GET'])
+@views.route('/deleteDoctor', methods=['POST', 'GET'])
 def deleteDoctor():
     if request.method == "POST":
         flag= request.form.get('flag')
         if flag=='get':
             id = request.form.get('id')
-            result=Mysqlhandler.getDoctor(0,id)
+            result=Admin.getDoctor(0,id)
             return jsonify(result)
         elif flag=='delete':
             id = request.form.get('id')
-            Mysqlhandler.deleteDoc(0,id)
+            Admin.deleteDoc(0,id)
             return 'success'
 
-@auth.route('/addReceptionist', methods=['POST', 'GET'])
+@views.route('/addReceptionist', methods=['POST', 'GET'])
 def addReceptionist():
     if "admin_id" in session:
         admin_id=session["admin_id"]
@@ -687,32 +550,29 @@ def addReceptionist():
         Lname = request.form.get('Lname')
         Fname = request.form.get('Fname')
         id = request.form.get('id')
-        # print(Lname)
-        # print(Fname)
 
         if len(Lname)==0 or len(Fname)==0 or len(id)==0:
             return 'failed'
-        elif Mysqlhandler.check_new_recep_id(0,id)!=1:
+        elif Admin.check_new_recep_id(0,id)!=1:
             return 'failed1'
         else:
-            Mysqlhandler.addReceptionist(0,id,Fname,Lname,admin_id)
+            Admin.addReceptionist(0,id,Fname,Lname,admin_id)
             return 'success'
-        return "Test"
 
-@auth.route('/deleteReceptionist', methods=['POST', 'GET'])
+@views.route('/deleteReceptionist', methods=['POST', 'GET'])
 def deleteReceptionist():
     if request.method == "POST":
         flag= request.form.get('flag')
         if flag=='get':
             id = request.form.get('id')
-            result=Mysqlhandler.getReceptionist(0,id)
+            result=Admin.getReceptionist(0,id)
             return jsonify(result)
         elif flag=='delete':
             id = request.form.get('id')
-            Mysqlhandler.deleteReceptionist(0,id)
+            Admin.deleteReceptionist(0,id)
             return 'success'
 
-@auth.route('/aupdateCredentials',methods=['GET','POST'])
+@views.route('/aupdateCredentials',methods=['GET','POST'])
 def aupdateCredentials():
     if request.method=="POST":
         if "admin_id" in session:
@@ -720,20 +580,18 @@ def aupdateCredentials():
         CurrentPassword = request.form.get('CurrentPassword')
         Newpassword = request.form.get('Newpassword')
         Confirmpassword = request.form.get('Confirmpassword')
-
-        # print(Confirmpassword)
         if Newpassword!=Confirmpassword:
             return 'failed1'
         elif len(Newpassword)<6:
             return 'failed2'
         else:
-            if Mysqlhandler.update_admin_credentials(0,CurrentPassword,Newpassword,admin_id)==-1:
+            if Admin.update_credentials(0,CurrentPassword,Newpassword,admin_id)==-1:
                 return 'failed'
             else:
                 return 'success'
 
 
-@auth.route('/alogout')
+@views.route('/alogout')
 def alogout():
     session.pop("admin_id",None)
     return redirect('/alogin')

@@ -4,15 +4,9 @@ body {
   color: #000000;
   background-image: url("/static/images/hero-bg.png");
   background-color: #ffffff;
-  /* overflow-x: hidden; */
-  /* width: fit-content;
-  height: fit-content; */
   background-size: cover;
-
   background-attachment: fixed;
 }
-
-
 
 .heading_container {
   display: -webkit-box;
@@ -150,7 +144,6 @@ a:focus {
 .custom_nav-container .navbar-nav .nav-item .nav-link {
   padding: 5px 20px;
   color: #ffffff;
-  /* text-align: center; */
   text-transform: uppercase;
   border-radius: 5px;
   -webkit-transition: all 0.3s;
@@ -227,16 +220,7 @@ a:focus {
   top: 0;
 }
 
-
-
-
-
 /*end header section*/
-
-
-
-
-
 
 .footer_section {
   background: #178066;
@@ -390,7 +374,6 @@ a:focus {
   color: inherit;
 }
 
-
 .testing-wrapper{
   
   width: 100%;
@@ -398,28 +381,15 @@ a:focus {
   padding: 10px;
   display: flex;
   justify-content: center;
-  /* overflow-x: auto;
-  overflow-y: auto; */
 }
 
 .testing-web{
-
-  /* margin: auto auto; */
   width: 100%;
-  
   justify-content:space-around;
   padding-left: 5px;
   padding-right: 5px;
   padding-top: 10px;
 }
-
-/* .flex-container {
-  display: flex;
-  flex-direction: row;
-  margin: auto auto;
-  width: 95%;
-  gap: 50px;
-} */
 .testing-web-left{
   
   background-color: #ffff;
@@ -430,40 +400,21 @@ a:focus {
   border-radius:20px;
   height:fit-content;
   border: 1px solid black;
-  /* float:left; */
   width:fit-content;
   max-width: 280px;
-  /* flex-basis: 180px; */
-  /* flex-grow: 8; */
-
   color: #000;
 }
 .testing-web-right{
-  
   border-radius:20px;
-  /* padding-left: 0%; */
   color: #ffffff;
-  /* flex-basis: 800px; */
-  
-  /* padding-left: 30%; */
-  
-  /* flex-grow: 1; */
-  /* width: 70%; */
-  
-  
-  /* float:left; */
 } 
 .button-cen{
-  /* border: 2px solid black; */
   padding-top: 7px;
   text-align: center;
 }
 .form-check{
-  
-  
   padding-top: 10px;
   padding-bottom: 10px;
-
 }
 .form-check-apply-button{
   width: 90%;
@@ -476,7 +427,6 @@ a:focus {
   font-weight: 500;
   color: #000;
   background-color: #fff;
-  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -488,15 +438,8 @@ a:focus {
 .form-check-apply-button:hover{
   background-color: #2EE59D;
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  /* font-size: 14px; */
   border: none;
-  /* font-weight: bolder; */
   transform: translateY(1px);
-  
-  /* box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  color: #22bb7e;
-  border: none;
-  transform: translateY(1px); */
 }
 .form-check-clear-button{
   width: 90%;
@@ -508,8 +451,7 @@ a:focus {
   letter-spacing: 1.5px;
   font-weight: 500;
   color: #000;
-  background-color: #fff;
-  
+  background-color: #fff;  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -524,28 +466,21 @@ a:focus {
   transform: translateY(1px);
 }
 .card{
-  
-  /* text-align: center; */
   border: 2px solid black;
   width: 100%;
   padding: 10px 10px 10px 10px;
   color: #000000;
-  
   border-radius:20px;
 }
-
 .table {
 	border-spacing: 0 15px;
 	border-collapse: separate;
-  
- 
 }
 .table thead tr th,
 .table thead tr td{
 	vertical-align: middle;
 	border: none;
   background-color: #ffffff;
-	/* box-shadow: 0 2px 10px rgba(212, 9, 9, 0.1); */
 }
 
 .table thead{
@@ -571,23 +506,18 @@ a:focus {
 .table tbody tr{
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.301);
 	border-radius: 5px;
-  
   border: 1px solid black;
 }
 .table tr{
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 	border-radius: 5px;
 }
-/* .table tbody tr td{
-	background: #fff;
-} */
 .table tbody tr td:nth-child(1) {
 	border-radius: 5px 0 0 5px;
 }
 .table tbody tr td:nth-last-child(1) {
 	border-radius: 0 5px 5px 0;
 }
-
 .user-info {
 	display: flex;
 	align-items: center;
@@ -598,13 +528,10 @@ a:focus {
   height: 45px;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
-  /* text-transform: uppercase; */
-  /* letter-spacing: 1.5px; */
   font-weight: 500;
   color: #000;
   background-color: #fff;
   font-weight: bolder;
-  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -615,8 +542,6 @@ a:focus {
 .form-check-for-button:hover{
   background-color: #2EE59D;
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  /* color: #fff; */
-  /* font-size: 14px; */
   border: none;
   font-weight: bolder;
   transform: translateY(1px);
@@ -632,7 +557,6 @@ a:focus {
   font-weight: 500;
   color: #000;
   background-color: #fff;
-  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);

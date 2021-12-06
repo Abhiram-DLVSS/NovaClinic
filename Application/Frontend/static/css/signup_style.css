@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
 html,body{
-background-image: url("/static/images/loginBG.jpg");
+background-image: url("/static/images/Login.jpg");
 background-size: cover;
 background-repeat: no-repeat;
 height: 100%;
@@ -75,7 +75,6 @@ align-content: center;
     margin-right: 5px;
 }
 
-
 .card{
 height: 475px;
 margin-top: auto;
@@ -134,12 +133,12 @@ margin-right: 5px;
   color: black;
   background-color: #74d6cb;
   width: 100px;
-  }
+}
   
-  .signup_btn:hover{
+.signup_btn:hover{
   color: black;
   background-color: #40beaf;
-  }
+}
 
 .links{
 color: white;
@@ -215,26 +214,6 @@ margin-left: 4px;
   padding: 10px 10px;
   margin: 15px -10px;
 }
-/* .login > button {
-  font-family: "Asap", sans-serif;
-  cursor: pointer;
-  color: #fff;
-  font-size: 16px;
-  text-transform: uppercase;
-  width: 80px;
-  border: 0;
-  padding: 10px 0;
-  margin-top: 10px;
-  margin-left: -5px;
-  border-radius: 5px;
-  background-color: #f45b69;
-  -webkit-transition: background-color 300ms;
-  -moz-transition: background-color 300ms;
-  transition: background-color 300ms;
-}
-.login > button:hover {
-  background-color: #f24353;
-} */
 
 @-webkit-keyframes wawes {
   from {
@@ -268,21 +247,12 @@ margin-left: 4px;
     transform: rotate(360deg);
   }
 }
-/* a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.6);
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  font-size: 12px;
-} */
 
 /*header section*/
 
 .header_section {
   padding: 15px 0;
 }
-
 
 .navbar-brand span {
   font-weight: bold;
