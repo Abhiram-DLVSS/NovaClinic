@@ -15,7 +15,7 @@ class User:
 	def verify(self,phno,password):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select * from user_credentials where phno='{}' and password=Sha2('{}',224);").format(phno,password)
+		query = ("select phno,password from users where phno='{}' and password=Sha2('{}',224);").format(phno,password)
 		if(phno==None and password==None):
 			return -1
 		cursor.execute(query)
@@ -28,7 +28,7 @@ class User:
 	def check_new_phno(self,phno):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select * from user_credentials where phno='{}';").format(phno)
+		query = ("select phno,password from users where phno='{}';").format(phno)
 		if(phno==None):
 			return -1
 		cursor.execute(query)
@@ -37,27 +37,20 @@ class User:
 			return 1
 		else:			 # Account already exists			
 			return 0
-
-	def add_info(self,FName,LName,dob,gender,phno):
-		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
-		cursor=cnx.cursor()
-		query = ("insert into user_info values('{}','{}','{}','{}','{}');").format(FName,LName,dob,gender,phno)
-		cursor.execute(query)
-		cursor.execute("commit")
 	
-	def add_credentials(self,phno,password):
+	def add_user(self,FName,LName,dob,gender,phno,password):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("insert into user_credentials values('{}',Sha2('{}',224));").format(phno,password)
+		query = ("insert into users values('{}','{}','{}','{}','{}','{}');").format(phno,password,FName,LName,dob,gender)
 		cursor.execute(query)
 		cursor.execute("commit")
 		
 	def update_info(self,FName,LName,NewPhno,OldPhno):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="UPDATE user_info SET FName='{}',LName='{}',phno='{}' where phno='{}';".format(FName,LName,NewPhno,OldPhno)
+		query="UPDATE users SET FName='{}',LName='{}',phno='{}' where phno='{}';".format(FName,LName,NewPhno,OldPhno)
 		cursor.execute(query)
-		query="UPDATE user_credentials SET phno='{}' where phno='{}';".format(NewPhno,OldPhno)
+		query="UPDATE users SET phno='{}' where phno='{}';".format(NewPhno,OldPhno)
 		cursor.execute(query)		
 		query="UPDATE aptmnt SET patient_id='{}' where patient_id='{}';".format(NewPhno,OldPhno)
 		cursor.execute(query)
@@ -66,12 +59,12 @@ class User:
 	def update_credentials(self,p_CurrentPassword,p_Newpassword,phno):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()		
-		query="select * from user_credentials where password=Sha2('{}',224) and phno='{}'".format(p_CurrentPassword,phno)
+		query="select phno,password from users where password=Sha2('{}',224) and phno='{}'".format(p_CurrentPassword,phno)
 		cursor.execute(query)		
 		vari=cursor.fetchall()
 		if(len(vari)==0):
 			return -1
-		query="UPDATE user_credentials SET password=Sha2('{}',224) where phno='{}' and password=Sha2('{}',224);".format(p_Newpassword,phno,p_CurrentPassword)
+		query="UPDATE users SET password=Sha2('{}',224) where phno='{}' and password=Sha2('{}',224);".format(p_Newpassword,phno,p_CurrentPassword)
 		cursor.execute(query)
 		cursor.execute("commit")
 		return 0
@@ -79,7 +72,7 @@ class User:
 	def show_aptmnt(self,patient_id):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()	
-		query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,user_info.FName,user_info.LName,doctors.spec,aptmnt.date,aptmnt.slot from aptmnt,doctors,user_info where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=user_info.phno and aptmnt.patient_id='{}' order by aptmnt.date,aptmnt.slot;".format(patient_id)
+		query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,users.FName,users.LName,doctors.spec,aptmnt.date,aptmnt.slot from aptmnt,doctors,users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.patient_id='{}' order by aptmnt.date,aptmnt.slot;".format(patient_id)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
@@ -87,7 +80,7 @@ class User:
 	def getName(self,patient_id):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()	
-		query="select FName, LName from user_info where phno='{}';".format(patient_id)
+		query="select FName, LName from users where phno='{}';".format(patient_id)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows	
@@ -108,7 +101,15 @@ class Appointment:
 	def getSlot(self,docID,date):		
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="select * from slots where doctor_id='{}' and date='{}';".format(docID,date)
+		query="select date,doctor_id,time from slots where doctor_id='{}' and date='{}';".format(docID,date)
+		cursor.execute(query)
+		row=cursor.fetchall()
+		return row
+
+	def getSlottimestring(self,docID,date):		
+		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
+		cursor=cnx.cursor()
+		query="select time from slots where doctor_id='{}' and date='{}';".format(docID,date)
 		cursor.execute(query)
 		row=cursor.fetchall()
 		return row
@@ -116,27 +117,26 @@ class Appointment:
 	def addSlot(self,docID,date):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="insert into slots values('{}','{}',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);".format(date,docID)
+		query="insert into slots values('{}','{}','000000000000000000000000');".format(date,docID)
 		cursor.execute(query)
 		cursor.execute("commit")
 		
 		
-	def updateSlot(self,sqlslot,docID,date):
+	def updateSlot(self,time,index,docID,date):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		
-		query="select {} from slots where doctor_id='{}' and date='{}';".format(sqlslot,docID,date)
+		query="select time from slots where doctor_id='{}' and date='{}';".format(docID,date)
 		cursor.execute(query)
 		rows=cursor.fetchall()
-			
-		if rows[0][0]==1:
+		chk=rows[0][0][index]
+		if chk=="1":
 			return -1
-		
-
-		query="update slots set {}=1 where doctor_id='{}' and date='{}';".format(sqlslot,docID,date)
-		cursor.execute(query)
-		cursor.execute("commit")
-		return 0
+		else:
+			query="update slots set time={} where doctor_id='{}' and date='{}';".format(time,docID,date)
+			cursor.execute(query)
+			cursor.execute("commit")
+			return 0
 	
 	def insertAptmnt(self,phno,docID,date,slot):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
@@ -184,7 +184,7 @@ class Appointment:
 		cursor.execute(query)
 		query="delete from temp_users where date<'{}';".format(date)
 		cursor.execute(query)
-		# query="delete from slots where (09$00_09$15 + 09$15_09$30 + 09$30_09$45 + 09$45_10$00 + 10$00_10$15 + 10$15_10$30 + 10$30_10$45 + 10$45_11$00 + 11$00_11$15 + 11$15_11$30 + 11$30_11$45 + 11$45_12$00 + 18$00_18$15 + 18$15_18$30 + 18$30_18$45 + 18$45_19$00 + 19$00_19$15 + 19$15_19$30 + 19$30_19$45 + 19$45_20$00 + 20$00_20$15 + 20$15_20$30 + 20$30_20$45 + 20$45_21$00)=0;"
+		# query="delete from slots where time='000000000000000000000000';"
 		# cursor.execute(query)
 		cursor.execute("commit")
 
@@ -218,13 +218,13 @@ class Receptionist:
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		if identifier==0:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from user_info union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno order by aptmnt.date,aptmnt.slot"
+			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno order by aptmnt.date,aptmnt.slot"
 		elif identifier==1:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from user_info union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and doctors.spec='{}' order by aptmnt.date,aptmnt.slot;".format(speciality)
+			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and doctors.spec='{}' order by aptmnt.date,aptmnt.slot;".format(speciality)
 		elif identifier==2:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from user_info union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' order by aptmnt.date,aptmnt.slot;".format(date)
+			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' order by aptmnt.date,aptmnt.slot;".format(date)
 		elif identifier==3:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from user_info union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' and doctors.spec='{}' order by aptmnt.date,aptmnt.slot;".format(date,speciality)
+			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' and doctors.spec='{}' order by aptmnt.date,aptmnt.slot;".format(date,speciality)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
@@ -305,7 +305,7 @@ class Admin:
 	def updateDoc(self,doctor_id,Fname,Lname,spec,exp,gender,edu,admin_id):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("update doctors set FName='{}',LName='{}',spec='{}',exp='{}',gender='{}',edu='{}',name='{}',admin_id='{}' where doctor_id='{}';").format(Fname,Lname,spec,exp,gender,edu,Fname,admin_id,doctor_id)
+		query = ("update doctors set FName='{}',LName='{}',spec='{}',exp='{}',gender='{}',edu='{}',admin_id='{}' where doctor_id='{}';").format(Fname,Lname,spec,exp,gender,edu,admin_id,doctor_id)
 		cursor.execute(query)
 		cursor.execute("commit")
 
@@ -368,7 +368,7 @@ class Admin:
 	def showAdmins(self):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select admin_id from admin;")
+		query = ("select admin_id,FName,LName from admin;")
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows

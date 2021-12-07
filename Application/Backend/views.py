@@ -36,7 +36,7 @@ def login():
         password1 = request.form.get('password1')
         val=User.verify(0,phno,password1)
         if val==0:
-            flash('The Phone Number or Password you entered is incorrect', category='error')
+            flash('The Phone Number or Password is incorrect', category='error')
             return render_template("login.html")
         elif val==-1:    
             return render_template("login.html")
@@ -68,7 +68,7 @@ def user_info():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         if User.check_new_phno(0,phno)!=1:
-            flash('An account already exists with the given phone number', category='error')
+            flash('Given Phone Number is already associated with an account.', category='error')
         elif len(firstname) <=0 or len(lastname) <=0:
             flash('Please enter your details correctly', category='error')
         elif gender=='Gender' or gender==None or dob=='' or len(dob)!=10:
@@ -79,10 +79,8 @@ def user_info():
             flash('Passwords don\'t match.', category='error')
         elif len(password1) < 6:
             flash('Password is too short(minimum is 6 characters)', category='error')
-        else:
-            # flash('Account Created!', category='success')
-            User.add_info(0,firstname,lastname,dob,gender,phno)
-            User.add_credentials(0,phno,password1)
+        else:       
+            User.add_user(0,firstname,lastname,dob,gender,phno,password1)
             session["phno"]=phno
             return redirect('/home')
 
@@ -115,22 +113,6 @@ def home():
             Lname=name[0][1]
     else:
         return redirect('/login')
-    if request.method=="POST":
-            name = request.form.get('name')
-            docname = request.form.get('docname')
-            spec = request.form.get('spec')
-            message = request.form.get('message')
-            if len(docname)<=0:
-                flash('You forgot to fill the form completely.',category='error')
-            elif len(name)<=0:
-                flash('You forgot to fill the form completely.',category='error')
-            elif len(spec)<=0:
-                flash('You forgot to fill the form completely.',category='error')
-            elif len(message)<=0:
-             flash('You forgot to fill the form completely.',category='error')
-            else:
-                 #send user to the database            
-                flash('Message Sent.',category='success')
     return render_template("home.html",result=result,phno=phno,Fname=Fname,Lname=Lname)
 
 @views.route('/updateInfo',methods=['GET','POST'])
@@ -219,42 +201,39 @@ def getslotsinfo():
         date = request.form.get('date')
         docID = request.form.get('docID')
         result=Appointment.getSlot(0,docID,date)
-
         if not result:
             Appointment.addSlot(0,docID,date)
-            
-
         result=Appointment.getSlot(0,docID,date)
         if not result:#if result is empty
             return "Empty"
         else:
             data={
-                "date":result[0][0],
-                "doctorid":result[0][1],
-                "09:00-09:15":result[0][2],
-                "09:15-09:30":result[0][3],
-                "09:30-09:45":result[0][4],
-                "09:45-10:00":result[0][5],
-                "10:00-10:15":result[0][6],
-                "10:15-10:30":result[0][7],
-                "10:30-10:45":result[0][8],
-                "10:45-11:00":result[0][9],
-                "11:00-11:15":result[0][10],
-                "11:15-11:30":result[0][11],
-                "11:30-11:45":result[0][12],
-                "11:45-12:00":result[0][13],
-                "18:00-18:15":result[0][14],
-                "18:15-18:30":result[0][15],
-                "18:30-18:45":result[0][16],
-                "18:45-19:00":result[0][17],
-                "19:00-19:15":result[0][18],
-                "19:15-19:30":result[0][19],
-                "19:30-19:45":result[0][20],
-                "19:45-20:00":result[0][21],
-                "20:00-20:15":result[0][22],
-                "20:15-20:30":result[0][23],
-                "20:30-20:45":result[0][24],
-                "20:45-21:00":result[0][25]
+                "date":result[0][2][0],
+                "doctorid":result[0][2][1],
+                "09:00-09:15":result[0][2][0],
+                "09:15-09:30":result[0][2][1],
+                "09:30-09:45":result[0][2][2],
+                "09:45-10:00":result[0][2][3],
+                "10:00-10:15":result[0][2][4],
+                "10:15-10:30":result[0][2][5],
+                "10:30-10:45":result[0][2][6],
+                "10:45-11:00":result[0][2][7],
+                "11:00-11:15":result[0][2][8],
+                "11:15-11:30":result[0][2][9],
+                "11:30-11:45":result[0][2][10],
+                "11:45-12:00":result[0][2][11],
+                "18:00-18:15":result[0][2][12],
+                "18:15-18:30":result[0][2][13],
+                "18:30-18:45":result[0][2][14],
+                "18:45-19:00":result[0][2][15],
+                "19:00-19:15":result[0][2][16],
+                "19:15-19:30":result[0][2][17],
+                "19:30-19:45":result[0][2][18],
+                "19:45-20:00":result[0][2][19],
+                "20:00-20:15":result[0][2][20],
+                "20:15-20:30":result[0][2][21],
+                "20:30-20:45":result[0][2][22],
+                "20:45-21:00":result[0][2][23]
                 }
         return data
 
@@ -270,20 +249,46 @@ def confirmaptmnt():
         date = request.form.get('date')
         docID = request.form.get('docID')
         slot = request.form.get('slot')
+        slot_dict={
+                "09:00-09:15":0,
+                "09:15-09:30":1,
+                "09:30-09:45":2,
+                "09:45-10:00":3,
+                "10:00-10:15":4,
+                "10:15-10:30":5,
+                "10:30-10:45":6,
+                "10:45-11:00":7,
+                "11:00-11:15":8,
+                "11:15-11:30":9,
+                "11:30-11:45":10,
+                "11:45-12:00":11,
+                "18:00-18:15":12,
+                "18:15-18:30":13,
+                "18:30-18:45":14,
+                "18:45-19:00":15,
+                "19:00-19:15":16,
+                "19:15-19:30":17,
+                "19:30-19:45":18,
+                "19:45-20:00":19,
+                "20:00-20:15":20,
+                "20:15-20:30":21,
+                "20:30-20:45":22,
+                "20:45-21:00":23
+                }
+        timestring=Appointment.getSlottimestring(0,docID,date)
+        newtimestring=timestring[0][0][0:slot_dict[slot]]+"1"+timestring[0][0][slot_dict[slot]+1:24]
         if "recep_id" in session:
             pphno=request.form.get('phno')
             if User.check_new_phno(0,pphno)==0:
                 return "failed"          
             Appointment.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot)
-            sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
-            slotchk=Appointment.updateSlot(0,sqlslot,docID,date)
+            slotchk=Appointment.updateSlot(0,newtimestring,slot_dict[slot],docID,date)
             if slotchk==-1:
                 return "failed1"
             Appointment.insertAptmnt(0,pphno,docID,date,slot)
             return "Success"
         else:
-            sqlslot=slot[0:2]+'$'+slot[3:5]+'_'+slot[6:8]+'$'+slot[9:11]
-            slotchk=Appointment.updateSlot(0,sqlslot,docID,date)
+            slotchk=Appointment.updateSlot(0,newtimestring,slot_dict[slot],docID,date)
             if slotchk==-1:
                 return "failed1"
             Appointment.insertAptmnt(0,phno,docID,date,slot)
