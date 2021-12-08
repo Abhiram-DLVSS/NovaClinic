@@ -7,85 +7,9 @@ views = Blueprint('views',__name__)
 views.permanent_session_lifetime=timedelta(days=14)
 
 todaysdate=date.today()
-@views.route('/')
-def welcome():
-    if "phno" in session:
-        return redirect('/home')
-    elif "recep_id" in session:
-        return redirect('/receptionist')
-    elif "admin_id" in session:
-        return redirect('/admin')
-    
-    return render_template("welcome.html")
 
 #USER
 
-    #SIGN IN
-@views.route('/login',methods=['GET','POST'])
-def login():
-    if "phno" in session:
-        phno=session["phno"]
-        return redirect('/home')
-    elif "recep_id" in session:
-        return redirect('/receptionist')
-    elif "admin_id" in session:
-        return redirect('/admin')
-    if request.method == 'POST':
-        session.permanent=True
-        phno = request.form.get('phno')
-        password1 = request.form.get('password1')
-        val=User.verify(0,phno,password1)
-        if val==0:
-            flash('The Phone Number or Password is incorrect', category='error')
-            return render_template("login.html")
-        elif val==-1:    
-            return render_template("login.html")
-        else:
-            session["phno"]=phno
-            return redirect('/home')
-    else:
-        if "phno" in session:
-            phno=session["phno"]
-            return redirect('/home')
-        else:
-            return render_template("login.html")
-
-@views.route('/signup',methods=['GET','POST'])
-def user_info():
-    if "phno" in session:
-        phno=session["phno"]
-        return redirect('/home')
-    elif "recep_id" in session:
-        return redirect('/receptionist')
-    elif "admin_id" in session:
-        return redirect('/admin')
-    if request.method == 'POST':
-        firstname = request.form.get('firstname')
-        lastname  = request.form.get('lastname')
-        dob = request.form.get('dob')
-        gender = request.form.get('gender')
-        phno = request.form.get('phno')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
-        if User.check_new_phno(0,phno)!=1:
-            flash('Given Phone Number is already associated with an account.', category='error')
-        elif len(firstname) <=0 or len(lastname) <=0:
-            flash('Please enter your details correctly', category='error')
-        elif gender=='Gender' or gender==None or dob=='' or len(dob)!=10:
-            flash('Please enter your details correctly', category='error')
-        elif len(phno) != 10:
-            flash('Please check your Phone Number.', category='error')
-        elif password1 != password2:
-            flash('Passwords don\'t match.', category='error')
-        elif len(password1) < 6:
-            flash('Password is too short(minimum is 6 characters)', category='error')
-        else:       
-            User.add_user(0,firstname,lastname,dob,gender,phno,password1)
-            session["phno"]=phno
-            return redirect('/home')
-
-    return render_template("signup.html")
-    #SIGN IN END
 
     #HOME
 @views.route('/userName', methods=['POST', 'GET'])
@@ -298,37 +222,12 @@ def confirmaptmnt():
 @views.route('/logout')
 def logout():
     session.pop("phno",None)
-    return redirect('/login')
+    return redirect('/home')
 
 #USER 
 
 # RECEPTIONIST
 
-@views.route('/rlogin',methods=['GET','POST'])
-def rlogin():
-    if "recep_id" in session:
-        recep_id=session["recep_id"]
-        return redirect('/receptionist')
-    elif "phno" in session:
-        return redirect('/home')
-    elif "admin_id" in session:
-        return redirect('/admin')
-    if request.method == 'POST':
-        session.permanent=True
-        recep_id = request.form.get('recep_id')
-        password = request.form.get('password')
-        
-        val=Receptionist.verify(0,recep_id,password)
-        if val==-1:
-            flash('Invalid Credentials. Please try again.', category='error')
-            return render_template("rlogin.html")
-        elif val==1:    
-            flash('Incorrect Credentials. Please try again.', category='error')
-            return render_template("rlogin.html")
-        else:
-            session["recep_id"]=recep_id
-            return redirect('/receptionist')
-    return render_template("rlogin.html")
 
 @views.route('/receptionist',methods=['GET','POST'])
 def receptionist():
@@ -439,36 +338,12 @@ def rupdateCredentials():
 @views.route('/rlogout')
 def rlogout():
     session.pop("recep_id",None)
-    return redirect('/rlogin')
+    return redirect('/home')
 
 #RECEPTIONIST END
 
 
 #ADMIN
-@views.route('/alogin',methods=['GET','POST'])
-def alogin():
-    if "admin_id" in session:
-        admin_id=session["admin_id"]
-        return redirect('/admin')
-    elif "phno" in session:
-        return redirect('/home')
-    elif "recep_id" in session:
-        return redirect('/receptionist')
-    if request.method == 'POST':
-        session.permanent=True
-        admin_id = request.form.get('admin_id')
-        password = request.form.get('password')
-        val=Admin.verify(0,admin_id,password)
-        if val==-1:
-            flash('Invalid Credentials. Please try again.', category='error')
-            return render_template("alogin.html")
-        elif val==1:    
-            flash('Incorrect Credentials. Please try again.', category='error')
-            return render_template("alogin.html")
-        else:
-            session["admin_id"]=admin_id
-            return redirect('/admin')
-    return render_template("alogin.html")
 
 @views.route('/admin',methods=['GET','POST'])
 def admin():
@@ -603,5 +478,5 @@ def aupdateCredentials():
 @views.route('/alogout')
 def alogout():
     session.pop("admin_id",None)
-    return redirect('/alogin')
+    return redirect('/home')
 #ADMIN END
