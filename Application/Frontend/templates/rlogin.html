@@ -1,0 +1,78 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Receptionist Login</title>
+      <!--Bootsrap 4 CDN-->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <!--Fontawesome CDN-->
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+      <script type="text/javascript" src="static/js/bootstrap.js"></script>
+      <!--Custom styles-->
+      <link rel="stylesheet" type="text/css" href="static/css/rlogin_style.css">
+      <link rel="shortcut icon" href="static/images/favicon.png" type="">
+   </head>
+   <body>
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %} {% if category ==
+      'error' %}
+      <div class="alert alert-danger alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button type="button" class="close" data-dismiss="alert">
+         <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      {% else %}
+      <div class="alert alert-success alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button type="button" class="close" data-dismiss="alert">
+         <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      {% endif %} {% endfor %} {% endif %} {% endwith %}
+      <!-- header section starts -->
+      <header class="header_section" style="margin-left: 100px;">
+         <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="/">
+            <span>
+            Nova Clinic
+            </span>
+            </a>
+         </nav>
+      </header>
+      <div class="container">
+         <form method="post" class="login">
+            <div class="input-group form-group">
+               <h4>Receptionist Login</h4>
+            </div>
+            <div class="input-group form-group">
+               <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+               </div>
+               <input type="tel" class="form-control" id="recep_id" name="recep_id" placeholder="Receptionist ID">
+            </div>
+            <div class="input-group form-group">
+               <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+               </div>
+               <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+               <button type="submit" id="login" value="Login" class="btn float-right login_btn">Login</button>
+            </div>
+         </form>
+      </div>
+      </div>
+      <script>
+         $(window).on("load",function(){
+           $(".loader-wrapper").fadeOut("slow");
+         });
+      </script>       
+   </body>
+   <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+   </div>
+</html>
