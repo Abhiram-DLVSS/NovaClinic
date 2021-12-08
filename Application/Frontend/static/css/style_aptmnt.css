@@ -538,7 +538,9 @@ a:focus {
   text-align: center;
 }
 .modal-body-date{
-  padding: 10px 10px 10px 100px;
+  padding: 10px 10px 10px 10px;
+  display: grid;
+  place-items: center;
 }
 .form-check-slot-enabled-button{
   width: 90%;

@@ -8,9 +8,9 @@ static_dir=os.path.join(template_dir, 'static')
 template_dir = os.path.join(template_dir, 'templates')
 
 def create_app():
-    app=Flask(__name__,template_folder=template_dir,static_folder=static_dir)    
+    app=Flask(__name__,template_folder=template_dir,static_folder=static_dir)  
+
     app.config['SECRET_KEY']=os.environ.get('SECRET_KEY')
-    # app.config['SECRET_KEY']="secretKEY"
 
     from Application.Backend import views
     
