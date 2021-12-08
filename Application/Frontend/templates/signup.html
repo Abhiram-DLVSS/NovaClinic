@@ -1,0 +1,150 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Sign Up</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+      <script type="text/javascript" src="static/js/bootstrap.js"></script>
+      <link rel="stylesheet" type="text/css" href="static/css/signup_style.css">
+      <link rel="shortcut icon" href="static/images/favicon.png" type="">
+   </head>
+   <body>
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %} {% if category ==
+      'error' %}
+      <div class="alert alert-danger alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button type="button" class="close" data-dismiss="alert">
+         <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      {% else %}
+      <div class="alert alert-success alter-dismissable fade show" role="alert">
+         {{ message }}
+         <button type="button" class="close" data-dismiss="alert">
+         <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      {% endif %} {% endfor %} {% endif %} {% endwith %}
+      <!-- header section starts -->
+      <header class="header_section" style="margin-left: 100px;">
+         <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="/">
+            <span>
+            Nova Clinic
+            </span>
+            </a>
+         </nav>
+      </header>
+      <div class="container">
+         <form name="form1" id="form1" method="post" class="signup">
+            <div class="input-group form-group">
+               <h3>Sign Up</h3>
+            </div>
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+               <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                     <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  </div>
+                  <label for="firstname"></label>
+                  <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" maxlength="20">
+                  <div class="input-group-prepend">
+                     <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  </div>
+                  <label for="lastname"></label>
+                  <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" maxlength="20">
+               </div>
+            </div>
+            <div class="size">
+               <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                  <div class="input-group form-group">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                     </div>
+                     <label for="DOB"></label>
+                     <input type="text" class="form-control" name="dob" id="dob" placeholder="YYYY-MM-DD" style="width: 275px; " maxlength="10">
+                  </div>
+               </div>
+            </div>
+            <div class="size">
+               <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                  <div class="input-group form-group">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-male fa-1.5x"></i><i class=" fa fa-female fa-1.5x"></i></span>
+                     </div>
+                     <select class="form-control" id="inputGroupSelect01" name="gender">
+                        <option selected disabled value="Gender">Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                     </select>
+                  </div>
+               </div>
+            </div>
+            <div class="size">
+               <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                  <div class="input-group form-group">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-mobile"></i></span>
+                     </div>
+                     <label for="tel"></label>
+                     <input type="tel" class="form-control" id="phno" name="phno" placeholder="Phone Number">
+                  </div>
+               </div>
+            </div>
+            <div class="size">
+               <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                  <div class="input-group form-group">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                     </div>
+                     <label for="password2"></label>
+                     <input type="password" class="form-control" id="password1" name="password1" placeholder="Enter password">
+                  </div>
+               </div>
+            </div>
+            <div class="size">
+               <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                  <div class="input-group form-group">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                     </div>
+                     <label for="password2"></label>
+                     <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm password">
+                  </div>
+               </div>
+            </div>
+            <div class ="center">
+               <button id="register" type="submit" class="btn float-right signup_btn">Register</button>
+            </div>
+         </form>
+      </div>
+      <!-- jQery -->
+      <script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
+      <!-- moment js -->
+      <script type="text/javascript" src="static/js/moment.min.js"></script>
+      <!-- Date Picker -->
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js"></script>
+      <script>
+         $(function(){
+          let datePicker = document.getElementById('dob');
+          let picker = new Litepicker({
+           element: datePicker,
+           format: 'YYYY-MM-DD',
+           maxDate:moment().format('YYYY-MM-DD'),
+           dropdowns:{"minYear":1920,"maxYear":null,"months":true,"years":true}
+          });
+         });
+      </script>
+      <script>
+         $(window).on("load",function(){
+           $(".loader-wrapper").fadeOut("slow");
+         });
+      </script>
+   </body>
+   <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+   </div>
+</html>
