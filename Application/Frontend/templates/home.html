@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- Basic -->
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!-- Mobile Metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <!-- Site Metas -->
+      <meta name="keywords" content="" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <link rel="shortcut icon" href="static/images/favicon.png" type="">
+      <title> Nova Clinic </title>
+      <!-- bootstrap core css -->
+      <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+      <!-- fonts style -->
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+      <!--owl slider stylesheet -->
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+      <!-- font awesome style -->
+      <link href="static/css/font-awesome.min.css" rel="stylesheet" />
+      <!-- AJAX -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <!-- Custom styles for this template -->
+      <link href="static/css/style.css" rel="stylesheet" />
+      <!-- responsive style -->
+      <link href="static/css/responsive.css" rel="stylesheet" />
+   </head>
+   <body>
+      <div class="hero_area">
+         <div class="hero_bg_box">
+            <img src="static/images/hero-bg.png" alt="">
+         </div>
+         <!-- header section strats -->
+         <header class="header_section">
+            <div class="container">
+               <nav class="navbar navbar-expand-lg custom_nav-container ">
+                  <div class="container-fluid">
+                     <a class="navbar-brand">
+                     <span>
+                     Nova Clinic
+                     </span>
+                     </a>
+                     <div class="d-flex">
+                        <div class="d-flex flex-column bd-highlight mb-3">
+                           <div class="p-2 bd-highlight" style="text-align: right;">
+                              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                              </button>
+                           </div>
+                           <div class="p-2 bd-highlight">
+                              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                 <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item">
+                                       <a class="nav-link" href="aptmnt">Appointment</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       Account
+                                       </a>
+                                       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                          <h6 class='dropdown-item' style="pointer-events: none;"><i><small>Signed in as</i></small><br><b>{{Fname}} {{Lname}}</b></h6>
+                                          <div class="dropdown-divider"></div>
+                                          <button type="button" 
+                                             class="btn dropdown-item" 
+                                             data-toggle="modal"
+                                             data-target="#book-modal">
+                                          Update Profile
+                                          </button>
+                                          <button type="button" 
+                                             class="btn dropdown-item" 
+                                             data-toggle="modal"
+                                             data-target="#book-modal1">
+                                          Change Password
+                                          </button>
+                                          <div class="dropdown-divider"></div>
+                                          <button type="button" class="btn dropdown-item"  onclick="location.href = 'logout'">Logout</button>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </nav>
+            </div>
+         </header>
+         <!-- end header section -->
+         <!-- slider section -->
+         <section class="slider_section ">
+            <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+               <div class="carousel-inner">
+                  <div class="carousel-item active">
+                     <div class="container ">
+                        <div class="row">
+                           <div class="col-md-7">
+                              <div class="detail-box">
+                                 <h1>
+                                    We Provide Best Healthcare
+                                 </h1>
+                                 <p>
+                                    Customer healthcare is our atmost priority.
+                                 </p>
+                                 <button type="button" class="btn form-check-book-button book1" onclick="location.href = 'aptmnt'">
+                                 Book Appointment
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+         <!-- end slider section -->
+      </div>
+      <div class="modal fade"
+         id="book-modal" data-backdrop="static" data-bs-keyboard="false">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal_title">
+                     Update Profile
+                  </h5>
+                  <button type="button" 
+                     class="close" 
+                     data-dismiss="modal" 
+                     aria-label="Close"
+                     id="modalClose">
+                  <span aria-hidden="true">
+                  x</span>
+                  </button>
+               </div>
+               <form >
+                  <div class="form-group">
+                     <label id="firstname_input">First name</label>
+                     <input type="text" class="form-control" name="FName" id="FName" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update First Name" value={{Fname}} maxlength="20">
+                  </div>
+                  <div class="form-group">
+                     <label id="lastname_input">Last Name</label>
+                     <input type="text" class="form-control" name="LName" id="LName" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update Last Name" value={{Lname}} maxlength="20">
+                  </div>
+                  <div class="form-group">
+                     <label id="phno_input">Phone Number</label>
+                     <input type="tel" class="form-control" name="Phno" id="Phno" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update contact info" value={{phno}}>
+                  </div>
+                  <div class="form-group" style="text-align: center;">
+                     <button name="update_atPatient" id="update_atPatient" class="btn form-check-book-button">Update</button>
+                  </div>
+                  <div id="form-group-wrapper-info" style="text-align: center;">
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <div class="modal fade"
+         id="book-modal1" data-backdrop="static" data-bs-keyboard="false">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal_title">
+                     Change Password
+                  </h5>
+                  <button type="button" 
+                     class="close" 
+                     data-dismiss="modal" 
+                     aria-label="Close"
+                     id="modalClose">
+                  <span aria-hidden="true">
+                  x</span>
+                  </button>
+               </div>
+               <form>
+                  <div class="form-group">
+                     <label for="Currentpassword">Current Password</label>
+                     <input type="password" class="form-control" id="Currentpassword" onchange onpropertychange onkeyuponpaste oninput="updateCredentialsCheck()" placeholder="Enter your current password">
+                  </div>
+                  <div class="form-group">
+                     <label for="Newpassword">New Password</label>
+                     <input type="password" class="form-control" id="Newpassword" onchange onpropertychange onkeyuponpaste oninput="updateCredentialsCheck()" placeholder="Enter new password">
+                  </div>
+                  <div class="form-group">
+                     <label for="Confirmpassword">Confirm Password</label>
+                     <input type="password" class="form-control" id="Confirmpassword" onchange onpropertychange onkeyuponpaste oninput="updateCredentialsCheck()" placeholder="Re-enter Password">
+                  </div>
+                  <div class="form-group" style="text-align: center;">
+                     <button class="btn form-check-book-button" name="update_atPatient_credentials" id="update_atPatient_credentials" >Update</button>
+                  </div>
+                  <div id="form-group-wrapper-credentials" style="text-align: center;">
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <!-- department section -->
+      <block>
+         <head>
+            <style>
+               table {
+               font-family: arial, sans-serif;
+               border-collapse: collapse;
+               width: 100%;
+               }
+               td, th {
+               border: 1px solid #dddddd;
+               text-align: left;
+               padding: 8px;
+               }
+            </style>
+         </head>
+         <body>
+            {% if result%}
+            <div class="form-group" id="tablediv">
+               <h2>Your Appointments</h2>
+               <div class=" table-responsive">
+                  <table class="table-striped">
+                     <tr>
+                        <th>Appointment ID</th>
+                        <th>Doctor ID</th>
+                        <th>Doctor Name</th>
+                        <th>Specialization</th>
+                        <th>Patient Name</th>
+                        <th>Appointment Date</th>
+                        <th>Appointment Time</th>
+                     </tr>
+                     {%for a_tuple in result%}
+                     <tr>
+                        <td>{{a_tuple[0]}}</td>
+                        <td>{{a_tuple[1]}}</td>
+                        <td>{{a_tuple[2]}} {{a_tuple[3]}}</td>
+                        <td>{{a_tuple[6]}}</td>
+                        <td>{{a_tuple[4]}} {{a_tuple[5]}}</td>
+                        <td>{{a_tuple[7]}}</td>
+                        <td>{{a_tuple[8]}}</td>
+                     </tr>
+                     {% endfor %}
+                  </table>
+               </div>
+            </div>
+            {% endif %}
+   </body>
+   <section class="department_section layout_padding">
+   <div class="department_container">
+   <div class="container ">
+   <div class="heading_container heading_center">
+   <h2>
+   Our Specilizations
+   </h2>
+   <p>
+   We specialize in the following departments.
+   </p>
+   </div>
+   <div class="row">
+   <div class="col-md-3">
+   <div class="box ">
+   <div class="img-box">
+   <img src="static/images/cardiology.png" alt="">
+   </div>
+   <div class="detail-box">
+   <h5>
+   Cardiology
+   </h5>
+   <p>
+   Trusted expertise for all conditions related to heart
+   </p>
+   </div>
+   </div>
+   </div>
+   <div class="col-md-3">
+   <div class="box ">
+   <div class="img-box">
+   <img src="static/images/den.png" alt="">
+   </div>
+   <div class="detail-box">
+   <h5>
+   Dentist
+   </h5>
+   <p>
+   Teething trobules? Schedule a dental checkup
+   </p>
+   </div>
+   </div>
+   </div>
+   <div class="col-md-3">
+   <div class="box ">
+   <div class="img-box">
+   <img src="static/images/gp.png" alt="">
+   </div>
+   <div class="detail-box">
+   <h5>
+   General Physician
+   </h5>
+   <p>
+   Have fever? Schedule a general health Checkup
+   </p>
+   </div>
+   </div>
+   </div>
+   <div class="col-md-3">
+   <div class="box ">
+   <div class="img-box">
+   <img src="static/images/brain.png" alt="">
+   </div>
+   <div class="detail-box">
+   <h5>
+   Neruologist
+   </h5>
+   <p>
+   Chronic Headaches? Schedule an appointment
+   </p>
+   </div>
+   </div>
+   </div>
+   </div>
+   </div>
+   </div>
+   </section>
+   </block>
+   {% include 'footer.html' %}
+   <!-- jQery -->
+   <script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
+   <!-- popper js -->
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+   <!-- bootstrap js -->
+   <script type="text/javascript" src="static/js/bootstrap.js"></script>
+   <!-- owl slider -->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+   <!-- custom js -->
+   <script type="text/javascript" src="static/js/custom.js"></script>
+   <script type="text/javascript" src="static/js/custom.js"></script>
+   <!-- To send data of others -->
+   <script type="text/javascript">
+      var name_of_the_patient_chosen,p_FName,p_LName,p_Phno,p_CurrentPassword,p_Newpassword,p_Confirmpassword;
+       $("#update_atPatient").click(function(){
+        p_FName = $("#FName").val();
+        p_LName = $("#LName").val();
+        p_Phno=$("#Phno").val();
+          $.ajax({
+          type: "POST",
+          url: "/updateInfo",
+          data: {"p_FName":p_FName,"p_LName":p_LName,"Phno":p_Phno},
+          success:function(data){
+            if(data=='failed'){
+              alert('Please enter your details correctly');
+            }
+            else if(data=='failed1'){
+              alert('An account already exists with the given new phone number');
+            }
+            else if(data=='success'){
+              alert('Success');
+              window.location.href = 'home';
+            }        
+            else if(data=='success1'){
+              alert('Please login again as you changed your Phone Number');
+              window.location.href = 'logout';
+            }
+          }
+          });
+       });
+      
+       $("#update_atPatient_credentials").click(function(){
+        p_CurrentPassword = $("#Currentpassword").val();
+        p_Newpassword = $("#Newpassword").val();
+        p_Confirmpassword=$("#Confirmpassword").val();
+        $.ajax({
+          type: "POST",
+          url: "/updateCredentials",
+          data: {"p_CurrentPassword":p_CurrentPassword,"p_Newpassword":p_Newpassword,"p_Confirmpassword":p_Confirmpassword},
+          success:function(data){
+            if(data=='failed'){
+              alert('Entered password is incorrect');
+            }
+            else if(data=='failed1'){
+              alert('Passwords doesn\'t match');
+            }
+            else if(data=='failed2'){
+              alert('Password minimum length should be 6');
+            }
+            else if(data=='success'){
+              alert('Success');
+              window.location.href = 'home';
+            }
+          }
+          });
+       });
+      
+      function updateCheck(){
+        if($('#FName').val().length!=0&&$('#LName').val().length!=0&&$('#Phno').val().length==10){
+        $('#update_atPatient').prop('disabled', false);}
+        else{
+          
+        $('#update_atPatient').prop('disabled', true);
+        }
+      }
+      if($('#datePicker').val()==''){
+        $('#update_atPatient').prop('disabled', true);
+      }
+      
+      function updateCredentialsCheck(){
+        if($('#Currentpassword').val()!=''&&$('#Newpassword').val()!=''&&$('#Confirmpassword').val()!=''){
+        $('#update_atPatient_credentials').prop('disabled', false);
+      }
+        else{
+          
+        $('#update_atPatient_credentials').prop('disabled', true);
+        }
+      }
+      if($('#Currentpassword').val()==''){
+        $('#update_atPatient_credentials').prop('disabled', true);
+      }
+      
+       
+   </script>
+   <script>
+      $(window).on("load",function(){
+        $(".loader-wrapper").fadeOut("slow");
+      });
+   </script>
+   </body>
+   <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+   </div>
+</html>
