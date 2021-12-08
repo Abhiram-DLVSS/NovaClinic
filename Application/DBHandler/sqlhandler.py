@@ -11,39 +11,6 @@ class User:
 	
 	def __init__(self):
 		pass
-
-	def verify(self,phno,password):
-		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
-		cursor=cnx.cursor()
-		query = ("select phno,password from users where phno='{}' and password=Sha2('{}',224);").format(phno,password)
-		if(phno==None and password==None):
-			return -1
-		cursor.execute(query)
-		vari=cursor.fetchall()
-		if(len(vari)!=0):
-			return 1
-		else:
-			return 0
-
-	def check_new_phno(self,phno):
-		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
-		cursor=cnx.cursor()
-		query = ("select phno,password from users where phno='{}';").format(phno)
-		if(phno==None):
-			return -1
-		cursor.execute(query)
-		vari=cursor.fetchall()
-		if(len(vari)==0):# Account doesn't exist			
-			return 1
-		else:			 # Account already exists			
-			return 0
-	
-	def add_user(self,FName,LName,dob,gender,phno,password):
-		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
-		cursor=cnx.cursor()
-		query = ("insert into users values('{}','{}','{}','{}','{}','{}');").format(phno,password,FName,LName,dob,gender)
-		cursor.execute(query)
-		cursor.execute("commit")
 		
 	def update_info(self,FName,LName,NewPhno,OldPhno):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
@@ -298,7 +265,7 @@ class Admin:
 	def addDoc(self,doctor_id,Fname,Lname,spec,exp,gender,edu,admin_id):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("insert into doctors values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}');").format(doctor_id,Fname,Lname,spec,exp,gender,edu,"Doctor"+gender,Fname,admin_id)
+		query = ("insert into doctors values('{}','{}','{}','{}','{}','{}','{}','{}','{}');").format(doctor_id,Fname,Lname,spec,exp,gender,edu,"Doctor"+gender,admin_id)
 		cursor.execute(query)
 		cursor.execute("commit")
 
