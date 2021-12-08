@@ -200,10 +200,10 @@ a:focus {
   padding: 15px 0;
 }
 
-.header_section .container-fluid {
+/* .header_section .container-fluid {
   padding-right: 25px;
   padding-left: 25px;
-}
+} */
 
 .navbar-brand span {
   font-weight: bold;
@@ -968,10 +968,6 @@ a:focus {
 .footer_section .footer-info p a {
   color: inherit;
 }
-
-
-
-
 .button-cen{
   padding-top: 7px;
   text-align: center;
@@ -1005,7 +1001,6 @@ a:focus {
   background-color: #2EE59D;
   font-weight: bolder;
   letter-spacing: 1.5px;
-  /* box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4); */
   transform: translateY(-1px);
   border: none;
 }

@@ -5,15 +5,9 @@ body {
   background-image: url("/static/images/hero-bg.png");
   background-color: #ffffff;
   overflow-x: hidden;
-  /* width: fit-content;
-  height: fit-content; */
   background-size: cover;
-
   background-attachment: fixed;
 }
-
-
-
 .heading_container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -26,26 +20,22 @@ body {
       -ms-flex-align: start;
           align-items: flex-start;
 }
-
 .heading_container h2 {
   position: relative;
   font-weight: bold;
   margin-bottom: 0;
   text-transform: uppercase;
 }
-
 .heading_container p {
   margin-top: 10px;
   margin-bottom: 0;
 }
-
 .heading_container.heading_center {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
 }
-
 a,
 a:hover,
 a:focus {
@@ -230,11 +220,6 @@ a:focus {
 
 /*end header section*/
 
-
-
-
-
-
 .footer_section {
   background: #178066;
   color: #ffffff;
@@ -389,30 +374,18 @@ a:focus {
 
 
 .testing-wrapper{
-  
   width: 100%;
   height: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
   display: flex;
   justify-content: center;
-  /* height:800px;*/
   overflow-x: auto;
   overflow-y: auto;
 }
 .testing-web{
-
-  margin: auto auto;
-  width: 95%;
-  
-  padding-left: 10%;
-  padding-right: 10%;
-  padding-top: 10px;
-  /* width: 1800px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 50px;
-  padding-right: 10px; */
+  width: 100%;
+  justify-content: space-around;
 }
 .testing-web-left{
   
@@ -422,44 +395,27 @@ a:focus {
   padding-left: 10px;
   padding-right: 10px;
   border-radius:20px;
-  
-  float:left;
-  width:30%;
+  height: fit-content;
+  width:fit-content;
   max-width: 280px;
   border: 1px solid black;
-
   color: #000;
 }
 .testing-web-right{
-  
-  /* background-color: #178066; */
   border-radius:20px;
   padding-left: 0%;
   color: #ffffff;
-  
-  padding-left: 30%;
   width: 65%;
-  
-  
-  float:left;
+  max-width: 400px;
 }
 .button-cen{
-  /* border: 2px solid black; */
   padding-top: 7px;
   text-align: center;
 }
 .form-check{
-  
-  
   padding-top: 10px;
   padding-bottom: 10px;
-
 }
-/* .form-check-button{
-  text-align: center;
-  padding-top: 20px;
-  padding-bottom: 10px;
-} */
 .form-check-book-button{
   width: 90%;
   max-width: 220px;
@@ -471,7 +427,6 @@ a:focus {
   font-weight: 500;
   color: #000;
   background-color: #fff;
-  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -482,9 +437,7 @@ a:focus {
 .form-check-book-button:hover{
   background-color: #2EE59D;
   font-weight: bolder;
-  /* letter-spacing: 1.5px; */
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  /* color: #fff; */
   transform: translateY(1px);
   border: none;
 }
@@ -499,7 +452,6 @@ a:focus {
   font-weight: 500;
   color: #000;
   background-color: #fff;
-  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -511,15 +463,8 @@ a:focus {
 .form-check-apply-button:hover{
   background-color: #2EE59D;
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  /* font-size: 14px; */
   border: none;
-  /* font-weight: bolder; */
   transform: translateY(1px);
-  
-  /* box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  color: #22bb7e;
-  border: none;
-  transform: translateY(1px); */
 }
 .form-check-for-button{
   width: 90%;
@@ -527,13 +472,10 @@ a:focus {
   height: 45px;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
-  /* text-transform: uppercase; */
-  /* letter-spacing: 1.5px; */
   font-weight: 500;
   color: #000;
   background-color: #fff;
   font-weight: bolder;
-  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -544,8 +486,6 @@ a:focus {
 .form-check-for-button:hover{
   background-color: #2EE59D;
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  /* color: #fff; */
-  /* font-size: 14px; */
   border: none;
   font-weight: bolder;
   transform: translateY(1px);
@@ -561,7 +501,6 @@ a:focus {
   font-weight: 500;
   color: #000;
   background-color: #fff;
-  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -576,8 +515,6 @@ a:focus {
   transform: translateY(1px);
 }
 .card{
-  
-  /* text-align: center; */
   border: 2px solid black;
   width: 100%;
   padding: 10px 10px 10px 10px;
@@ -597,20 +534,12 @@ a:focus {
 .modal-content{
   border-radius: 20px;
 }
-/* .bd-highlight{
-  border: 2px solid black;
-} */
 .modal-body{
   text-align: center;
 }
 .modal-body-date{
   padding: 10px 10px 10px 100px;
-  /* border: 2px solid black; */
 }
-/* .datePicker{
-  display: block;
-  margin : 0 auto;
-} */
 .form-check-slot-enabled-button{
   width: 90%;
   max-width: 140px;
@@ -622,7 +551,6 @@ a:focus {
   font-weight: 500;
   color: #000;
   background-color: #fff;
-  
   border: 1px solid black;
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -633,15 +561,8 @@ a:focus {
 .form-check-slot-enabled-button:hover{
    background-color: #2EE59D;
    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-   /* font-size: 14px; */
    border: none;
-   /* font-weight: bolder; */
    transform: translateY(1px);
-   
-   /* box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-   color: #22bb7e;
-   border: none;
-   transform: translateY(1px); */
 }
 .form-check-slot-disabled-button{
   width: 90%;
@@ -664,9 +585,6 @@ a:focus {
 }
 .form-check-slot-disabled-button:hover{
   box-shadow: 0px 15px 20px rgba(255,89,94, 0.4);
-  /* color: #FF595E; */
-  /* border: none; */
-  /* transform: translateY(1px); */
 }
 .slot-buttons-padding{
   width: 90%;
