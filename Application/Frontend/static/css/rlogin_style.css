@@ -1,12 +1,9 @@
-/* Made with love by Mutiullah Samim*/
-
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
 html,body{
 background-image: url("/static/images/recep.jpg");
 background-size: cover;
 background-repeat: no-repeat;
-/* background-color: black; */
 box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
 height: 100%;
 font-family: 'Numans', sans-serif;
@@ -140,14 +137,6 @@ margin-right: 5px;
   background-color: #40beaf;
 }
 
-/* .links{
-color: white;
-}
-
-.links a{
-margin-left: 4px;
-} */
-
 .login {
   overflow: hidden;
   background-color: white;
@@ -205,26 +194,6 @@ margin-left: 4px;
   padding: 10px 10px;
   margin: 15px -10px;
 }
-/* .login > button {
-  font-family: "Asap", sans-serif;
-  cursor: pointer;
-  color: #000;
-  font-size: 16px;
-  text-transform: uppercase;
-  width: 80px;
-  border: 0;
-  padding: 10px 0;
-  margin-top: 10px;
-  margin-left: -5px;
-  border-radius: 5px;
-  background-color: #74d6cb;
-  -webkit-transition: background-color 300ms;
-  -moz-transition: background-color 300ms;
-  transition: background-color 300ms;
-}
-.login > button:hover {
-  background-color: #46cfbf;
-} */
 
 @-webkit-keyframes wawes {
   from {
@@ -258,21 +227,11 @@ margin-left: 4px;
     transform: rotate(360deg);
   }
 }
-/* a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.6);
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  font-size: 12px;
-} */
+
 .btn-center{
-  /* background-color: #000; */
   text-align:center;
   width: fit-content;
 }
-
-
 
 a,
 a:hover,
@@ -297,7 +256,6 @@ a:focus {
 .header_section {
   padding: 15px 0;
 }
-
 
 .navbar-brand span {
   font-weight: bold;
