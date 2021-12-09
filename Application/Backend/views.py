@@ -88,6 +88,7 @@ def user_info():
     #SIGN IN END
 
     #HOME
+    
 @views.route('/userName', methods=['POST', 'GET'])
 def userName():    
     phno=session["phno"]
@@ -133,22 +134,7 @@ def updateInfo():
             return 'success'        
     return 'failed'
 
-@views.route('/updateCredentials',methods=['GET','POST'])
-def updateCredentials():
-    if request.method=="POST":        
-        phno=session["phno"]
-        p_CurrentPassword = request.form.get('p_CurrentPassword')
-        p_Newpassword = request.form.get('p_Newpassword')
-        p_Confirmpassword = request.form.get('p_Confirmpassword')
-        if p_Newpassword!=p_Confirmpassword:
-            return 'failed1'
-        elif len(p_Newpassword)<6:
-            return 'failed2'
-        else:
-            if User.update_credentials(0,p_CurrentPassword,p_Newpassword,phno)==-1:
-                return 'failed'
-            else:
-                return 'success'
+
     
     #HOME END
 
@@ -208,8 +194,8 @@ def getslotsinfo():
             return "Empty"
         else:
             data={
-                "date":result[0][2][0],
-                "doctorid":result[0][2][1],
+                "date":result[0][0],
+                "doctorid":result[0][1],
                 "09:00-09:15":result[0][2][0],
                 "09:15-09:30":result[0][2][1],
                 "09:30-09:45":result[0][2][2],
@@ -249,32 +235,7 @@ def confirmaptmnt():
         date = request.form.get('date')
         docID = request.form.get('docID')
         slot = request.form.get('slot')
-        slot_dict={
-                "09:00-09:15":0,
-                "09:15-09:30":1,
-                "09:30-09:45":2,
-                "09:45-10:00":3,
-                "10:00-10:15":4,
-                "10:15-10:30":5,
-                "10:30-10:45":6,
-                "10:45-11:00":7,
-                "11:00-11:15":8,
-                "11:15-11:30":9,
-                "11:30-11:45":10,
-                "11:45-12:00":11,
-                "18:00-18:15":12,
-                "18:15-18:30":13,
-                "18:30-18:45":14,
-                "18:45-19:00":15,
-                "19:00-19:15":16,
-                "19:15-19:30":17,
-                "19:30-19:45":18,
-                "19:45-20:00":19,
-                "20:00-20:15":20,
-                "20:15-20:30":21,
-                "20:30-20:45":22,
-                "20:45-21:00":23
-                }
+        slot_dict={"09:00-09:15":0,"09:15-09:30":1,"09:30-09:45":2,"09:45-10:00":3,"10:00-10:15":4,"10:15-10:30":5,"10:30-10:45":6,"10:45-11:00":7,"11:00-11:15":8,"11:15-11:30":9,"11:30-11:45":10,"11:45-12:00":11,"18:00-18:15":12,"18:15-18:30":13,"18:30-18:45":14,"18:45-19:00":15,"19:00-19:15":16,"19:15-19:30":17,"19:30-19:45":18,"19:45-20:00":19,"20:00-20:15":20,"20:15-20:30":21,"20:30-20:45":22,"20:45-21:00":23}
         timestring=Appointment.getSlottimestring(0,docID,date)
         newtimestring=timestring[0][0][0:slot_dict[slot]]+"1"+timestring[0][0][slot_dict[slot]+1:24]
         if "recep_id" in session:
@@ -293,13 +254,20 @@ def confirmaptmnt():
                 return "failed1"
             Appointment.insertAptmnt(0,phno,docID,date,slot)
             return "Success"
+
+@views.route('/aptmntDelete', methods=['POST', 'GET'])
+def aptmntDelete():
+    if request.method == "POST":
+        aptmnt_id = request.form.get('aptmnt_id')
+        docID=request.form.get('docID')
+        slot=request.form.get('slot')        
+        date=request.form.get('date')
+        slot_dict={"09:00-09:15":0,"09:15-09:30":1,"09:30-09:45":2,"09:45-10:00":3,"10:00-10:15":4,"10:15-10:30":5,"10:30-10:45":6,"10:45-11:00":7,"11:00-11:15":8,"11:15-11:30":9,"11:30-11:45":10,"11:45-12:00":11,"18:00-18:15":12,"18:15-18:30":13,"18:30-18:45":14,"18:45-19:00":15,"19:00-19:15":16,"19:15-19:30":17,"19:30-19:45":18,"19:45-20:00":19,"20:00-20:15":20,"20:15-20:30":21,"20:30-20:45":22,"20:45-21:00":23}
+        timestring=Appointment.getSlottimestring(0,docID,date)
+        newtimestring=timestring[0][0][0:slot_dict[slot]]+"0"+timestring[0][0][slot_dict[slot]+1:24]
+        Appointment.delete_aptmnt(0,aptmnt_id,docID,date,newtimestring)
+        return "success"
     #APPPOINTMENT END
-
-@views.route('/logout')
-def logout():
-    session.pop("phno",None)
-    return redirect('/home')
-
 #USER 
 
 # RECEPTIONIST
@@ -416,30 +384,8 @@ def raptmnt():
         result=Appointment.showDoctors(0)        
         return render_template("raptmnt.html",result=result)
 
-@views.route('/rupdateCredentials',methods=['GET','POST'])
-def rupdateCredentials():
-    if request.method=="POST":
-        if "recep_id" in session:
-            recep_id=session["recep_id"]
-        CurrentPassword = request.form.get('CurrentPassword')
-        Newpassword = request.form.get('Newpassword')
-        Confirmpassword = request.form.get('Confirmpassword')
-        if Newpassword!=Confirmpassword:
-            return 'failed1'
-        elif len(Newpassword)<6:
-            return 'failed2'
-        else:
-            if Receptionist.update_credentials(0,CurrentPassword,Newpassword,recep_id)==-1:
-                return 'failed'
-            else:
-                return 'success'
 
 
-
-@views.route('/rlogout')
-def rlogout():
-    session.pop("recep_id",None)
-    return redirect('/home')
 
 #RECEPTIONIST END
 
@@ -581,11 +527,13 @@ def deleteReceptionist():
             Admin.deleteReceptionist(0,id)
             return 'success'
 
-@views.route('/aupdateCredentials',methods=['GET','POST'])
-def aupdateCredentials():
+
+
+#ADMIN END
+
+@views.route('/updateCredentials',methods=['GET','POST'])
+def updateCredentials():
     if request.method=="POST":
-        if "admin_id" in session:
-            admin_id=session["admin_id"]
         CurrentPassword = request.form.get('CurrentPassword')
         Newpassword = request.form.get('Newpassword')
         Confirmpassword = request.form.get('Confirmpassword')
@@ -594,14 +542,32 @@ def aupdateCredentials():
         elif len(Newpassword)<6:
             return 'failed2'
         else:
-            if Admin.update_credentials(0,CurrentPassword,Newpassword,admin_id)==-1:
-                return 'failed'
-            else:
-                return 'success'
+            if "phno" in session:
+                phno=session["phno"]
+                if User.update_credentials(0,CurrentPassword,Newpassword,phno)==-1:
+                    return 'failed'
+                else:
+                    return 'success'
+            elif "admin_id" in session:
+                admin_id=session["admin_id"]
+                if Admin.update_credentials(0,CurrentPassword,Newpassword,admin_id)==-1:
+                    return 'failed'
+                else:
+                    return 'success'
+            elif "recep_id" in session:
+                recep_id=session["recep_id"]
+                if Receptionist.update_credentials(0,CurrentPassword,Newpassword,recep_id)==-1:
+                    return 'failed'
+                else:
+                    return 'success'
+                
+@views.route('/logout')
+def logout():
+    if "phno" in session:
+        session.pop("phno",None)
+    elif "recep_id" in session:
+        session.pop("recep_id",None)
+    elif "admin_id" in session:
+        session.pop("admin_id",None)
+    return redirect('/')
 
-
-@views.route('/alogout')
-def alogout():
-    session.pop("admin_id",None)
-    return redirect('/home')
-#ADMIN END

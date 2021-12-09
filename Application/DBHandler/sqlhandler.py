@@ -72,7 +72,7 @@ class User:
 	def show_aptmnt(self,patient_id):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()	
-		query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,users.FName,users.LName,doctors.spec,aptmnt.date,aptmnt.slot from aptmnt,doctors,users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.patient_id='{}' order by aptmnt.date,aptmnt.slot;".format(patient_id)
+		query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,users.FName,users.LName,doctors.doctor_specialization,aptmnt.date,aptmnt.slot from aptmnt,doctors,users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.patient_id='{}' order by aptmnt.date,aptmnt.slot;".format(patient_id)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
@@ -158,19 +158,19 @@ class Appointment:
 		if identifier==0:
 			query = "select * from doctors;"
 		elif identifier==1:
-			query = "select * from doctors order by exp {};".format(order)
+			query = "select * from doctors order by doctor_experience {};".format(order)
 		elif identifier==2:			
-			query = "select * from doctors where spec='{}';".format(spec)
+			query = "select * from doctors where doctor_specialization='{}';".format(spec)
 		elif identifier==3:
 			query = "select * from doctors where gender='{}';".format(gender)
 		elif identifier==4:
-			query = "select * from doctors where spec='{}' order by exp {};".format(spec,order)
+			query = "select * from doctors where doctor_specialization='{}' order by doctor_experience {};".format(spec,order)
 		elif identifier==5:
-			query = "select * from doctors where gender='{}' and spec='{}';".format(gender,spec)
+			query = "select * from doctors where gender='{}' and doctor_specialization='{}';".format(gender,spec)
 		elif identifier==6:
-			query = "select * from doctors where gender='{}' order by exp {};".format(gender,order)
+			query = "select * from doctors where gender='{}' order by doctor_experience {};".format(gender,order)
 		elif identifier==7:
-			query = "select * from doctors where gender='{}' and spec='{}' order by exp {};".format(gender,spec,order)
+			query = "select * from doctors where gender='{}' and doctor_specialization='{}' order by doctor_experience {};".format(gender,spec,order)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
@@ -186,6 +186,15 @@ class Appointment:
 		cursor.execute(query)
 		# query="delete from slots where time='000000000000000000000000';"
 		# cursor.execute(query)
+		cursor.execute("commit")
+	
+	def delete_aptmnt(self,aptmnt_id,docID,date,time):
+		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
+		cursor=cnx.cursor()
+		query="delete from aptmnt where aptmnt_id='{}';".format(aptmnt_id)
+		cursor.execute(query)
+		query="update slots set time='{}' where doctor_id='{}' and date='{}';".format(time,docID,date)
+		cursor.execute(query)
 		cursor.execute("commit")
 
 class Receptionist:
@@ -218,13 +227,13 @@ class Receptionist:
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		if identifier==0:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno order by aptmnt.date,aptmnt.slot"
+			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.doctor_specialization,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno order by aptmnt.date,aptmnt.slot"
 		elif identifier==1:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and doctors.spec='{}' order by aptmnt.date,aptmnt.slot;".format(speciality)
+			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.doctor_specialization,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and doctors.doctor_specialization='{}' order by aptmnt.date,aptmnt.slot;".format(speciality)
 		elif identifier==2:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' order by aptmnt.date,aptmnt.slot;".format(date)
+			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.doctor_specialization,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' order by aptmnt.date,aptmnt.slot;".format(date)
 		elif identifier==3:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.spec,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' and doctors.spec='{}' order by aptmnt.date,aptmnt.slot;".format(date,speciality)
+			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.doctor_specialization,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' and doctors.doctor_specialization='{}' order by aptmnt.date,aptmnt.slot;".format(date,speciality)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
@@ -305,7 +314,7 @@ class Admin:
 	def updateDoc(self,doctor_id,Fname,Lname,spec,exp,gender,edu,admin_id):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("update doctors set FName='{}',LName='{}',spec='{}',exp='{}',gender='{}',edu='{}',admin_id='{}' where doctor_id='{}';").format(Fname,Lname,spec,exp,gender,edu,admin_id,doctor_id)
+		query = ("update doctors set FName='{}',LName='{}',doctor_specialization='{}',doctor_experience='{}',gender='{}',doctor_education='{}',by_admin_id='{}' where doctor_id='{}';").format(Fname,Lname,spec,exp,gender,edu,admin_id,doctor_id)
 		cursor.execute(query)
 		cursor.execute("commit")
 
@@ -357,6 +366,7 @@ class Admin:
 		cursor.execute(query)
 		row=cursor.fetchall()
 		return row
+
 	def showReceptionists(self):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
@@ -376,7 +386,7 @@ class Admin:
 	def showDoctors(self):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select doctor_id,FName,LName,spec from doctors;")
+		query = ("select doctor_id,FName,LName,doctor_specialization from doctors;")
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows

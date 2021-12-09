@@ -103,7 +103,7 @@
                                           data-target="#pwd-modal">
                                        Change Password
                                        </button>
-                                       <a class="dropdown-item" href="alogout">Logout</a>
+                                       <a class="dropdown-item" href="logout">Logout</a>
                                     </div>
                                  </li>
                               </ul>
@@ -1109,7 +1109,7 @@
            Confirmpassword=$("#Confirmpassword").val();
            $.ajax({
              type: "POST",
-             url: "/aupdateCredentials",
+             url: "/updateCredentials",
              data: {"CurrentPassword":CurrentPassword,"Newpassword":Newpassword,"Confirmpassword":Confirmpassword},
              success:function(data){
                if(data=='failed'){
