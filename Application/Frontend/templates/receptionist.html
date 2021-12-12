@@ -55,7 +55,7 @@
                                     data-target="#pwd-modal">
                                  Change Password
                                  </button>
-                                 <a class="dropdown-item" href="rlogout">Logout</a>
+                                 <a class="dropdown-item" href="logout">Logout</a>
                               </div>
                            </li>
                         </ul>
@@ -157,6 +157,7 @@
                                        <th>Patient Number</th>
                                        <th>Date</th>
                                        <th>Time</th>
+                                       <th></th>
                                     </tr>
                                  </thead>
                                  <tbody>
@@ -169,7 +170,8 @@
                                        <td>{{a_tuple[5]}} {{a_tuple[6]}}</td>
                                        <td>{{a_tuple[7]}}</td>
                                        <td>{{a_tuple[8]}}</td>
-                                       <td>{{a_tuple[9]}}</td>
+                                       <td>{{a_tuple[9]}}</td>                                       
+                                       <td style="text-align: center;"><button type="button" class="btn btn-outline-danger" name="cancel_aptmnt" data-toggle="modal"  data-target="#confirm-modal" id="{{a_tuple[0]}}" onclick="cancel_aptmnt1('{{a_tuple[0]}}','{{a_tuple[1]}}','{{a_tuple[2]}} {{a_tuple[3]}}','{{a_tuple[4]}}','{{a_tuple[5]}} {{a_tuple[6]}}','{{a_tuple[7]}}','{{a_tuple[8]}}','{{a_tuple[9]}}')">Cancel</button></td>
                                     </tr>
                                     {% endfor %}
                                     {%if not result%}
@@ -226,6 +228,39 @@
             </div>
          </div>
       </div>
+      <div class="modal fade" id="confirm-modal" data-backdrop="static" data-bs-keyboard="false">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal_title">
+                     Confirm cancellation of Appointment?
+                  </h5>
+                  <button type="button" 
+                     class="close" 
+                     data-dismiss="modal" 
+                     aria-label="Close"
+                     id="modalClose">
+                  <span aria-hidden="true">
+                  x</span>
+                  </button>
+               </div>
+               <div class="modal-body-confirm modal-body">
+                  <div id="confirm-modal-body-id-wrapper">
+                  </div>
+                  <br>
+                  <button type="button" class="btn form-check-for-button"
+                     name="confirm"
+                     id="confirm">Confirm</button>
+                  <button type="button" class="form-check-clear-button"
+                     data-toggle="modal" 
+                     data-dismiss="modal"
+                     name="cancel"
+                     id="cancel">Cancel</button>
+               </div>
+               <br>                   
+            </div>
+         </div>
+      </div>
       <!-- Testing end -->
       <!-- jQery -->
       <script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
@@ -260,6 +295,59 @@
       <script type="text/javascript" src="static/js/custom.js"></script>
       <!-- To send data of others -->
       <script>
+         var del_aptmnt_id,del_docID,del_docName,del_spec,del_date,del_time,del_pname,del_phno;
+      function cancel_aptmnt1(delaptmnt_id,deldocID,deldocName,delspec,delpname,delphno,deldate,deltime){
+         del_aptmnt_id=delaptmnt_id;
+         del_docID=deldocID;
+         del_docName=deldocName;
+         del_spec=delspec;
+         del_date=deldate;
+         del_time=deltime;
+         del_pname=delpname;
+         del_phno=delphno;
+         var wrapper = document.getElementById("confirm-modal-body-id-wrapper");
+           var myHTML = '';
+           myHTML += '<br><p><b>Appointment ID</b>:</p>';
+           myHTML += '<p>'+del_aptmnt_id+'</p>';
+
+           myHTML += '<br><p><b>Doctor Name</b>:</p>';
+           myHTML += '<p>'+del_docName+'</p>';
+           
+           myHTML += '<br><p><b>Doctor Specialization</b>:</p>';    
+           myHTML += '<p>'+del_spec+'</p>';
+         
+           myHTML += '<br><p><b>Patient Name</b>:</p>';    
+           myHTML += '<p>'+del_pname+'</p>';
+         
+           myHTML += '<br><p><b>Patient Phone Number</b>:</p>';    
+           myHTML += '<p>'+del_phno+'</p>';
+           
+           myHTML += '<br><p><b>Appointment Date</b>:</p>';    
+           myHTML += '<p>'+del_date+'</p>';
+         
+           myHTML += '<br><p><b>Appointment time</b>:</p>';    
+           myHTML += '<p>'+del_time+'</p>';
+
+           wrapper.innerHTML=myHTML
+      };
+      $("#confirm").click(function(){
+        $.ajax({
+          type: "POST",
+          url: "/aptmntDelete",
+          data: {"aptmnt_id":del_aptmnt_id,"docID":del_docID,"slot":del_time,"date":del_date},
+          success:function(data){
+             if(data=='success'){          
+              $('#confirm-modal').modal('hide');
+              alert('Your appointment was cancelled successfully');
+              window.location.href = 'home';  
+            }
+            else{
+               alert('Your appointment was cancellation failed');
+            }
+          }
+          });
+       });
+
          function detailscheck(){
          if($('#Confirmpassword').val().length==0|| $('#Currentpassword').val().length==0|| $('#Newpassword').val().length==0){
          $('#update_at_credentials').prop('disabled', true);}
@@ -276,7 +364,7 @@
          Confirmpassword=$("#Confirmpassword").val();
          $.ajax({
            type: "POST",
-           url: "/rupdateCredentials",
+           url: "/updateCredentials",
            data: {"CurrentPassword":CurrentPassword,"Newpassword":Newpassword,"Confirmpassword":Confirmpassword},
            success:function(data){
              if(data=='failed'){
@@ -294,6 +382,8 @@
            }
            });
          });
+
+         
          
       </script>
    </body>

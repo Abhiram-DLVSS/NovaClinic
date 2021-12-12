@@ -1,1 +1,65 @@
-### Backend
+# Backend
+
+NovaClinic is a web application that helps health centers provide users with an easy way to book a doctor’s appointment online. It also allows the health centers to manage their appointments.
+
+### API Endpoints
+- /login
+    - Receives the Phone Number and Password through a POST request
+    - If the credentials are correct, This will redirect to the Homepage, else displays the error flash message
+- /signup
+    - Receives the User Information like Phone Number, Name, Date of Birth, Gender and  Password
+    - Verifies whether the given Phone Number is new and a few other inputs compatibility checks.
+    - If everything given was correct, This’ll add the User to the Database.
+- /userName
+    - Receives the Phone Number of the logged-in user
+    - Returns the Name of the User
+- /home
+    - Receives the Phone Number of the logged-in  user
+    - Renders the User’s homepage along with the data of upcoming appointments and the name of the User.
+- /updateInfo
+    - Receives the Edited Phone Number, First Name and Last Name
+    - Updates the User Information in the database after a few verifications
+- /updateCredentials
+    - Receives the Old Password and New Password
+    - Updates the User Credentials in the database if the old password matches the password in the database
+- /aptmnt
+    - Receives the Doctor filter choices
+    - Renders the Appointment page accordingly
+- /getslotsinfo
+    - Receives the Date and Doctor ID
+    - Returns the data of the Slots of that Doctor on that date.
+- /confirmaptmnt
+    - Receives the Date, Doctor ID, Name of the Patient, Slot
+    - Creates the appointment in the Database and updates the Slots data in the Database
+- /aptmntDelete
+    - Receives the appointment ID, date, slot, Doctor ID
+    - Deletes the appointment in the Database and updates the Slots data in the Database
+- /rlogin
+    - Receives the Receptionists Username and Password
+    - If the credentials are correct, This will redirect to the Receptionists Homepage, else displays the error flash message
+- /receptionist
+    - Receives the Filter choices of Appointments
+    - Renders the Receptionist Home Page accordingly
+- /raptmnt
+    - Receives the Filter choices of Doctor
+    - Renders the Appointment page accordingly
+- /alogin
+    - Receives the Admins Username and Password
+    - If the credentials are correct, This will redirect to the Admins Homepage else displays the error flash message
+- /admin
+    - Returns the IDs and Name of the existing Doctors, Receptionists and Admins
+- /addDoctor
+    - Receives the Doctor ID, Name, Specialization, Gender, Experience and Education of the Doctor to be added
+    - Will verify if the Doctor ID is unique, If unique, will add the Doctor to the Database.
+- /updateDoctor
+    - Receives the Doctor ID, Name, Specialization, Gender, Experience, Education of the Doctor to be updated
+    - Will update the Doctor information in the Database
+- /deleteDoctor
+    - Receives the Doctor ID of the Doctor to be deleted
+    - Will delete the Doctor information in the Database
+- /addReceptionist
+    - Receives the Receptionist ID, Name of the Receptionist to be added
+    - Will verify if the Receptionist ID is unique, If unique will add the Receptionist to the Database.
+- /deleteReceptionist
+    - Receives the Receptionist ID of the Receptionist to be deleted
+    - Will delete the Receptionist information in the Database
