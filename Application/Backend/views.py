@@ -464,7 +464,7 @@ def updateDoctor():
             if len(Lname)==0 or len(Fname)==0 or len(spec)==0 or gender=='Gender' or len(id)==0 or len(edu)==0:
                 return 'failed'
             else:
-                Admin.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
+                Admin.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu)
                 return 'success'
 
 #To delete Doctor

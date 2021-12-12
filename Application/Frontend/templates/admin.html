@@ -282,8 +282,6 @@
                   </div>
                   <br>
                   <button type="button" class="btn form-check-for-button"
-                     data-toggle="modal" 
-                     data-dismiss="modal"
                      name="confirm"
                      id="confirm">Confirm</button>
                   <button type="button" class="form-check-clear-button"
@@ -317,7 +315,7 @@
                      <div class="row">
                         <div class="col">
                            <select name="docID" id="docID1" class="form-select form-select-lg mb-3">
-                              <option selected disabled value="">Choose a Doctor ID</option>
+                              <option selected hidden disabled value="">Choose a Doctor ID</option>
                               {%for a_tuple in docids%}
                               <option value="{{a_tuple[0]}}">{{a_tuple[0]}}</option>
                               {% endfor %}
@@ -359,10 +357,10 @@
                      <br>
                      <div style="text-align: center;">
                         <button type="button" class="btn form-check-for-button"
-                           data-toggle="modal" 
-                           data-dismiss="modal"
                            name="updateDocbutton"
                            id="updateDocbutton"
+                           data-toggle="modal"
+                           data-dismiss="modal"
                            data-target="#confirm-modal1">Update</button>
                      </div>
                   </form>
@@ -391,8 +389,6 @@
                   </div>
                   <br>
                   <button type="button" class="btn form-check-for-button"
-                     data-toggle="modal" 
-                     data-dismiss="modal"
                      name="confirm"
                      id="confirm1">Confirm</button>
                   <button type="button" class="form-check-clear-button"
@@ -426,7 +422,7 @@
                      <div class="row">
                         <div class="col">
                            <select name="docID" id="docID2" class="form-select form-select-lg mb-3">
-                              <option selected disabled value="">Choose a Doctor ID</option>
+                              <option selected hidden disabled value="">Choose a Doctor ID</option>
                               {%for a_tuple in docids%}
                               <option value="{{a_tuple[0]}}">{{a_tuple[0]}}</option>
                               {% endfor %}
@@ -500,8 +496,6 @@
                   </div>
                   <br>
                   <button type="button" class="btn form-check-for-button"
-                     data-toggle="modal" 
-                     data-dismiss="modal"
                      name="confirm"
                      id="confirm2">Confirm</button>
                   <button type="button" class="form-check-clear-button"
@@ -626,8 +620,6 @@
                   </div>
                   <br>
                   <button type="button" class="btn form-check-for-button"
-                     data-toggle="modal" 
-                     data-dismiss="modal"
                      name="confirm"
                      id="Recepconfirm">Confirm</button>
                   <button type="button" class="form-check-clear-button"
@@ -661,7 +653,7 @@
                      <div class="row">
                         <div class="col">
                            <select name="RecepID" id="RecepID2" class="form-select form-select-lg mb-3">
-                              <option selected disabled value="">Choose a Receptionist ID</option>
+                              <option selected hidden disabled value="">Choose a Receptionist ID</option>
                               {%for a_tuple in recepids%}
                               <option value="{{a_tuple[0]}}">{{a_tuple[0]}}</option>
                               {% endfor %}
@@ -712,8 +704,6 @@
                   </div>
                   <br>
                   <button type="button" class="btn form-check-for-button"
-                     data-toggle="modal" 
-                     data-dismiss="modal"
                      name="confirm"
                      id="Recepconfirm2">Confirm</button>
                   <button type="button" class="form-check-clear-button"
@@ -823,6 +813,7 @@
                  alert('Enter a unique Doctor ID');
                }
                else if(data=='success'){
+                  $('#confirm-modal').modal('hide');
                  alert('Success');
                  location.reload();
                }
@@ -896,6 +887,7 @@
                  alert('Please enter the details correctly');
                }
                else if(data=='success'){
+               $('#confirm-modal1').modal('hide');
                  alert('Success');
                  location.reload();
                }
@@ -963,6 +955,7 @@
                url: "/deleteDoctor",
                data: {"Fname":Fname,"Lname":Lname,"id":id,"gender":gender,"exp":exp,"edu":edu,"spec":spec,"flag":'delete'},
                success:function(data){
+               $('#confirm-modal2').modal('hide');
                if(data=='success'){
                    alert('Success');
                  location.reload();
@@ -1029,6 +1022,7 @@
                  alert('Enter a unique Receptionist ID');
                }
                else if(data=='success'){
+                 $('#Recep-confirm-modal').modal('hide');
                  alert('Success');
                  location.reload();
                }
@@ -1078,7 +1072,8 @@
                url: "/deleteReceptionist",
                data: {"Fname":RecepFname,"Lname":RecepLname,"id":Recepid,"flag":'delete'},
                success:function(data){
-               if(data=='success'){
+               if(data=='success'){                  
+                  $('#Recep-confirm-modal2').modal('hide');
                    alert('Success');
                  location.reload();
                  }
@@ -1116,10 +1111,10 @@
                  alert('Entered password is incorrect');
                }
                else if(data=='failed1'){
-                 alert('Passwords doesn\'t match');
+                 alert('Passwords don\'t match');
                }
                else if(data=='failed2'){
-                 alert('Password minimum length should be 6');
+                 alert('Passwords minimum length should be 6');
                }
                else if(data=='success'){
                  alert('Success');
