@@ -116,6 +116,39 @@
          </section>
          <!-- end slider section -->
       </div>
+      <div class="modal fade" id="confirm-modal" data-backdrop="static" data-bs-keyboard="false">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal_title">
+                     Confirm cancellation of Appointment?
+                  </h5>
+                  <button type="button" 
+                     class="close" 
+                     data-dismiss="modal" 
+                     aria-label="Close"
+                     id="modalClose">
+                  <span aria-hidden="true">
+                  x</span>
+                  </button>
+               </div>
+               <div class="modal-body-confirm modal-body">
+                  <div id="confirm-modal-body-id-wrapper">
+                  </div>
+                  <br>
+                  <button type="button" class="btn form-check-for-button"
+                     name="confirm"
+                     id="confirm">Confirm</button>
+                  <button type="button" class="form-check-clear-button"
+                     data-toggle="modal" 
+                     data-dismiss="modal"
+                     name="cancel"
+                     id="cancel">Cancel</button>
+               </div>
+               <br>                   
+            </div>
+         </div>
+      </div>
       <div class="modal fade"
          id="book-modal" data-backdrop="static" data-bs-keyboard="false">
          <div class="modal-dialog modal-dialog-centered">
@@ -224,6 +257,7 @@
                         <th>Patient Name</th>
                         <th>Appointment Date</th>
                         <th>Appointment Time</th>
+                        <th></th>
                      </tr>
                      {%for a_tuple in result%}
                      <tr>
@@ -233,7 +267,8 @@
                         <td>{{a_tuple[6]}}</td>
                         <td>{{a_tuple[4]}} {{a_tuple[5]}}</td>
                         <td>{{a_tuple[7]}}</td>
-                        <td>{{a_tuple[8]}}</td>
+                        <td>{{a_tuple[8]}}</td>                        
+                        <td style="text-align: center;"><button type="button" class="btn btn-outline-danger" name="cancel_aptmnt" data-toggle="modal"  data-target="#confirm-modal" id="{{a_tuple[0]}}" onclick="cancel_aptmnt('{{a_tuple[0]}}','{{a_tuple[1]}}','{{a_tuple[2]}} {{a_tuple[3]}}','{{a_tuple[6]}}','{{a_tuple[7]}}','{{a_tuple[8]}}')">Cancel</button></td>
                      </tr>
                      {% endfor %}
                   </table>
@@ -367,7 +402,7 @@
         $.ajax({
           type: "POST",
           url: "/updateCredentials",
-          data: {"p_CurrentPassword":p_CurrentPassword,"p_Newpassword":p_Newpassword,"p_Confirmpassword":p_Confirmpassword},
+          data: {"CurrentPassword":p_CurrentPassword,"Newpassword":p_Newpassword,"Confirmpassword":p_Confirmpassword},
           success:function(data){
             if(data=='failed'){
               alert('Entered password is incorrect');
@@ -393,7 +428,7 @@
           
         $('#update_atPatient').prop('disabled', true);
         }
-      }
+      };
       if($('#datePicker').val()==''){
         $('#update_atPatient').prop('disabled', true);
       }
@@ -410,6 +445,52 @@
       if($('#Currentpassword').val()==''){
         $('#update_atPatient_credentials').prop('disabled', true);
       }
+      var del_aptmnt_id,del_docID,del_docName,del_spec,del_date,del_time;
+      function cancel_aptmnt(delaptmnt_id,deldocID,deldocName,delspec,deldate,deltime){
+         del_aptmnt_id=delaptmnt_id;
+         del_docID=deldocID;
+         del_docName=deldocName;
+         del_spec=delspec;
+         del_date=deldate;
+         del_time=deltime;
+         var wrapper = document.getElementById("confirm-modal-body-id-wrapper");
+           var myHTML = '';
+           myHTML += '<br><p><b>Appointment ID</b>:</p>';
+           myHTML += '<p>'+del_aptmnt_id+'</p>';
+
+           myHTML += '<br><p><b>Doctor Name</b>:</p>';
+           myHTML += '<p>'+del_docName+'</p>';
+           
+           myHTML += '<br><p><b>Doctor Specialization</b>:</p>';    
+           myHTML += '<p>'+del_spec+'</p>';
+         
+           myHTML += '<br><p><b>Appointment Date</b>:</p>';    
+           myHTML += '<p>'+del_date+'</p>';
+         
+           myHTML += '<br><p><b>Appointment time</b>:</p>';    
+           myHTML += '<p>'+del_time+'</p>';
+
+           wrapper.innerHTML=myHTML
+      };
+
+      $("#confirm").click(function(){
+        $.ajax({
+          type: "POST",
+          url: "/aptmntDelete",
+          data: {"aptmnt_id":del_aptmnt_id,"docID":del_docID,"slot":del_time,"date":del_date},
+          success:function(data){
+             if(data=='success'){          
+              $('#confirm-modal').modal('hide');
+              alert('Your appointment was cancelled successfully');
+              window.location.href = 'home';  
+            }
+            else{
+               alert('Your appointment was cancellation failed');
+            }
+          }
+          });
+       });
+
       
        
    </script>
