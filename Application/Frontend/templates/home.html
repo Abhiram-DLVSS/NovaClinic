@@ -257,7 +257,7 @@
                         <th>Patient Name</th>
                         <th>Appointment Date</th>
                         <th>Appointment Time</th>
-                        <th>Cancel Appointment</th>
+                        <th></th>
                      </tr>
                      {%for a_tuple in result%}
                      <tr>
@@ -481,11 +481,11 @@
           success:function(data){
              if(data=='success'){          
               $('#confirm-modal').modal('hide');
-              alert('Appointment cancellation - Success');
+              alert('Your appointment was cancelled successfully');
               window.location.href = 'home';  
             }
             else{
-               alert('Appointment cancellation - Failed');
+               alert('Your appointment was cancellation failed');
             }
           }
           });

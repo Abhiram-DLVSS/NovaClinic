@@ -338,11 +338,11 @@
           success:function(data){
              if(data=='success'){          
               $('#confirm-modal').modal('hide');
-              alert('Appointment cancellation - Success');
+              alert('Your appointment was cancelled successfully');
               window.location.href = 'home';  
             }
             else{
-               alert('Appointment cancellation - Failed');
+               alert('Your appointment was cancellation failed');
             }
           }
           });

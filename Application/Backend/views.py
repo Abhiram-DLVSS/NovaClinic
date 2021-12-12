@@ -2,11 +2,12 @@ from datetime import timedelta,date
 from Application.DBHandler import User,Receptionist,Admin,Appointment
 from flask import Blueprint,render_template,request,flash,jsonify,redirect,session
 
-
 views = Blueprint('views',__name__)
-views.permanent_session_lifetime=timedelta(days=14)
-
+views.permanent_session_lifetime=timedelta(days=7)
 todaysdate=date.today()
+
+
+#Welcome Page
 @views.route('/')
 def welcome():
     if "phno" in session:
@@ -18,18 +19,16 @@ def welcome():
     
     return render_template("welcome.html")
 
-#USER
-
-    #SIGN IN
+#Users Login Page
 @views.route('/login',methods=['GET','POST'])
 def login():
     if "phno" in session:
-        phno=session["phno"]
         return redirect('/home')
     elif "recep_id" in session:
         return redirect('/receptionist')
     elif "admin_id" in session:
         return redirect('/admin')
+
     if request.method == 'POST':
         session.permanent=True
         phno = request.form.get('phno')
@@ -44,16 +43,12 @@ def login():
             session["phno"]=phno
             return redirect('/home')
     else:
-        if "phno" in session:
-            phno=session["phno"]
-            return redirect('/home')
-        else:
-            return render_template("login.html")
+        return render_template("login.html")
 
+#Sign Up Page
 @views.route('/signup',methods=['GET','POST'])
 def user_info():
     if "phno" in session:
-        phno=session["phno"]
         return redirect('/home')
     elif "recep_id" in session:
         return redirect('/receptionist')
@@ -85,10 +80,8 @@ def user_info():
             return redirect('/home')
 
     return render_template("signup.html")
-    #SIGN IN END
 
-    #HOME
-    
+ #Returns the Name of the User   
 @views.route('/userName', methods=['POST', 'GET'])
 def userName():    
     phno=session["phno"]
@@ -98,6 +91,7 @@ def userName():
         "LName":result[0][1]}
     return data
 
+#Home Page
 @views.route('/home',methods=['GET','POST'])
 def home():
     if "admin_id" in session:
@@ -116,6 +110,7 @@ def home():
         return redirect('/login')
     return render_template("home.html",result=result,phno=phno,Fname=Fname,Lname=Lname)
 
+#Updates Users Information
 @views.route('/updateInfo',methods=['GET','POST'])
 def updateInfo():
     if request.method=="POST":
@@ -133,12 +128,8 @@ def updateInfo():
                 return 'success1'
             return 'success'        
     return 'failed'
-
-
     
-    #HOME END
-
-    #APPPOINTMENT
+#Appointment Page
 @views.route('/aptmnt',methods=['GET','POST'])
 def aptmnt():
     if "admin_id" in session:
@@ -177,10 +168,10 @@ def aptmnt():
         result=Appointment.aptmnt_doctors(0,identifier,speciality,gender,high)
         return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno,gender=gender)
     else:
-        result=Appointment.showDoctors(0)        
+        result=Appointment.aptmnt_doctors(0,0,None,None,None)      
         return render_template("aptmnt.html",result=result,phno=phno)
-        
 
+#Returns the availability of slots information on a Particular Day
 @views.route('/getslotsinfo', methods=['POST', 'GET'])
 def getslotsinfo():
     if request.method == "POST":
@@ -223,6 +214,7 @@ def getslotsinfo():
                 }
         return data
 
+#Adding the Appointment and updating the Slots data in the Database
 @views.route('/confirmaptmnt', methods=['POST', 'GET'])
 def confirmaptmnt():
     if "phno" in session:
@@ -255,6 +247,7 @@ def confirmaptmnt():
             Appointment.insertAptmnt(0,phno,docID,date,slot)
             return "Success"
 
+#Deletes the Appointment
 @views.route('/aptmntDelete', methods=['POST', 'GET'])
 def aptmntDelete():
     if request.method == "POST":
@@ -267,15 +260,11 @@ def aptmntDelete():
         newtimestring=timestring[0][0][0:slot_dict[slot]]+"0"+timestring[0][0][slot_dict[slot]+1:24]
         Appointment.delete_aptmnt(0,aptmnt_id,docID,date,newtimestring)
         return "success"
-    #APPPOINTMENT END
-#USER 
 
-# RECEPTIONIST
-
+#Receptionist Login
 @views.route('/rlogin',methods=['GET','POST'])
 def rlogin():
     if "recep_id" in session:
-        recep_id=session["recep_id"]
         return redirect('/receptionist')
     elif "phno" in session:
         return redirect('/home')
@@ -285,7 +274,6 @@ def rlogin():
         session.permanent=True
         recep_id = request.form.get('recep_id')
         password = request.form.get('password')
-        
         val=Receptionist.verify(0,recep_id,password)
         if val==-1:
             flash('Invalid Credentials. Please try again.', category='error')
@@ -298,6 +286,7 @@ def rlogin():
             return redirect('/receptionist')
     return render_template("rlogin.html")
 
+#Receptionist Homepage
 @views.route('/receptionist',methods=['GET','POST'])
 def receptionist():
     
@@ -342,7 +331,7 @@ def receptionist():
     result=Receptionist.show_aptmnts(0,None,None,0)
     return render_template("receptionist.html",date=None,speciality=None,result=result,Fname=Fname,Lname=Lname)
 
-
+#Walk In Appointments
 @views.route('/raptmnt',methods=['GET','POST'])
 def raptmnt():
     if "admin_id" in session:
@@ -350,14 +339,14 @@ def raptmnt():
     elif "phno" in session:
         return redirect('/home')
     elif "recep_id" in session:
-        recep_id=session["recep_id"]        
+        recep_id=session["recep_id"]    
     else:
         return redirect('/login')
     if request.method=="POST":
         high = request.form.get('high')
         speciality = request.form.get('speciality')
         gender = request.form.get('gender')
-        if request.form.get('clear')=='clear':#if clear button is pressed
+        if request.form.get('clear')=='clear':#If the clear button is pressed
             high=None
             speciality=None
             gender=None
@@ -381,16 +370,10 @@ def raptmnt():
         result=Appointment.aptmnt_doctors(0,identifier,speciality,gender,high)
         return render_template("raptmnt.html",result=result,high=high,speciality=speciality,gender=gender)
     else:
-        result=Appointment.showDoctors(0)        
+        result=Appointment.aptmnt_doctors(0,0,None,None,None)        
         return render_template("raptmnt.html",result=result)
 
-
-
-
-#RECEPTIONIST END
-
-
-#ADMIN
+#Admin Login Page
 @views.route('/alogin',methods=['GET','POST'])
 def alogin():
     if "admin_id" in session:
@@ -416,12 +399,13 @@ def alogin():
             return redirect('/admin')
     return render_template("alogin.html")
 
+#Admin Homepage
 @views.route('/admin',methods=['GET','POST'])
 def admin():
     
     if "phno" in session:
         return redirect('/home')
-    if "recep_id" in session:
+    elif "recep_id" in session:
         return redirect('/receptionist')
     
     docids=Admin.showDoctors(0)
@@ -438,10 +422,9 @@ def admin():
         
     return render_template("admin.html",docids=docids,recepids=recepids,adminids=adminids,Fname=Fname,Lname=Lname)
 
+#To Add Doctor
 @views.route('/addDoctor', methods=['POST', 'GET'])
 def addDoctor():
-    if "admin_id" in session:
-        admin_id=session["admin_id"]
     if request.method == "POST":
             
         Lname = request.form.get('Lname')
@@ -456,9 +439,10 @@ def addDoctor():
         elif Admin.check_new_docid(0,id)!=1:
             return 'failed1'
         else:
-            Admin.addDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
+            Admin.addDoc(0,id,Fname,Lname,spec,exp,gender,edu)
             return 'success'
 
+#To Update Doctor information
 @views.route('/updateDoctor', methods=['POST', 'GET'])
 def updateDoctor():
     if "admin_id" in session:
@@ -483,6 +467,7 @@ def updateDoctor():
                 Admin.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu,admin_id)
                 return 'success'
 
+#To delete Doctor
 @views.route('/deleteDoctor', methods=['POST', 'GET'])
 def deleteDoctor():
     if request.method == "POST":
@@ -496,12 +481,10 @@ def deleteDoctor():
             Admin.deleteDoc(0,id)
             return 'success'
 
+#To add Receptionist
 @views.route('/addReceptionist', methods=['POST', 'GET'])
 def addReceptionist():
-    if "admin_id" in session:
-        admin_id=session["admin_id"]
     if request.method == "POST":
-            
         Lname = request.form.get('Lname')
         Fname = request.form.get('Fname')
         id = request.form.get('id')
@@ -511,9 +494,10 @@ def addReceptionist():
         elif Admin.check_new_recep_id(0,id)!=1:
             return 'failed1'
         else:
-            Admin.addReceptionist(0,id,Fname,Lname,admin_id)
+            Admin.addReceptionist(0,id,Fname,Lname)
             return 'success'
 
+#To delete Receptionist
 @views.route('/deleteReceptionist', methods=['POST', 'GET'])
 def deleteReceptionist():
     if request.method == "POST":
@@ -527,10 +511,7 @@ def deleteReceptionist():
             Admin.deleteReceptionist(0,id)
             return 'success'
 
-
-
-#ADMIN END
-
+#To Update the Credentials
 @views.route('/updateCredentials',methods=['GET','POST'])
 def updateCredentials():
     if request.method=="POST":
@@ -560,7 +541,8 @@ def updateCredentials():
                     return 'failed'
                 else:
                     return 'success'
-                
+
+#Logout 
 @views.route('/logout')
 def logout():
     if "phno" in session:
