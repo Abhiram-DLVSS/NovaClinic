@@ -52,7 +52,7 @@ class User:
 	def add_user(self,FName,LName,dob,gender,phno,password):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("insert into users values('{}','{}','{}','{}','{}','{}');").format(phno,password,FName,LName,dob,gender)
+		query = ("insert into users values('{}',Sha2('{}',224),'{}','{}','{}','{}');").format(phno,password,FName,LName,dob,gender)
 		cursor.execute(query)
 		cursor.execute("commit")
 	
@@ -61,9 +61,7 @@ class User:
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		query="UPDATE users SET FName='{}',LName='{}',phno='{}' where phno='{}';".format(FName,LName,NewPhno,OldPhno)
-		cursor.execute(query)
-		query="UPDATE users SET phno='{}' where phno='{}';".format(NewPhno,OldPhno)
-		cursor.execute(query)		
+		cursor.execute(query)	
 		query="UPDATE aptmnt SET patient_id='{}' where patient_id='{}';".format(NewPhno,OldPhno)
 		cursor.execute(query)
 		cursor.execute("commit")
@@ -166,7 +164,7 @@ class Appointment:
 		if chk=="1":
 			return -1
 		else:
-			query="update slots set time={} where doctor_id='{}' and date='{}';".format(time,docID,date)
+			query="update slots set time='{}' where doctor_id='{}' and date='{}';".format(time,docID,date)
 			cursor.execute(query)
 			cursor.execute("commit")
 			return 0
