@@ -19,11 +19,11 @@ class User:
 		pass
 
 	#Verify the given User Credentials
-	def verify(self,phno,password):
+	def verify(self,Phone_Number,Password):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select phno from users where phno='{}' and password=Sha2('{}',224);").format(phno,password)
-		if(phno==None and password==None):
+		query = ("select Phone_Number from users where Phone_Number='{}' and Password=Sha2('{}',224);").format(Phone_Number,Password)
+		if(Phone_Number==None and Password==None):
 			return -1
 		cursor.execute(query)
 		vari=cursor.fetchall()
@@ -34,11 +34,11 @@ class User:
 			return 0
 
 	#Check whether the sign up Phone number is new
-	def check_new_phno(self,phno):
+	def check_new_phno(self,Phone_Number):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select phno from users where phno='{}';").format(phno)
-		if(phno==None):
+		query = ("select Phone_Number from users where Phone_Number='{}';").format(Phone_Number)
+		if(Phone_Number==None):
 			return -1
 		cursor.execute(query)
 		vari=cursor.fetchall()
@@ -49,51 +49,51 @@ class User:
 			return 0
 	
 	#Register User
-	def add_user(self,FName,LName,dob,gender,phno,password):
+	def add_user(self,First_Name,Last_Name,Date_Of_Birth,Gender,Phone_Number,Password):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("insert into users values('{}',Sha2('{}',224),'{}','{}','{}','{}');").format(phno,password,FName,LName,dob,gender)
+		query = ("insert into users values('{}',Sha2('{}',224),'{}','{}','{}','{}');").format(Phone_Number,Password,First_Name,Last_Name,Date_Of_Birth,Gender)
 		cursor.execute(query)
 		cursor.execute("commit")
 	
 	#Update the User Information
-	def update_info(self,FName,LName,NewPhno,OldPhno):
+	def update_info(self,First_Name,Last_Name,NewPhno,OldPhno):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="UPDATE users SET FName='{}',LName='{}',phno='{}' where phno='{}';".format(FName,LName,NewPhno,OldPhno)
+		query="UPDATE users SET First_Name='{}',Last_Name='{}',Phone_Number='{}' where Phone_Number='{}';".format(First_Name,Last_Name,NewPhno,OldPhno)
 		cursor.execute(query)	
-		query="UPDATE aptmnt SET patient_id='{}' where patient_id='{}';".format(NewPhno,OldPhno)
+		query="UPDATE aptmnt SET Patient_ID='{}' where Patient_ID='{}';".format(NewPhno,OldPhno)
 		cursor.execute(query)
 		cursor.execute("commit")
 	
 	#Update the credentials of the User
-	def update_credentials(self,p_CurrentPassword,p_Newpassword,phno):
+	def update_credentials(self,p_CurrentPassword,p_Newpassword,Phone_Number):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()		
-		query="select phno from users where password=Sha2('{}',224) and phno='{}'".format(p_CurrentPassword,phno)
+		query="select Phone_Number from users where Password=Sha2('{}',224) and Phone_Number='{}'".format(p_CurrentPassword,Phone_Number)
 		cursor.execute(query)		
 		vari=cursor.fetchall()
 		if(len(vari)==0):
 			return -1
-		query="UPDATE users SET password=Sha2('{}',224) where phno='{}' and password=Sha2('{}',224);".format(p_Newpassword,phno,p_CurrentPassword)
+		query="UPDATE users SET Password=Sha2('{}',224) where Phone_Number='{}' and Password=Sha2('{}',224);".format(p_Newpassword,Phone_Number,p_CurrentPassword)
 		cursor.execute(query)
 		cursor.execute("commit")
 		return 0
 	
 	#Show Upcoming Appointments for the user
-	def show_aptmnt(self,patient_id):
+	def show_aptmnt(self,Patient_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()	
-		query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,users.FName,users.LName,doctors.doctor_specialization,aptmnt.date,aptmnt.slot from aptmnt,doctors,users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.patient_id='{}' order by aptmnt.date,aptmnt.slot;".format(patient_id)
+		query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,users.First_Name,users.Last_Name,doctors.Specialization,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Patient_ID='{}' order by aptmnt.Date,aptmnt.Slot;".format(Patient_ID)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
 
 	#Name of the User
-	def getName(self,patient_id):
+	def getName(self,Patient_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()	
-		query="select FName, LName from users where phno='{}';".format(patient_id)
+		query="select First_Name, Last_Name from users where Phone_Number='{}';".format(Patient_ID)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows	
@@ -104,106 +104,106 @@ class Appointment:
 		pass
 	
 	#Show the list of Doctors with their information
-	def aptmnt_doctors(self,identifier,spec,gender,order):
+	def aptmnt_doctors(self,identifier,spec,Gender,order):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		if identifier==0:
 			query = "select * from doctors;"
 		elif identifier==1:
-			query = "select * from doctors order by doctor_experience {};".format(order)
+			query = "select * from doctors order by Experience {};".format(order)
 		elif identifier==2:			
-			query = "select * from doctors where doctor_specialization='{}';".format(spec)
+			query = "select * from doctors where Specialization='{}';".format(spec)
 		elif identifier==3:
-			query = "select * from doctors where gender='{}';".format(gender)
+			query = "select * from doctors where Gender='{}';".format(Gender)
 		elif identifier==4:
-			query = "select * from doctors where doctor_specialization='{}' order by doctor_experience {};".format(spec,order)
+			query = "select * from doctors where Specialization='{}' order by Experience {};".format(spec,order)
 		elif identifier==5:
-			query = "select * from doctors where gender='{}' and doctor_specialization='{}';".format(gender,spec)
+			query = "select * from doctors where Gender='{}' and Specialization='{}';".format(Gender,spec)
 		elif identifier==6:
-			query = "select * from doctors where gender='{}' order by doctor_experience {};".format(gender,order)
+			query = "select * from doctors where Gender='{}' order by Experience {};".format(Gender,order)
 		elif identifier==7:
-			query = "select * from doctors where gender='{}' and doctor_specialization='{}' order by doctor_experience {};".format(gender,spec,order)
+			query = "select * from doctors where Gender='{}' and Specialization='{}' order by Experience {};".format(Gender,spec,order)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
 
-	#Data of a Doctors slots on a choosen date
-	def getSlot(self,docID,date):		
+	#Data of a Doctors slots on a choosen Date
+	def getSlot(self,docID,Date):		
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="select date,doctor_id,time from slots where doctor_id='{}' and date='{}';".format(docID,date)
+		query="select Date,Doctor_ID,Time from slots where Doctor_ID='{}' and Date='{}';".format(docID,Date)
 		cursor.execute(query)
 		row=cursor.fetchall()
 		return row
 
 	#Time String in Slots Table - Availability
-	def getSlottimestring(self,docID,date):		
+	def getSlottimestring(self,docID,Date):		
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="select time from slots where doctor_id='{}' and date='{}';".format(docID,date)
+		query="select Time from slots where Doctor_ID='{}' and Date='{}';".format(docID,Date)
 		cursor.execute(query)
 		row=cursor.fetchall()
 		return row
 
-	#If the slot isn't present, add the slot
-	def addSlot(self,docID,date):
+	#If the Slot isn't present, add the Slot
+	def addSlot(self,docID,Date):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="insert into slots values('{}','{}','000000000000000000000000');".format(date,docID)
+		query="insert into slots values('{}','{}','000000000000000000000000');".format(Date,docID)
 		cursor.execute(query)
 		cursor.execute("commit")
 		
-	#Upon confirming an Appointment update the slot
-	def updateSlot(self,time,index,docID,date):
+	#Upon confirming an Appointment update the Slot
+	def updateSlot(self,Time,index,docID,Date):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="select time from slots where doctor_id='{}' and date='{}';".format(docID,date)
+		query="select Time from slots where Doctor_ID='{}' and Date='{}';".format(docID,Date)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		chk=rows[0][0][index]
 		if chk=="1":
 			return -1
 		else:
-			query="update slots set time='{}' where doctor_id='{}' and date='{}';".format(time,docID,date)
+			query="update slots set Time='{}' where Doctor_ID='{}' and Date='{}';".format(Time,docID,Date)
 			cursor.execute(query)
 			cursor.execute("commit")
 			return 0
 	
 	#Confirming the Appointment
-	def insertAptmnt(self,phno,docID,date,slot):
+	def insertAptmnt(self,Phone_Number,docID,Date,Slot):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="insert into aptmnt(patient_id,doctor_id,date,slot) values('{}','{}','{}','{}');".format(phno,docID,date,slot)
+		query="insert into aptmnt(Patient_ID,Doctor_ID,Date,Slot) values('{}','{}','{}','{}');".format(Phone_Number,docID,Date,Slot)
 		cursor.execute(query)
 		cursor.execute("commit")
 	
 	#Walk In Appointment Users(Patients)
-	def addTempUser(self,p_Fname,p_Lname,date,gender,phno,slot):
+	def addTempUser(self,p_Fname,p_Lname,Date,Gender,Phone_Number,Slot):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="insert into temp_users(FName,LName,dob,gender,phno,slot,date) values('{}','{}','{}','{}','{}','{}','{}');".format(p_Fname,p_Lname,date,gender,phno,slot,date)
+		query="insert into temp_users(First_Name,Last_Name,Date_Of_Birth,Gender,Phone_Number,Slot,Date) values('{}','{}','{}','{}','{}','{}','{}');".format(p_Fname,p_Lname,Date,Gender,Phone_Number,Slot,Date)
 		cursor.execute(query)
 		cursor.execute("commit")	
 	
 	#Delete all old Appointments
-	def delete_old_aptmnt(self,date):
+	def delete_old_aptmnt(self,Date):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="delete from aptmnt where date<'{}';".format(date)
+		query="delete from aptmnt where Date<'{}';".format(Date)
 		cursor.execute(query)
-		query="delete from slots where date<'{}';".format(date)
+		query="delete from slots where Date<'{}';".format(Date)
 		cursor.execute(query)
-		query="delete from temp_users where date<'{}';".format(date)
+		query="delete from temp_users where Date<'{}';".format(Date)
 		cursor.execute(query)
 		cursor.execute("commit")
 	
 	#Cancel Appointment
-	def delete_aptmnt(self,aptmnt_id,docID,date,time):
+	def delete_aptmnt(self,Aptmnt_ID,docID,Date,Time):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="delete from aptmnt where aptmnt_id='{}';".format(aptmnt_id)
+		query="delete from aptmnt where Aptmnt_ID='{}';".format(Aptmnt_ID)
 		cursor.execute(query)
-		query="update slots set time='{}' where doctor_id='{}' and date='{}';".format(time,docID,date)
+		query="update slots set Time='{}' where Doctor_ID='{}' and Date='{}';".format(Time,docID,Date)
 		cursor.execute(query)
 		cursor.execute("commit")
 
@@ -213,11 +213,11 @@ class Receptionist:
 		pass
 
 	#Verify the given Receptionist Credentials
-	def verify(self,recep_id,password):
+	def verify(self,Recep_ID,Password):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select * from receptionists where recep_id='{}' and password=Sha2('{}',224);").format(recep_id,password)
-		if(recep_id=='' or password==''):
+		query = ("select * from receptionists where Recep_ID='{}' and Password=Sha2('{}',224);").format(Recep_ID,Password)
+		if(Recep_ID=='' or Password==''):
 			return -1
 		cursor.execute(query)
 		vari=cursor.fetchall()		
@@ -228,42 +228,42 @@ class Receptionist:
 			return 0
 	
 	#Name of the Receptionist
-	def getName(self,recep_id):
+	def getName(self,Recep_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()	
-		query="select FName, LName from receptionists where recep_id='{}';".format(recep_id)
+		query="select First_Name, Last_Name from receptionists where Recep_ID='{}';".format(Recep_ID)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
 	
 	#Show Upcoming Appointments for the Receptionist
-	def show_aptmnts(self,date,speciality,identifier):
+	def show_aptmnts(self,Date,speciality,identifier):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		if identifier==0:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.doctor_specialization,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno order by aptmnt.date,aptmnt.slot"
+			query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users union select First_Name,Last_Name,Phone_Number from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number order by aptmnt.Date,aptmnt.Slot"
 		elif identifier==1:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.doctor_specialization,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and doctors.doctor_specialization='{}' order by aptmnt.date,aptmnt.slot;".format(speciality)
+			query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users union select First_Name,Last_Name,Phone_Number from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and doctors.Specialization='{}' order by aptmnt.Date,aptmnt.Slot;".format(speciality)
 		elif identifier==2:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.doctor_specialization,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' order by aptmnt.date,aptmnt.slot;".format(date)
+			query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users union select First_Name,Last_Name,Phone_Number from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date='{}' order by aptmnt.Date,aptmnt.Slot;".format(Date)
 		elif identifier==3:
-			query="select aptmnt.aptmnt_id,aptmnt.doctor_id,doctors.FName,doctors.LName,doctors.doctor_specialization,users.FName,users.LName,aptmnt.patient_id,aptmnt.date,aptmnt.slot from aptmnt,doctors,(select FName,LName,phno from users union select FName,LName,phno from temp_users) as users where aptmnt.doctor_id=doctors.doctor_id and aptmnt.patient_id=users.phno and aptmnt.date='{}' and doctors.doctor_specialization='{}' order by aptmnt.date,aptmnt.slot;".format(date,speciality)
+			query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users union select First_Name,Last_Name,Phone_Number from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date='{}' and doctors.Specialization='{}' order by aptmnt.Date,aptmnt.Slot;".format(Date,speciality)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
 	
 	#Update the credentials of the Receptionist
-	def update_credentials(self,CurrentPassword,Newpassword,recep_id):
+	def update_credentials(self,CurrentPassword,Newpassword,Recep_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()			
 		
-		query="select * from receptionists where password=Sha2('{}',224) and recep_id='{}'".format(CurrentPassword,recep_id)
+		query="select * from receptionists where Password=Sha2('{}',224) and Recep_ID='{}'".format(CurrentPassword,Recep_ID)
 		cursor.execute(query)		
 		vari=cursor.fetchall()
-		#If Entered password is incorrect
+		#If Entered Password is incorrect
 		if(len(vari)==0):
 			return -1
-		query="UPDATE receptionists SET password=Sha2('{}',224) where recep_id='{}' and password=Sha2('{}',224);".format(Newpassword,recep_id,CurrentPassword)
+		query="UPDATE receptionists SET Password=Sha2('{}',224) where Recep_ID='{}' and Password=Sha2('{}',224);".format(Newpassword,Recep_ID,CurrentPassword)
 		cursor.execute(query)
 		cursor.execute("commit")
 		return 0
@@ -274,11 +274,11 @@ class Admin:
 		pass
 
 	#Verify the given Admin Credentials
-	def verify(self,admin_id,password):
+	def verify(self,Admin_ID,Password):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select * from admin where admin_id='{}' and password=Sha2('{}',224);").format(admin_id,password)
-		if(admin_id=='' or password==''):
+		query = ("select * from admin where Admin_ID='{}' and Password=Sha2('{}',224);").format(Admin_ID,Password)
+		if(Admin_ID=='' or Password==''):
 			return -1
 		cursor.execute(query)
 		vari=cursor.fetchall()
@@ -288,20 +288,20 @@ class Admin:
 			return 0
 
 	#Name of the Admin
-	def getName(self,admin_id):
+	def getName(self,Admin_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()	
-		query="select FName, LName from admin where admin_id='{}';".format(admin_id)
+		query="select First_Name, Last_Name from admin where Admin_ID='{}';".format(Admin_ID)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
 	
 	#Verify whether the given Doctor ID is unique or not
-	def check_new_docid(self,doctor_id):
+	def check_new_docid(self,Doctor_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = "select * from doctors where doctor_id='{}';".format(doctor_id)
-		if(doctor_id==None):
+		query = "select * from doctors where Doctor_ID='{}';".format(Doctor_ID)
+		if(Doctor_ID==None):
 			return -1
 		cursor.execute(query)
 		vari=cursor.fetchall()
@@ -312,11 +312,11 @@ class Admin:
 			return 0
 	
 	#Verify whether the given Receptionist ID is unique or not
-	def check_new_recep_id(self,recep_id):
+	def check_new_recep_id(self,Recep_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = "select * from receptionists where recep_id='{}';".format(recep_id)
-		if(recep_id==None):
+		query = "select * from receptionists where Recep_ID='{}';".format(Recep_ID)
+		if(Recep_ID==None):
 			return -1
 		cursor.execute(query)
 		vari=cursor.fetchall()
@@ -327,18 +327,18 @@ class Admin:
 			return 0
 	
 	#Add a New Doctor
-	def addDoc(self,doctor_id,Fname,Lname,spec,exp,gender,edu):
+	def addDoc(self,Doctor_ID,Fname,Lname,spec,exp,Gender,edu):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("insert into doctors values('{}','{}','{}','{}','{}','{}','{}','{}');").format(doctor_id,Fname,Lname,spec,exp,gender,edu,"Doctor"+gender)
+		query = ("insert into doctors values('{}','{}','{}','{}','{}','{}','{}','{}');").format(Doctor_ID,Fname,Lname,spec,exp,Gender,edu,"Doctor"+Gender)
 		cursor.execute(query)
 		cursor.execute("commit")
 
 	#Update the information of a Doctor
-	def updateDoc(self,doctor_id,Fname,Lname,spec,exp,gender,edu):
+	def updateDoc(self,Doctor_ID,Fname,Lname,spec,exp,Gender,edu):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("update doctors set FName='{}',LName='{}',doctor_specialization='{}',doctor_experience='{}',gender='{}',doctor_education='{}' where doctor_id='{}';").format(Fname,Lname,spec,exp,gender,edu,doctor_id)
+		query = ("update doctors set First_Name='{}',Last_Name='{}',Specialization='{}',Experience='{}',Gender='{}',Education='{}' where Doctor_ID='{}';").format(Fname,Lname,spec,exp,Gender,edu,Doctor_ID)
 		cursor.execute(query)
 		cursor.execute("commit")
 
@@ -346,37 +346,37 @@ class Admin:
 	def deleteDoc(self,doctorID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = "delete from doctors where doctor_id='{}';".format(doctorID)
+		query = "delete from doctors where Doctor_ID='{}';".format(doctorID)
 		cursor.execute(query)
 		cursor.execute("commit")
 
 	#Add a new Receptionist
-	def addReceptionist(self,recep_id,Fname,Lname):
+	def addReceptionist(self,Recep_ID,Fname,Lname):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("insert into receptionists(recep_id,FName,LName) values('{}','{}','{}');").format(recep_id,Fname,Lname)
+		query = ("insert into receptionists(Recep_ID,First_Name,Last_Name) values('{}','{}','{}');").format(Recep_ID,Fname,Lname)
 		cursor.execute(query)
 		cursor.execute("commit")
 
 	#Delete a Receptionist
-	def deleteReceptionist(self,recep_id):
+	def deleteReceptionist(self,Recep_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = "delete from receptionists where recep_id='{}';".format(recep_id)
+		query = "delete from receptionists where Recep_ID='{}';".format(Recep_ID)
 		cursor.execute(query)
 		cursor.execute("commit")
 
 	#Update the credentials of the Admin
-	def update_credentials(self,CurrentPassword,Newpassword,admin_id):
+	def update_credentials(self,CurrentPassword,Newpassword,Admin_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="select * from admin where password=Sha2('{}',224) and admin_id='{}'".format(CurrentPassword,admin_id)
+		query="select * from admin where Password=Sha2('{}',224) and Admin_ID='{}'".format(CurrentPassword,Admin_ID)
 		cursor.execute(query)		
 		vari=cursor.fetchall()
-		#If entered password is incorrect
+		#If entered Password is incorrect
 		if(len(vari)==0):	
 			return -1
-		query="UPDATE admin SET password=Sha2('{}',224) where admin_id='{}' and password=Sha2('{}',224);".format(Newpassword,admin_id,CurrentPassword)
+		query="UPDATE admin SET Password=Sha2('{}',224) where Admin_ID='{}' and Password=Sha2('{}',224);".format(Newpassword,Admin_ID,CurrentPassword)
 		cursor.execute(query)
 		cursor.execute("commit")
 		return 0
@@ -385,16 +385,16 @@ class Admin:
 	def getDoctor(self,doctorID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = "select * from doctors where doctor_id='{}';".format(doctorID)
+		query = "select * from doctors where Doctor_ID='{}';".format(doctorID)
 		cursor.execute(query)
 		row=cursor.fetchall()
 		return row	
 
 	#Returns the Information about a Receptionist to autofill delete Receptionist modal
-	def getReceptionist(self,recep_id):
+	def getReceptionist(self,Recep_ID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = "select * from receptionists where recep_id='{}';".format(recep_id)
+		query = "select * from receptionists where Recep_ID='{}';".format(Recep_ID)
 		cursor.execute(query)
 		row=cursor.fetchall()
 		return row
@@ -403,7 +403,7 @@ class Admin:
 	def showReceptionists(self):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select recep_id,FName,LName from receptionists;")
+		query = ("select Recep_ID,First_Name,Last_Name from receptionists;")
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
@@ -412,7 +412,7 @@ class Admin:
 	def showAdmins(self):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select admin_id,FName,LName from admin;")
+		query = ("select Admin_ID,First_Name,Last_Name from admin;")
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
@@ -421,7 +421,7 @@ class Admin:
 	def showDoctors(self):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select doctor_id,FName,LName,doctor_specialization from doctors;")
+		query = ("select Doctor_ID,First_Name,Last_Name,Specialization from doctors;")
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
