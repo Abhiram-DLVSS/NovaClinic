@@ -1,11 +1,22 @@
--- login to myql
+-- Login to MySQL (mysql -u root -p)
 CREATE DATABASE nova;
-use nova;
+USE nova;
 
 -- Create Tables
+CREATE TABLE `doctors` (
+  `doctor_id` varchar(10) NOT NULL,
+  `FName` varchar(20) NOT NULL,
+  `LName` varchar(20) NOT NULL,
+  `doctor_specialization` varchar(20) NOT NULL,
+  `doctor_experience` int NOT NULL,
+  `gender` varchar(6) NOT NULL,
+  `doctor_education` varchar(40) NOT NULL,
+  `doctor_image` varchar(20) NOT NULL,
+  PRIMARY KEY (`doctor_id`)
+);
 
 CREATE TABLE `aptmnt` (
-  `aptmnt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `aptmnt_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` char(10) NOT NULL,
   `doctor_id` varchar(10) NOT NULL,
   `date` date NOT NULL,
@@ -13,19 +24,6 @@ CREATE TABLE `aptmnt` (
   PRIMARY KEY (`aptmnt_id`),
   KEY `doctor_id` (`doctor_id`),
   CONSTRAINT `aptmnt_ibfk_2` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`)
-);
-
-
-CREATE TABLE `doctors` (
-  `doctor_id` varchar(10) NOT NULL,
-  `FName` varchar(20) NOT NULL,
-  `LName` varchar(20) NOT NULL,
-  `doctor_specialization` varchar(20) NOT NULL,
-  `doctor_experience` int(11) NOT NULL,
-  `gender` varchar(6) NOT NULL,
-  `doctor_education` varchar(40) NOT NULL,
-  `doctor_image` varchar(20) NOT NULL,
-  PRIMARY KEY (`doctor_id`)
 );
 
 CREATE TABLE `receptionists` (
@@ -36,7 +34,6 @@ CREATE TABLE `receptionists` (
   PRIMARY KEY (`recep_id`)
 );
 
-
 CREATE TABLE `slots` (
   `date` char(10) NOT NULL,
   `doctor_id` varchar(10) NOT NULL,
@@ -45,7 +42,6 @@ CREATE TABLE `slots` (
   KEY `doctor_id` (`doctor_id`),
   CONSTRAINT `slots_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`)
 );
-
 
 CREATE TABLE `temp_users` (
   `FName` varchar(20) NOT NULL,
@@ -58,7 +54,6 @@ CREATE TABLE `temp_users` (
   PRIMARY KEY (`slot`,`date`,`phno`)
 );
 
-
 CREATE TABLE `users` (
   `phno` char(10) NOT NULL,
   `password` char(56) NOT NULL,
@@ -69,7 +64,6 @@ CREATE TABLE `users` (
   PRIMARY KEY (`phno`)
 );
 
-
 CREATE TABLE `admin` (
   `admin_id` varchar(10) NOT NULL,
   `password` char(56) NOT NULL,
@@ -78,23 +72,21 @@ CREATE TABLE `admin` (
   PRIMARY KEY (`admin_id`)
 );
 
-
-
 -- Add Doctors
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc001','Hemant','Madan','Cardiology',20,'Male','M.D.,D.M','DoctorMale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc002','Subhash','Chandra','Cardiology',35,'Male','M.D.,D.M','DoctorMale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc003','Anantha','Subramaniam','General Physician',30,'Male','MBBS, DNB','DoctorMale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc004','Rohith','Batra','Dermatology',20,'Male','MBBS, MD','DoctorMale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc005','T.S.','Kanaka','Neurology',34,'Female','MBBS, MCh','DoctorFemale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc006','Gagan','Sabharwal','Dentist',25,'Male','BDS, MDS','DoctorMale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc007','Mukul','Varma','Neurology',26,'Male','MBBS, MS','DoctorMale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc008','Indira','Hinduja','General Physician',27,'Female','MBBS','DoctorFemale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc009','Kalpesh','Thakur','Dermatology',35,'Male','MBBS, MD','DoctorMale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc010','Tarun','Giroti','Dentist',38,'Male','BDS, MDS','DoctorMale');
-INSERT INTO `` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc011','Padmavati','Iyer','General Physician',25,'Female','MBBS, DNB','DoctorFemale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc001','Hemant','Madan','Cardiology',20,'Male','M.D.,D.M','DoctorMale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc002','Subhash','Chandra','Cardiology',35,'Male','M.D.,D.M','DoctorMale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc003','Anantha','Subramaniam','General Physician',30,'Male','MBBS, DNB','DoctorMale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc004','Rohith','Batra','Dermatology',20,'Male','MBBS, MD','DoctorMale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc005','T.S.','Kanaka','Neurology',34,'Female','MBBS, MCh','DoctorFemale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc006','Gagan','Sabharwal','Dentist',25,'Male','BDS, MDS','DoctorMale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc007','Mukul','Varma','Neurology',26,'Male','MBBS, MS','DoctorMale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc008','Indira','Hinduja','General Physician',27,'Female','MBBS','DoctorFemale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc009','Kalpesh','Thakur','Dermatology',35,'Male','MBBS, MD','DoctorMale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc010','Tarun','Giroti','Dentist',38,'Male','BDS, MDS','DoctorMale');
+INSERT INTO `nova`.`doctors` (`doctor_id`,`FName`,`LName`,`doctor_specialization`,`doctor_experience`,`gender`,`doctor_education`,`doctor_image`) VALUES ('Doc011','Padmavati','Iyer','General Physician',25,'Female','MBBS, DNB','DoctorFemale');
 
 -- Add a Receptionist
-INSERT INTO `` (`recep_id`,`FName`,`LName`,`password`) VALUES ('Nova001','Clawhauser','O',Sha2('Test@1234',224));
+INSERT INTO `nova`.`receptionists` (`recep_id`,`FName`,`LName`,`password`) VALUES ('Nova001','Clawhauser','O',Sha2('Test@1234',224));
 
 -- Add a Admin
 INSERT INTO `nova`.`admin` (`admin_id`, `password`, `FName`, `LName`) VALUES ('Admin001',Sha2('Test@1234',224),'Elliot','Alderson');
