@@ -66,7 +66,7 @@ def user_info():
             flash('Given Phone Number is already associated with an account.', category='error')
         elif len(firstname) <=0 or len(lastname) <=0:
             flash('Please enter your details correctly', category='error')
-        elif gender=='Gender' or gender==None or dob=='' or len(dob)!=10:
+        elif gender=='Gender' or gender==None or dob=='' or len(dob)!=10 or not phno.isnumeric():
             flash('Please enter your details correctly', category='error')
         elif len(phno) != 10:
             flash('Please check your Phone Number.', category='error')
