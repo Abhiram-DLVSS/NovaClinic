@@ -53,10 +53,10 @@
                               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                  <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                       <a class="nav-link" href="aptmnt">Appointment</a>
+                                       <a class="nav-link" href="aptmnt" style="font-weight: bold; text-shadow: 1px 1px #000000;">Appointment</a>
                                     </li>
                                     <li class="nav-item dropdown">
-                                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="font-weight: bold; text-shadow: 1px 1px #000000;">
                                        Account
                                        </a>
                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -100,8 +100,8 @@
                                  <h1>
                                     We Provide Best Healthcare
                                  </h1>
-                                 <p>
-                                    Customer healthcare is our atmost priority.
+                                 <p  style="font-size: 17px;">
+                                    People's health is our top priority
                                  </p>
                                  <button type="button" class="btn form-check-book-button book1" onclick="location.href = 'aptmnt'">
                                  Book Appointment
@@ -169,15 +169,15 @@
                <form >
                   <div class="form-group">
                      <label id="firstname_input">First name</label>
-                     <input type="text" class="form-control" name="FName" id="FName" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update First Name" value={{Fname}} maxlength="20">
+                     <input type="text" class="form-control" name="FName" id="FName" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update First Name" value="{{Fname}}" maxlength="20">
                   </div>
                   <div class="form-group">
                      <label id="lastname_input">Last Name</label>
-                     <input type="text" class="form-control" name="LName" id="LName" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update Last Name" value={{Lname}} maxlength="20">
+                     <input type="text" class="form-control" name="LName" id="LName" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update Last Name" value="{{Lname}}" maxlength="20">
                   </div>
                   <div class="form-group">
                      <label id="phno_input">Phone Number</label>
-                     <input type="tel" class="form-control" name="Phno" id="Phno" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update contact info" value={{phno}}>
+                     <input type="tel" class="form-control" name="Phno" id="Phno" onchange onpropertychange onkeyuponpaste oninput="updateCheck()" placeholder="Update contact info" value="{{phno}}">
                   </div>
                   <div class="form-group" style="text-align: center;">
                      <button name="update_atPatient" id="update_atPatient" class="btn form-check-book-button">Update</button>
@@ -284,7 +284,7 @@
    Our Specilizations
    </h2>
    <p>
-   We specialize in the following departments.
+   We specialize in the following departments
    </p>
    </div>
    <div class="row">

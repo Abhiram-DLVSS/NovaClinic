@@ -22,7 +22,7 @@ class User:
 	def verify(self,phno,password):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select phno,password from users where phno='{}' and password=Sha2('{}',224);").format(phno,password)
+		query = ("select phno from users where phno='{}' and password=Sha2('{}',224);").format(phno,password)
 		if(phno==None and password==None):
 			return -1
 		cursor.execute(query)
@@ -37,7 +37,7 @@ class User:
 	def check_new_phno(self,phno):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query = ("select phno,password from users where phno='{}';").format(phno)
+		query = ("select phno from users where phno='{}';").format(phno)
 		if(phno==None):
 			return -1
 		cursor.execute(query)
@@ -70,7 +70,7 @@ class User:
 	def update_credentials(self,p_CurrentPassword,p_Newpassword,phno):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()		
-		query="select phno,password from users where password=Sha2('{}',224) and phno='{}'".format(p_CurrentPassword,phno)
+		query="select phno from users where password=Sha2('{}',224) and phno='{}'".format(p_CurrentPassword,phno)
 		cursor.execute(query)		
 		vari=cursor.fetchall()
 		if(len(vari)==0):
