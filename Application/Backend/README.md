@@ -3,6 +3,8 @@
 NovaClinic is a web application that helps health centers provide users with an easy way to book a doctor’s appointment online. It also allows the health centers to manage their appointments.
 
 ### API Endpoints
+- /
+    - It'll render the Welcome Page
 - /login
     - Receives the Phone Number and Password through a POST request
     - If the credentials are correct, This will redirect to the Homepage, else displays the error flash message
@@ -63,3 +65,5 @@ NovaClinic is a web application that helps health centers provide users with an 
 - /deleteReceptionist
     - Receives the Receptionist ID of the Receptionist to be deleted
     - Will delete the Receptionist information in the Database
+- /logout
+    - Will clear the session variable and will redirect to the Welcome Page

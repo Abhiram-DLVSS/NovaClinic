@@ -39,7 +39,7 @@ Make sure you have Python and MySQL installed.
 
     ```mysql
     mysql -u root -p
-    source [Repository_Directory]\\NovaClinic\\setupDatabase.sql;
+    source [Repository_Directory]//NovaClinic//setupDatabase.sql;
     ```
 
 - Go to the "sqlhandler.py" file in NovaClinic/Application/DBHandler/
