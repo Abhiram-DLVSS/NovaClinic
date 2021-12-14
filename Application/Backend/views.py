@@ -255,10 +255,11 @@ def aptmntDelete():
         docID=request.form.get('docID')
         slot=request.form.get('slot')        
         date=request.form.get('date')
+        phno=request.form.get('phno')
         slot_dict={"09:00-09:15":0,"09:15-09:30":1,"09:30-09:45":2,"09:45-10:00":3,"10:00-10:15":4,"10:15-10:30":5,"10:30-10:45":6,"10:45-11:00":7,"11:00-11:15":8,"11:15-11:30":9,"11:30-11:45":10,"11:45-12:00":11,"18:00-18:15":12,"18:15-18:30":13,"18:30-18:45":14,"18:45-19:00":15,"19:00-19:15":16,"19:15-19:30":17,"19:30-19:45":18,"19:45-20:00":19,"20:00-20:15":20,"20:15-20:30":21,"20:30-20:45":22,"20:45-21:00":23}
         timestring=Appointment.getSlottimestring(0,docID,date)
         newtimestring=timestring[0][0][0:slot_dict[slot]]+"0"+timestring[0][0][slot_dict[slot]+1:24]
-        Appointment.delete_aptmnt(0,aptmnt_id,docID,date,newtimestring)
+        Appointment.delete_aptmnt(0,aptmnt_id,docID,date,newtimestring,phno)
         return "success"
 
 #Receptionist Login

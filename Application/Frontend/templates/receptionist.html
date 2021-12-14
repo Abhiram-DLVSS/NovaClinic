@@ -334,7 +334,7 @@
         $.ajax({
           type: "POST",
           url: "/aptmntDelete",
-          data: {"aptmnt_id":del_aptmnt_id,"docID":del_docID,"slot":del_time,"date":del_date},
+          data: {"aptmnt_id":del_aptmnt_id,"docID":del_docID,"slot":del_time,"date":del_date,"phno":del_phno},
           success:function(data){
              if(data=='success'){          
               $('#confirm-modal').modal('hide');

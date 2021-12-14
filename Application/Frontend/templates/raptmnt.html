@@ -454,7 +454,7 @@
            phno=$("#phno").val();
           });
          function detailscheck(){
-           if($('#phno').val().length!=10 || $('#Fname').val()==''||$('#Lname').val()==''||$('#inputAge').val()==''||$('#inputGender').val()=='Gender'){
+           if($('#phno').val().length!=10 || isNaN($('#phno').val())|| isNaN($('#inputAge').val()) || $('#Fname').val()==''||$('#Lname').val()==''||$('#inputAge').val()==''||$('#inputAge').val()>100||$('#inputAge').val()<1||$('#inputGender').val()=='Gender'){
            $('#next_atPatient').prop('disabled', true);}
            else{
              

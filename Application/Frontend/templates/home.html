@@ -422,10 +422,9 @@
        });
       
       function updateCheck(){
-        if($('#FName').val().length!=0&&$('#LName').val().length!=0&&$('#Phno').val().length==10){
+        if($('#FName').val().length!=0&&$('#LName').val().length!=0&&$('#Phno').val().length==10&& !isNaN($('#Phno').val()) ){
         $('#update_atPatient').prop('disabled', false);}
-        else{
-          
+        else{          
         $('#update_atPatient').prop('disabled', true);
         }
       };
@@ -477,7 +476,7 @@
         $.ajax({
           type: "POST",
           url: "/aptmntDelete",
-          data: {"aptmnt_id":del_aptmnt_id,"docID":del_docID,"slot":del_time,"date":del_date},
+          data: {"aptmnt_id":del_aptmnt_id,"docID":del_docID,"slot":del_time,"date":del_date,"phno":"0"},
           success:function(data){
              if(data=='success'){          
               $('#confirm-modal').modal('hide');

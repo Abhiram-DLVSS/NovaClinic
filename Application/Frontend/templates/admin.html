@@ -228,7 +228,7 @@
                            <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()"name="spec" id="spec" placeholder="Specialization" maxlength="20">
                         </div>
                         <div class="col">
-                           <input type="int" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()"id="inputExp" placeholder="Experience" max="100">
+                           <input type="int" class="form-control" onchange onpropertychange onkeyuponpaste oninput="doctorcheck()"id="inputExp" placeholder="Experience" max="100" >
                         </div>
                      </div>
                      <br>
@@ -751,7 +751,7 @@
       <!-- To send data of others -->
       <script>
          function doctorcheck(){
-           if($('#docID').val()==''|| $('#Fname').val()==''|| $('#Lname').val()==''|| $('#inputExp').val()==''|| $('#spec').val()==''|| $('#inputEdu').val()==''|| $('#inputGender').val()=='Gender'){
+           if($('#docID').val()==''|| $('#Fname').val()==''|| $('#Lname').val()==''|| $('#inputExp').val()==''||isNaN($('#inputExp').val())|| $('#spec').val()==''|| $('#inputEdu').val()==''||$('#inputExp').val()>90||$('#inputExp').val()<1|| $('#inputGender').val()=='Gender'){
            $('#addDocbutton').prop('disabled', true);}
            else{
              

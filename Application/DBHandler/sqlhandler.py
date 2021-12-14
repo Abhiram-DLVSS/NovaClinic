@@ -198,12 +198,14 @@ class Appointment:
 		cursor.execute("commit")
 	
 	#Cancel Appointment
-	def delete_aptmnt(self,Aptmnt_ID,docID,Date,Time):
+	def delete_aptmnt(self,Aptmnt_ID,docID,Date,Time,phno):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		query="delete from aptmnt where Aptmnt_ID='{}';".format(Aptmnt_ID)
 		cursor.execute(query)
 		query="update slots set Time='{}' where Doctor_ID='{}' and Date='{}';".format(Time,docID,Date)
+		cursor.execute(query)
+		query="delete from temp_users where Phone_Number='{}' and Date='{}';".format(phno,Date)
 		cursor.execute(query)
 		cursor.execute("commit")
 
