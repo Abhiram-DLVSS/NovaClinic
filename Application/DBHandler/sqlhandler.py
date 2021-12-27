@@ -1,16 +1,16 @@
 import mysql.connector
 import os
 
-DB_URL = os.environ.get('CLEARDB_DATABASE_URL')
-DBhost=DB_URL[32:59]
-DBuser=DB_URL[8:22]
-DBpassword=DB_URL[23:31]
-DBname=DB_URL[60:82]
+# DB_URL = os.environ.get('CLEARDB_DATABASE_URL')
+# DBhost=DB_URL[32:59]
+# DBuser=DB_URL[8:22]
+# DBpassword=DB_URL[23:31]
+# DBname=DB_URL[60:82]
 
-# DBhost='localhost'
-# DBuser='root'
-# DBpassword='YOUR_MySQL_PASSWORD'
-# DBname='nova'
+DBhost='localhost'
+DBuser='root'
+DBpassword='sqlpassword'
+DBname='nova'
 
 
 class User:
@@ -178,10 +178,10 @@ class Appointment:
 		cursor.execute("commit")
 	
 	#Walk In Appointment Users(Patients)
-	def addTempUser(self,p_Fname,p_Lname,Date,Gender,Phone_Number,Slot):
+	def addTempUser(self,p_Fname,p_Lname,Date,Gender,Phone_Number,Slot,docID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="insert into temp_users(First_Name,Last_Name,Date_Of_Birth,Gender,Phone_Number,Slot,Date) values('{}','{}','{}','{}','{}','{}','{}');".format(p_Fname,p_Lname,Date,Gender,Phone_Number,Slot,Date)
+		query="insert into temp_users(First_Name,Last_Name,Date_Of_Birth,Gender,Phone_Number,Slot,Date,Doctor_ID) values('{}','{}','{}','{}','{}','{}','{}','{}');".format(p_Fname,p_Lname,Date,Gender,Phone_Number,Slot,Date,docID)
 		cursor.execute(query)
 		cursor.execute("commit")	
 	
@@ -198,14 +198,14 @@ class Appointment:
 		cursor.execute("commit")
 	
 	#Cancel Appointment
-	def delete_aptmnt(self,Aptmnt_ID,docID,Date,Time,phno):
+	def delete_aptmnt(self,Aptmnt_ID,docID,Date,Time,phno,slot):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		query="delete from aptmnt where Aptmnt_ID='{}';".format(Aptmnt_ID)
 		cursor.execute(query)
 		query="update slots set Time='{}' where Doctor_ID='{}' and Date='{}';".format(Time,docID,Date)
 		cursor.execute(query)
-		query="delete from temp_users where Phone_Number='{}' and Date='{}';".format(phno,Date)
+		query="delete from temp_users where Phone_Number='{}' and Date='{}' and Doctor_ID='{}' and slot='{}';".format(phno,Date,docID,slot)
 		cursor.execute(query)
 		cursor.execute("commit")
 
