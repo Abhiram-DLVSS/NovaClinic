@@ -1,16 +1,16 @@
 import mysql.connector
 import os
 
-# DB_URL = os.environ.get('CLEARDB_DATABASE_URL')
-# DBhost=DB_URL[32:59]
-# DBuser=DB_URL[8:22]
-# DBpassword=DB_URL[23:31]
-# DBname=DB_URL[60:82]
+DB_URL = os.environ.get('CLEARDB_DATABASE_URL')
+DBhost=DB_URL[32:59]
+DBuser=DB_URL[8:22]
+DBpassword=DB_URL[23:31]
+DBname=DB_URL[60:82]
 
-DBhost='localhost'
-DBuser='root'
-DBpassword='sqlpassword'
-DBname='nova'
+# DBhost='localhost'
+# DBuser='root'
+# DBpassword='YOUR_MySQL_PASSWORD'
+# DBname='nova'
 
 
 class User:
