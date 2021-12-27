@@ -301,6 +301,7 @@ def receptionist():
         if name!=None:
             Fname=name[0][0]
             Lname=name[0][1]
+        Appointment.delete_old_aptmnt(0,todaysdate)
     else:
         return redirect('/rlogin')
 
