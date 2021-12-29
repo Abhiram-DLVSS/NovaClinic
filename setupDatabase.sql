@@ -51,7 +51,8 @@ CREATE TABLE `temp_users` (
   `Phone_Number` char(10) NOT NULL,
   `Slot` char(11) NOT NULL,
   `Date` Date NOT NULL,
-  PRIMARY KEY (`Slot`,`Date`,`Phone_Number`)
+  `Doctor_ID` varchar(10) NOT NULL,
+  PRIMARY KEY (`Slot`,`Date`,`Phone_Number`,`Doctor_ID`)
 );
 
 CREATE TABLE `users` (

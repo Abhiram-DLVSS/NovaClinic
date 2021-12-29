@@ -81,10 +81,10 @@ class User:
 		return 0
 	
 	#Show Upcoming Appointments for the user
-	def show_aptmnt(self,Patient_ID):
+	def show_aptmnt(self,Patient_ID,Date):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
-		cursor=cnx.cursor()	
-		query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,users.First_Name,users.Last_Name,doctors.Specialization,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Patient_ID='{}' order by aptmnt.Date,aptmnt.Slot;".format(Patient_ID)
+		cursor=cnx.cursor()
+		query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,users.First_Name,users.Last_Name,doctors.Specialization,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Patient_ID='{}' and aptmnt.Date>='{}' order by aptmnt.Date,aptmnt.Slot;".format(Patient_ID,Date)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows
@@ -178,10 +178,10 @@ class Appointment:
 		cursor.execute("commit")
 	
 	#Walk In Appointment Users(Patients)
-	def addTempUser(self,p_Fname,p_Lname,Date,Gender,Phone_Number,Slot):
+	def addTempUser(self,p_Fname,p_Lname,Date,Gender,Phone_Number,Slot,docID):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
-		query="insert into temp_users(First_Name,Last_Name,Date_Of_Birth,Gender,Phone_Number,Slot,Date) values('{}','{}','{}','{}','{}','{}','{}');".format(p_Fname,p_Lname,Date,Gender,Phone_Number,Slot,Date)
+		query="insert into temp_users(First_Name,Last_Name,Date_Of_Birth,Gender,Phone_Number,Slot,Date,Doctor_ID) values('{}','{}','{}','{}','{}','{}','{}','{}');".format(p_Fname,p_Lname,Date,Gender,Phone_Number,Slot,Date,docID)
 		cursor.execute(query)
 		cursor.execute("commit")	
 	
@@ -198,14 +198,14 @@ class Appointment:
 		cursor.execute("commit")
 	
 	#Cancel Appointment
-	def delete_aptmnt(self,Aptmnt_ID,docID,Date,Time,phno):
+	def delete_aptmnt(self,Aptmnt_ID,docID,Date,Time,phno,slot):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		query="delete from aptmnt where Aptmnt_ID='{}';".format(Aptmnt_ID)
 		cursor.execute(query)
 		query="update slots set Time='{}' where Doctor_ID='{}' and Date='{}';".format(Time,docID,Date)
 		cursor.execute(query)
-		query="delete from temp_users where Phone_Number='{}' and Date='{}';".format(phno,Date)
+		query="delete from temp_users where Phone_Number='{}' and Date='{}' and Doctor_ID='{}' and slot='{}';".format(phno,Date,docID,slot)
 		cursor.execute(query)
 		cursor.execute("commit")
 
@@ -239,17 +239,17 @@ class Receptionist:
 		return rows
 	
 	#Show Upcoming Appointments for the Receptionist
-	def show_aptmnts(self,Date,speciality,identifier):
+	def show_aptmnts(self,Date,speciality,identifier,Today):
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()
 		if identifier==0:
-			query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users union select First_Name,Last_Name,Phone_Number from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number order by aptmnt.Date,aptmnt.Slot"
+			query="(select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date>='{}') union (select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number,Slot,Doctor_ID,Date from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date=users.Date and aptmnt.Slot=users.Slot and aptmnt.Doctor_ID=users.Doctor_ID and aptmnt.Date>='{}') order by Date,Slot,Aptmnt_ID".format(Today,Today)
 		elif identifier==1:
-			query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users union select First_Name,Last_Name,Phone_Number from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and doctors.Specialization='{}' order by aptmnt.Date,aptmnt.Slot;".format(speciality)
+			query="(select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and doctors.Specialization='{}' and aptmnt.Date>='{}') union (select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number,Slot,Doctor_ID,Date from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date=users.Date and aptmnt.Slot=users.Slot and aptmnt.Doctor_ID=users.Doctor_ID and doctors.Specialization='{}' and aptmnt.Date>='{}') order by Date,Slot,Aptmnt_ID".format(speciality,Today,speciality,Today)
 		elif identifier==2:
-			query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users union select First_Name,Last_Name,Phone_Number from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date='{}' order by aptmnt.Date,aptmnt.Slot;".format(Date)
+			query="(select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date='{}' and aptmnt.Date>='{}') union (select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number,Slot,Doctor_ID,Date from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date=users.Date and aptmnt.Slot=users.Slot and aptmnt.Doctor_ID=users.Doctor_ID and aptmnt.Date='{}' and aptmnt.Date>='{}') order by Date,Slot,Aptmnt_ID".format(Date,Today,Date,Today)
 		elif identifier==3:
-			query="select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users union select First_Name,Last_Name,Phone_Number from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date='{}' and doctors.Specialization='{}' order by aptmnt.Date,aptmnt.Slot;".format(Date,speciality)
+			query="(select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number from users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date='{}' and doctors.Specialization='{}' and aptmnt.Date>='{}') union (select aptmnt.Aptmnt_ID,aptmnt.Doctor_ID,doctors.First_Name,doctors.Last_Name,doctors.Specialization,users.First_Name,users.Last_Name,aptmnt.Patient_ID,aptmnt.Date,aptmnt.Slot from aptmnt,doctors,(select First_Name,Last_Name,Phone_Number,Slot,Doctor_ID,Date from temp_users) as users where aptmnt.Doctor_ID=doctors.Doctor_ID and aptmnt.Patient_ID=users.Phone_Number and aptmnt.Date=users.Date and aptmnt.Slot=users.Slot and aptmnt.Doctor_ID=users.Doctor_ID and aptmnt.Date='{}' and doctors.Specialization='{}' and aptmnt.Date>='{}') order by Date,Slot,Aptmnt_ID".format(Date,speciality,Today,Date,speciality,Today)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows

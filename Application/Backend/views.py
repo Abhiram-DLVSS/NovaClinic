@@ -1,4 +1,4 @@
-from datetime import timedelta,date
+from datetime import timedelta,date,datetime
 from Application.DBHandler import User,Receptionist,Admin,Appointment
 from flask import Blueprint,render_template,request,flash,jsonify,redirect,session
 
@@ -100,12 +100,14 @@ def home():
         return redirect('/receptionist')
     elif "phno" in session:
         phno=session["phno"]
-        result=User.show_aptmnt(0,phno)
-        name=User.getName(0,phno)
+        result=User.show_aptmnt(0,phno,todaysdate)
         Appointment.delete_old_aptmnt(0,todaysdate)
+        name=User.getName(0,phno)
         if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
+        else:
+            return redirect('/logout')
     else:
         return redirect('/login')
     return render_template("home.html",result=result,phno=phno,Fname=Fname,Lname=Lname)
@@ -138,6 +140,12 @@ def aptmnt():
         return redirect('/receptionist')
     elif "phno" in session:
         phno=session["phno"]
+        name=User.getName(0,phno)
+        if name!=None and name:
+            Fname=name[0][0]
+            Lname=name[0][1]
+        else:
+            return redirect('/logout')
     else:
         return redirect('/login')
     if request.method=="POST":
@@ -181,6 +189,19 @@ def getslotsinfo():
         if not result:
             Appointment.addSlot(0,docID,date)
         result=Appointment.getSlot(0,docID,date)
+        if(str(date)==str(todaysdate)):
+            now = datetime.now()
+            current_time = now.strftime("%H%M")
+            today_slot={"0859":0,"0914":1,"0929":2,"0944":3,"0959":4,"1014":5,"1029":6,"1044":7,"1059":8,"1114":9,"1129":10,"1144":11,"1759":12,"1814":13,"1829":14,"1844":15,"1859":16,"1914":17,"1929":18,"1944":19,"1959":20,"2014":21,"2029":22,"2044":23,"2044":24}
+            timesup=0
+            for a in today_slot:
+                if(int(current_time)<int(a)):
+                    timesup=today_slot[str(a)]
+                    break
+            res=''
+            for x in range(timesup):
+                res=res+'1'
+            result=[(result[0][0],result[0][1],res+result[0][2][timesup:])]
         if not result:#if result is empty
             return "Empty"
         else:
@@ -234,7 +255,7 @@ def confirmaptmnt():
             pphno=request.form.get('phno')
             if User.check_new_phno(0,pphno)==0:
                 return "failed"          
-            Appointment.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot)
+            Appointment.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot,docID)
             slotchk=Appointment.updateSlot(0,newtimestring,slot_dict[slot],docID,date)
             if slotchk==-1:
                 return "failed1"
@@ -259,7 +280,7 @@ def aptmntDelete():
         slot_dict={"09:00-09:15":0,"09:15-09:30":1,"09:30-09:45":2,"09:45-10:00":3,"10:00-10:15":4,"10:15-10:30":5,"10:30-10:45":6,"10:45-11:00":7,"11:00-11:15":8,"11:15-11:30":9,"11:30-11:45":10,"11:45-12:00":11,"18:00-18:15":12,"18:15-18:30":13,"18:30-18:45":14,"18:45-19:00":15,"19:00-19:15":16,"19:15-19:30":17,"19:30-19:45":18,"19:45-20:00":19,"20:00-20:15":20,"20:15-20:30":21,"20:30-20:45":22,"20:45-21:00":23}
         timestring=Appointment.getSlottimestring(0,docID,date)
         newtimestring=timestring[0][0][0:slot_dict[slot]]+"0"+timestring[0][0][slot_dict[slot]+1:24]
-        Appointment.delete_aptmnt(0,aptmnt_id,docID,date,newtimestring,phno)
+        Appointment.delete_aptmnt(0,aptmnt_id,docID,date,newtimestring,phno,slot)
         return "success"
 
 #Receptionist Login
@@ -298,9 +319,12 @@ def receptionist():
     elif "recep_id" in session:
         recep_id=session["recep_id"]
         name=Receptionist.getName(0,recep_id)
-        if name!=None:
+        if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
+            Appointment.delete_old_aptmnt(0,todaysdate)
+        else:
+            return redirect('/logout')
     else:
         return redirect('/rlogin')
 
@@ -313,23 +337,23 @@ def receptionist():
             date=None
             speciality=None
         elif speciality==None and date==None:
-            result=Receptionist.show_aptmnts(0,date,speciality,0)
+            result=Receptionist.show_aptmnts(0,date,speciality,0,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         
         elif speciality!=None and date==None:           
-            result=Receptionist.show_aptmnts(0,date,speciality,1)
+            result=Receptionist.show_aptmnts(0,date,speciality,1,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality==None and date!=None:
             
-            result=Receptionist.show_aptmnts(0,date,speciality,2)
+            result=Receptionist.show_aptmnts(0,date,speciality,2,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality!=None and date!=None:
             
-            result=Receptionist.show_aptmnts(0,date,speciality,3)
+            result=Receptionist.show_aptmnts(0,date,speciality,3,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         
         
-    result=Receptionist.show_aptmnts(0,None,None,0)
+    result=Receptionist.show_aptmnts(0,None,None,0,todaysdate)
     return render_template("receptionist.html",date=None,speciality=None,result=result,Fname=Fname,Lname=Lname)
 
 #Walk In Appointments
@@ -340,7 +364,14 @@ def raptmnt():
     elif "phno" in session:
         return redirect('/home')
     elif "recep_id" in session:
-        recep_id=session["recep_id"]    
+        recep_id=session["recep_id"]
+        name=Receptionist.getName(0,recep_id)
+        if name!=None and name:
+            Fname=name[0][0]
+            Lname=name[0][1]
+            Appointment.delete_old_aptmnt(0,todaysdate)
+        else:
+            return redirect('/logout')
     else:
         return redirect('/login')
     if request.method=="POST":
@@ -415,9 +446,11 @@ def admin():
     if "admin_id" in session:
         admin_id=session["admin_id"]
         name=Admin.getName(0,admin_id)
-        if name!=None:
+        if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
+        else:
+            return redirect('/logout')
     else:
         return redirect('/alogin')
         
