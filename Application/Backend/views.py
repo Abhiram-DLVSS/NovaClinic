@@ -1,4 +1,4 @@
-from datetime import timedelta,date
+from datetime import timedelta,date,datetime
 from Application.DBHandler import User,Receptionist,Admin,Appointment
 from flask import Blueprint,render_template,request,flash,jsonify,redirect,session
 
@@ -99,9 +99,9 @@ def home():
     elif "recep_id" in session:
         return redirect('/receptionist')
     elif "phno" in session:
-        phno=session["phno"]
-        result=User.show_aptmnt(0,phno)
-        name=User.getName(0,phno)
+        phno=session["phno"]        
+        result=User.show_aptmnt(0,phno,todaysdate)
+        name=User.getName(0,phno)        
         Appointment.delete_old_aptmnt(0,todaysdate)
         if name!=None and name:
             Fname=name[0][0]
@@ -181,6 +181,19 @@ def getslotsinfo():
         if not result:
             Appointment.addSlot(0,docID,date)
         result=Appointment.getSlot(0,docID,date)
+        if(str(date)==str(todaysdate)):
+            now = datetime.now()
+            current_time = now.strftime("%H%M")
+            today_slot={"0859":0,"0914":1,"0929":2,"0944":3,"0959":4,"1014":5,"1029":6,"1044":7,"1059":8,"1114":9,"1129":10,"1144":11,"1759":12,"1814":13,"1829":14,"1844":15,"1859":16,"1914":17,"1929":18,"1944":19,"1959":20,"2014":21,"2029":22,"2044":23,"2044":24}
+            timesup=0
+            for a in today_slot:
+                if(int(current_time)<int(a)):
+                    timesup=today_slot[str(a)]
+                    break
+            res=''
+            for x in range(timesup):
+                res=res+'1'
+            result=[(result[0][0],result[0][1],res+result[0][2][timesup:])]
         if not result:#if result is empty
             return "Empty"
         else:
@@ -314,23 +327,23 @@ def receptionist():
             date=None
             speciality=None
         elif speciality==None and date==None:
-            result=Receptionist.show_aptmnts(0,date,speciality,0)
+            result=Receptionist.show_aptmnts(0,date,speciality,0,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         
         elif speciality!=None and date==None:           
-            result=Receptionist.show_aptmnts(0,date,speciality,1)
+            result=Receptionist.show_aptmnts(0,date,speciality,1,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality==None and date!=None:
             
-            result=Receptionist.show_aptmnts(0,date,speciality,2)
+            result=Receptionist.show_aptmnts(0,date,speciality,2,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality!=None and date!=None:
             
-            result=Receptionist.show_aptmnts(0,date,speciality,3)
+            result=Receptionist.show_aptmnts(0,date,speciality,3,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         
         
-    result=Receptionist.show_aptmnts(0,None,None,0)
+    result=Receptionist.show_aptmnts(0,None,None,0,todaysdate)
     return render_template("receptionist.html",date=None,speciality=None,result=result,Fname=Fname,Lname=Lname)
 
 #Walk In Appointments
