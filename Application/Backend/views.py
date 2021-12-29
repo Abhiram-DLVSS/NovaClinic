@@ -99,13 +99,15 @@ def home():
     elif "recep_id" in session:
         return redirect('/receptionist')
     elif "phno" in session:
-        phno=session["phno"]        
+        phno=session["phno"]
         result=User.show_aptmnt(0,phno,todaysdate)
-        name=User.getName(0,phno)        
         Appointment.delete_old_aptmnt(0,todaysdate)
+        name=User.getName(0,phno)
         if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
+        else:
+            return redirect('/logout')
     else:
         return redirect('/login')
     return render_template("home.html",result=result,phno=phno,Fname=Fname,Lname=Lname)
@@ -138,6 +140,12 @@ def aptmnt():
         return redirect('/receptionist')
     elif "phno" in session:
         phno=session["phno"]
+        name=User.getName(0,phno)
+        if name!=None and name:
+            Fname=name[0][0]
+            Lname=name[0][1]
+        else:
+            return redirect('/logout')
     else:
         return redirect('/login')
     if request.method=="POST":
@@ -311,10 +319,12 @@ def receptionist():
     elif "recep_id" in session:
         recep_id=session["recep_id"]
         name=Receptionist.getName(0,recep_id)
-        if name!=None:
+        if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
-        Appointment.delete_old_aptmnt(0,todaysdate)
+            Appointment.delete_old_aptmnt(0,todaysdate)
+        else:
+            return redirect('/logout')
     else:
         return redirect('/rlogin')
 
@@ -354,7 +364,14 @@ def raptmnt():
     elif "phno" in session:
         return redirect('/home')
     elif "recep_id" in session:
-        recep_id=session["recep_id"]    
+        recep_id=session["recep_id"]
+        name=Receptionist.getName(0,recep_id)
+        if name!=None and name:
+            Fname=name[0][0]
+            Lname=name[0][1]
+            Appointment.delete_old_aptmnt(0,todaysdate)
+        else:
+            return redirect('/logout')
     else:
         return redirect('/login')
     if request.method=="POST":
@@ -429,9 +446,11 @@ def admin():
     if "admin_id" in session:
         admin_id=session["admin_id"]
         name=Admin.getName(0,admin_id)
-        if name!=None:
+        if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
+        else:
+            return redirect('/logout')
     else:
         return redirect('/alogin')
         
