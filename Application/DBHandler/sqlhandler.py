@@ -1,11 +1,10 @@
 import mysql.connector
 import os
 
-DB_URL = os.environ.get('CLEARDB_DATABASE_URL')
-DBhost=DB_URL[32:59]
-DBuser=DB_URL[8:22]
-DBpassword=DB_URL[23:31]
-DBname=DB_URL[60:82]
+DBhost=os.environ.get('DBhost')
+DBuser=os.environ.get('DBuser')
+DBpassword=os.environ.get('DBpassword')
+DBname=os.environ.get('DBname')
 
 # DBhost='localhost'
 # DBuser='root'
