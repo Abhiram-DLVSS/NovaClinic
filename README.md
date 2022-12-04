@@ -8,11 +8,6 @@ This is a web application that helps health centers provide users with an easy w
 - [Setup & Installation](#Setup--Installation)
 - [Running The App](#Running-The-App)
 - [Viewing The App](#Viewing-The-App)
-## Live Demo
-
-You can view our Web Application deployed on Heroku here:
-
-- [NovaClinic](https://nova-clinic.herokuapp.com/)
 
 ## Technologies used
 - [Flask](https://flask.palletsprojects.com/en/2.0.x/)

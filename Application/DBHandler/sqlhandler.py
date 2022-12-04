@@ -8,7 +8,7 @@ DBname=os.environ.get('DBname')
 
 # DBhost='localhost'
 # DBuser='root'
-# DBpassword='YOUR_MySQL_PASSWORD'
+# DBpassword='MySQL_Password'
 # DBname='nova'
 
 
@@ -93,6 +93,15 @@ class User:
 		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
 		cursor=cnx.cursor()	
 		query="select First_Name, Last_Name from users where Phone_Number='{}';".format(Patient_ID)
+		cursor.execute(query)
+		rows=cursor.fetchall()
+		return rows	
+
+	#Details of the User
+	def getUserDetails(self,Patient_ID):
+		cnx=mysql.connector.connect(host=DBhost,user=DBuser,password=DBpassword,database=DBname)
+		cursor=cnx.cursor()	
+		query="select First_Name, Last_Name,Date_Of_Birth,Gender from users where Phone_Number='{}';".format(Patient_ID)
 		cursor.execute(query)
 		rows=cursor.fetchall()
 		return rows	

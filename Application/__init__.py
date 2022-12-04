@@ -14,9 +14,9 @@ def create_app():
     
 
 
-    app.config['SECRET_KEY']=os.environ.get('SECRET_KEY')
+    # app.config['SECRET_KEY']=os.environ.get('SECRET_KEY')
     
-    # app.config['SECRET_KEY']="RandomSecretString"
+    app.config['SECRET_KEY']="RandomSecretString"
     
 
 
