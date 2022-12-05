@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <!-- Basic -->
+   <meta charset="utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <!-- Mobile Metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+   <!-- Site Metas -->
+   <meta name="keywords" content="" />
+   <meta name="description" content="" />
+   <meta name="author" content="" />
+   <link rel="shortcut icon" href="static/images/favicon.png" type="">
+   <title> Nova Clinic</title>
+   <!-- bootstrap core css -->
+   <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+   <!-- fonts style -->
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   <!-- font awesome style -->
+   <link href="static/css/font-awesome.min.css" rel="stylesheet" />
+   <!-- Custom styles for this template -->
+   <link href="/static/css/style_aptmnt.css" rel="stylesheet" />
+   <!-- <link href="/static/css/bs-datepicker.css" rel="stylesheet" /> -->
+   <!-- AJAX -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+   <div class="hero_area">
+      <!-- header section strats -->
+      <header class="header_section">
+         <div class="container">
+            <nav class="navbar navbar-expand-lg custom_nav-container ">
+               <div class="container-fluid">
+                  <a class="navbar-brand" href="/receptionist">
+                     <span>
+                        Nova Clinic
+                     </span>
+                  </a>
+                  <div class="d-flex">
+                     <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                     </button>
+                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                           <li class="nav-item active">
+                              <a class="nav-link" href="/receptionist"
+                                 style="text-shadow: 1px 1px #000000;font-weight: bold;">Home <span
+                                    class="sr-only">(current)</span></a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" href="/logout"
+                                 style="text-shadow: 1px 1px #000000;font-weight: bold;">Logout</a>
+                           </li>
+                        </ul>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </nav>
+         </div>
+      </header>
+      <!-- end header section -->
+      <!-- Testing -->
+      <form method="POST">
+         <div class="testing-wrapper">
+            <br>
+            <div class="testing-web d-flex flex-row bd-highlight mb-3">
+               <div class="testing-web-left p-2 bd-highlight" id="left">
+                  <div class="filters" style="text-align: center; font-weight: bold; font-size: 20px;">
+                     <label class="form-check-label">
+                        Filters
+                     </label>
+                  </div>
+                  <div class="form-check">
+                     <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="desc">
+                     {% if high=="desc"%}
+                     <input class="form-check-input" type="radio" name="high" id="flexRadioDefault1" value="desc"
+                        checked>
+                     {%endif%}
+                     <label class="form-check-label" for="flexRadioDefault1">
+                        Sort by experience
+                     </label>
+                  </div>
+                  <hr class="solid" color="white">
+                  <div class="form-check">
+                     <input class="form-check-input" type="radio" name="speciality" id="gp" value="General Physician">
+                     {% if speciality=="General Physician"%}
+                     <input class="form-check-input" type="radio" name="speciality" id="gp" value="General Physician"
+                        checked>
+                     {%endif%}
+                     <label class="form-check-label" for="gp">
+                        General Physician
+                     </label>
+                  </div>
+                  <div class="form-check">
+                     <input class="form-check-input" type="radio" name="speciality" id="ca" value="Cardiology">
+                     {% if speciality=="Cardiology"%}
+                     <input class="form-check-input" type="radio" name="speciality" id="ca" value="Cardiology" checked>
+                     {%endif%}
+                     <label class="form-check-label" for="ca">
+                        Cardiology
+                     </label>
+                  </div>
+                  <div class="form-check">
+                     <input class="form-check-input" type="radio" name="speciality" id="der" value="Dermatology">
+                     {% if speciality=="Dermatology"%}
+                     <input class="form-check-input" type="radio" name="speciality" id="der" value="Dermatology"
+                        checked>
+                     {%endif%}
+                     <label class="form-check-label" for="der">
+                        Dermatology
+                     </label>
+                  </div>
+                  <div class="form-check">
+                     <input class="form-check-input" type="radio" name="speciality" id="dent" value="Dentist">
+                     {% if speciality=="Dentist"%}
+                     <input class="form-check-input" type="radio" name="speciality" id="dent" value="Dentist" checked>
+                     {%endif%}
+                     <label class="form-check-label" for="dent">
+                        Dentist
+                     </label>
+                  </div>
+                  <div class="form-check">
+                     <input class="form-check-input" type="radio" name="speciality" id="neu" value="Neurology">
+                     {% if speciality=="Neurology"%}
+                     <input class="form-check-input" type="radio" name="speciality" id="neu" value="Neurology" checked>
+                     {%endif%}
+                     <label class="form-check-label" for="neu">
+                        Neurology
+                     </label>
+                  </div>
+                  <hr class="solid" color="white">
+                  <div class="form-check">
+                     <input class="form-check-input" type="radio" name="gender" id="genm" value="Male">
+                     {% if gender=="Male"%}
+                     <input class="form-check-input" type="radio" name="gender" id="genm" value="Male" checked>
+                     {%endif%}
+                     <label class="form-check-label" for="genm">
+                        Male
+                     </label>
+                  </div>
+                  <div class="form-check">
+                     <input class="form-check-input" type="radio" name="gender" id="genf" value="Female">
+                     {% if gender=="Female"%}
+                     <input class="form-check-input" type="radio" name="gender" id="genf" value="Female" checked>
+                     {%endif%}
+                     <label class="form-check-label" for="genf">
+                        Female
+                     </label>
+                  </div>
+                  <div class="button-cen">
+                     <button class="form-check-apply-button" type="submit" formmethod="post">Apply</button>
+                  </div>
+                  <div class="button-cen">
+                     <button class="form-check-clear-button" type="submit" name="clear" value="clear"
+                        formmethod="post">Clear</button>
+                  </div>
+               </div>
+               <!-- right half -->
+               <div class="testing-web-right p-2 bd-highlight" id="right">
+                  <div class="d-flex flex-column bd-highlight mb-3">
+                     {% if result%}
+                     {%for a_tuple in result%}
+                     <div class="card">
+                        <div class="card-img-wrapper">
+                           <div class="card-img">
+                              <img src="/static/images/{{a_tuple[7]}}.png" class="card-img-top" alt="Doctor">
+                           </div>
+                        </div>
+                        <div class="card-body">
+                           <h3 class="card-title">
+                              Dr.{{a_tuple[1]}} {{a_tuple[2]}}</h4>
+                              <p class="card-text"><small>Doctor ID: {{a_tuple[0]}}</small></small></p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                           <li class="list-group-item">Gender: {{a_tuple[5]}}</li>
+                           <li class="list-group-item">Speciality: {{a_tuple[3]}}</li>
+                           <li class="list-group-item">Education: {{a_tuple[6]}}</li>
+                           <li class="list-group-item">Experience: {{a_tuple[4]}}</li>
+                        </ul>
+                        <div class="card-body">
+                           <div class="button-cen">
+                              <button type="button" class="btn form-check-book-button book1" data-toggle="modal"
+                                 name="{{a_tuple[0]}}" id="{{a_tuple[0]}}" value="{{a_tuple[1]}} {{a_tuple[2]}}"
+                                 data-target="#others-modal" onclick="booked_doc(this.id,'{{a_tuple[3]}}')">
+                                 Book Appointment
+                              </button>
+                           </div>
+                        </div>
+                     </div>
+                     <br>
+                     {% endfor %}
+                     {%endif%}
+                     {% if not result%}
+                     <div class="card">
+                        <div class="card-body" style="text-align: center; font-size: 20px;">
+                           Sorry, no results were found.
+                        </div>
+                     </div>
+                     {%endif%}
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal fade" id="others-modal" data-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="modal_title">
+                        Patient Details
+                     </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalClose">
+                        <span aria-hidden="true">
+                           x</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <form>
+                        <div class="row">
+                           <div class="col">
+                              <input type="tel" class="form-control" onchange onpropertychange onkeyuponpaste
+                                 oninput="usercheck()" name="phno" id="phno" placeholder="Phone Number">
+                           </div>
+                           <div class="col">
+                           </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                           <div class="col">
+                              <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste
+                                 oninput="detailscheck()" name="Fname" id="Fname" placeholder="First name"
+                                 maxlength="20">
+                           </div>
+                           <div class="col">
+                              <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste
+                                 oninput="detailscheck()" name="Lname" id="Lname" placeholder="Last name"
+                                 maxlength="20">
+                           </div>
+                        </div>
+                        <br>
+                        <div class="form-row">
+                           <div class="col">
+                              <input type="int" onchange onpropertychange onkeyuponpaste oninput="detailscheck()"
+                                 class="form-control" name="inputAge" id="inputAge" placeholder="Age" max="100">
+                           </div>
+                           <div class="col">
+                              <select class="form-select" name="inputGender" id="inputGender" onchange onpropertychange
+                                 onkeyuponpaste oninput="detailscheck()">
+                                 <option hidden value="Gender">Gender</option>
+                                 <option value="Male">Male</option>
+                                 <option value="Female">Female</option>
+                                 <option value="Others">Others</option>
+                              </select>
+                           </div>
+                        </div>
+                        <br>
+                        <div style="text-align: center;">
+                           <button type="button" class="btn form-check-for-button" data-toggle="modal"
+                              data-dismiss="modal" name="next_atPatient" id="next_atPatient"
+                              data-target="#date-modal">Next</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal fade" id="date-modal" data-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="modal_title">
+                        Choose a convienient date
+                     </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalClose">
+                        <span aria-hidden="true">
+                           x</span>
+                     </button>
+                  </div>
+                  <div class="modal-body date-modal-body">
+                     <br>
+                     <div class="modal-body-date">
+                        <input type="text" class="form-control" onchange onpropertychange onkeyuponpaste
+                           oninput="datecheck()" name="datePicker" id="datePicker" placeholder="Choose Date"
+                           style="width: 275px; text-align: center;" maxlength="10">
+                     </div>
+                     <br>
+                     <div style="text-align: center;">
+                        <button type="button" class="btn form-check-for-button" data-toggle="modal" data-dismiss="modal"
+                           name="next_atdate" id="next_atdate" data-target="#slot-modal">Next</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal fade" id="slot-modal" data-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="modal_title">
+                        Choose a convienient slot
+                     </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalClose">
+                        <span aria-hidden="true">
+                           x</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <label>🌤️MORNING</label>
+                     <br>
+                     <div id="slot-modal-body-id-mor-wrapper">
+                     </div>
+                     <div class="d-flex flex-wrap" id="slot-modal-body-id-mor-wrapper2">
+                     </div>
+                     <div id="slot-modal-body-id-mor-wrapper3">
+                     </div>
+                     <br>
+                     <label>🌙EVENING</label>
+                     <br>
+                     <div id="slot-modal-body-id-eve-wrapper">
+                     </div>
+                     <div class="d-flex flex-wrap" id="slot-modal-body-id-eve-wrapper2">
+                     </div>
+                     <div id="slot-modal-body-id-eve-wrapper3">
+                     </div>
+                     <br>
+                     <div style="width: 100%; text-align: left;">
+                        <button class="form-check-clear-button" data-toggle="modal" data-dismiss="modal"
+                           name="back_at_slot" id="back_at_slot" data-target="#date-modal">Back</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal fade" id="confirm-modal" data-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="modal_title">
+                        Confirm Appointment
+                     </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalClose">
+                        <span aria-hidden="true">
+                           x</span>
+                     </button>
+                  </div>
+                  <div class="modal-body-confirm modal-body">
+                     <div id="confirm-modal-body-id-wrapper">
+                     </div>
+                     <br>
+                     <button type="button" class="btn form-check-for-button" name="confirm"
+                        id="confirm">Confirm</button>
+                     <button type="button" class="form-check-clear-button" data-toggle="modal" data-dismiss="modal"
+                        name="cancel" id="cancel">Cancel</button>
+                  </div>
+                  <br>
+               </div>
+            </div>
+         </div>
+         <div class="modal fade" id="tq-modal" data-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class='col-12 modal-title text-center' style="font-size:30px;" id="modal_title">
+                        Appointment Successful!
+                     </h5>
+                  </div>
+                  <div class="modal-body">
+                     <button type="button" class="btn form-check-for-button" name="next_attq" id="next_attq">Ok</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </form>
+   </div>
+   <!-- jQery -->
+   <script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
+   <!-- popper js -->
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+   <!-- bootstrap js -->
+   <script type="text/javascript" src="static/js/bootstrap.js"></script>
+   </script>
+   <!-- moment js -->
+   <script type="text/javascript" src="static/js/moment.min.js"></script>
+   <!-- Date Picker -->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js"></script>
+   <script>
+      $(function () {
+         let datePicker = document.getElementById('datePicker');
+         let picker = new Litepicker({
+            element: datePicker,
+            format: 'YYYY-MM-DD',
+            minDate: moment().format('YYYY-MM-DD'),
+            maxDate: moment().add(14, 'day').format('YYYY-MM-DD'),
+            lockDaysFilter: (day) => {//to not include Sundays
+               const d = day.getDay();
+               return [0].includes(d);
+            },
+            setup: (picker) => {
+               picker.on('selected', (date1, date2) => {
+                  datecheck();
+               });
+            }
+         });
+      });
+   </script>
+   <!-- custom js -->
+   <script type="text/javascript" src="static/js/custom.js"></script>
+   <!-- To send data of others -->
+   <script type="text/javascript">
+      var name_of_the_doctor_chosen, p_Fname, p_Lname, age, gender, str, date, num, slot, doc_id, docName, speciality;
+      function booked_doc(clicked_id, speciality1) {
+         docID = clicked_id;
+         docName = $("#" + clicked_id).val();
+         speciality = speciality1;
+
+
+         $("#Fname").val() = '';
+         $("#Lname").val() = '';
+         $("#inputAge").val() = '';
+         $("#inputGender").val();
+         $("#phno").val() = '';
+      }
+
+      $("#next_atPatient").click(function () {
+         p_Fname = $("#Fname").val();
+         p_Lname = $("#Lname").val();
+         age = $("#inputAge").val();
+         gender = $("#inputGender").val();
+         phno = $("#phno").val();
+      });
+      function usercheck() {
+         console.log($('#phno').val().length);
+         console.log(isNaN($('#phno').val()));
+         console.log($('#phno').val().length != 10 || isNaN($('#phno').val()));
+         if ($('#phno').val().length != 10 || isNaN($('#phno').val())) {
+            $('#next_atPatient').prop('disabled', true);
+            $('#Fname').prop('disabled', true);
+            $('#Lname').prop('disabled', true);
+            $('#inputAge').prop('disabled', true);
+            $('#inputGender').prop('disabled', true);
+         }
+         else {
+            $.ajax({
+               type: "POST",
+               timeout: 10000,
+               url: "/checkuser",
+               data: { "phno": $("#phno").val() },
+               success: function (data) {
+                  if (data == "0") { //Phno Exists
+                     $.ajax({
+                        type: "POST",
+                        url: "/getuserinfo",
+                        timeout: 10000,
+                        data: { "phno": $("#phno").val() },
+                        success: function (data) {
+                           $("#Fname").val(data.Fname);
+                           $("#Lname").val(data.Lname);
+                           $("#inputAge").val(data.Age);
+                           $("#inputGender").val(data.Gender);
+                           detailscheck();
+                        }
+                     });
+                  }
+                  else {
+                     $("#Fname").val("");
+                     $("#Lname").val("");
+                     $("#inputAge").val("");
+                     $("#inputGender").val("Gender");
+                     $('#Fname').prop('disabled', false);
+                     $('#Lname').prop('disabled', false);
+                     $('#inputAge').prop('disabled', false);
+                     $('#inputGender').prop('disabled', false);
+                  }
+               }
+            });
+
+         }
+      }
+      function detailscheck() {
+         if ($('#phno').val().length != 10 || isNaN($('#phno').val()) || isNaN($('#inputAge').val()) || $('#Fname').val() == '' || $('#Lname').val() == '' || $('#inputAge').val() == '' || $('#inputAge').val() > 100 || $('#inputAge').val() < 1 || $('#inputGender').val() == 'Gender') {
+            $('#next_atPatient').prop('disabled', true);
+         }
+         else {
+
+            $('#next_atPatient').prop('disabled', false);
+         }
+      }
+
+      $('#next_atPatient').prop('disabled', true);
+      $('#Fname').prop('disabled', true);
+      $('#Lname').prop('disabled', true);
+      $('#inputAge').prop('disabled', true);
+      $('#inputGender').prop('disabled', true);
+
+
+      function datecheck() {
+         if ($('#datePicker').val().length == 10) {
+            $('#next_atdate').prop('disabled', false);
+         }
+         else {
+
+            $('#next_atdate').prop('disabled', true);
+         }
+      }
+      if ($('#datePicker').val() == '') {
+         $('#next_atdate').prop('disabled', true);
+      }
+
+
+      $("#next_atdate").click(function () {
+         date = $("#datePicker").val();
+         $.ajax({
+            type: "POST",
+            timeout: 10000,
+            url: "/getslotsinfo",
+            data: { "date": date, "docID": docID },
+            success: function (data) {
+               //Morning
+               var i = 0;
+               if (data == "Empty") {
+                  var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper3");
+                  var myHTML = '';
+                  myHTML += '<br><label style="color: red;">No slots Available</label>';
+                  wrapper.innerHTML = myHTML
+
+                  //clearing if any buttons are present
+                  wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
+                  myHTML = '';
+                  wrapper.innerHTML = myHTML
+               }
+               else {
+                  const keys = Object.keys(data);
+                  var wrapper = document.getElementById("slot-modal-body-id-mor-wrapper2");
+                  var myHTML = '';
+                  for (; i < 12; i++) {
+                     if (data[keys[i]] == 0) {
+                        myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button"  data-toggle="modal" data-dismiss="modal" data-target="#confirm-modal" onclick="time(this.id)" id="' + keys[i] + '">' + keys[i] + '</button></div>';
+                     }
+                     else {
+                        myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>' + keys[i] + '</button></div>';
+                     }
+                  }
+                  wrapper.innerHTML = myHTML
+                  //clearing if any buttons are present
+                  wrapper = document.getElementById("slot-modal-body-id-mor-wrapper3");
+                  myHTML = '';
+                  wrapper.innerHTML = myHTML
+               }
+
+
+               //Evening
+               if (data == "Empty") {
+                  var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper3");
+                  var myHTML = '';
+                  myHTML += '<br><label style="color: red;">No slots Available</label>';
+                  wrapper.innerHTML = myHTML
+
+                  //clearing if any buttons are present
+                  wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
+                  myHTML = '';
+                  wrapper.innerHTML = myHTML
+               }
+               else {
+                  const keys = Object.keys(data);
+                  var wrapper = document.getElementById("slot-modal-body-id-eve-wrapper2");
+                  var myHTML = '';
+                  for (; i < 24; i++) {
+                     if (data[keys[i]] == 0) {
+
+                        myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-enabled-button" data-toggle="modal" data-dismiss="modal" data-target="#confirm-modal" onclick="time(this.id)" id="' + keys[i] + '">' + keys[i] + '</button></div>';
+                     }
+                     else {
+                        myHTML += '<div class="slot-buttons-padding"><button class="form-check-slot-disabled-button" disabled>' + keys[i] + '</button></div>';
+                     }
+                  }
+                  wrapper.innerHTML = myHTML
+                  //clearing if any buttons are present
+                  wrapper = document.getElementById("slot-modal-body-id-eve-wrapper3");
+                  myHTML = '';
+                  wrapper.innerHTML = myHTML
+               }
+
+
+
+
+
+            }
+         });
+      });
+
+
+      function time(clicked_id) {
+         slot = clicked_id;
+         var wrapper = document.getElementById("confirm-modal-body-id-wrapper");
+         var myHTML = '';
+         myHTML += '<br><p><b>Name</b>:</p>';
+         myHTML += '<p>' + p_Fname + ' ' + p_Lname + '</p>';
+
+         myHTML += '<br><p><b>Phone Number</b>:</p>';
+         myHTML += '<p>' + phno + '</p>';
+
+         myHTML += '<br><p><b>Doctor</b>:</p>';
+         myHTML += '<p>' + docName + '</p>';
+
+         myHTML += '<br><p><b>Speciality</b>:</p>';
+         myHTML += '<p>' + speciality + '</p>';
+
+         myHTML += '<br><p><b>Date</b>:</p>';
+         myHTML += '<p>' + date + '</p>';
+
+         myHTML += '<br><p><b>Slot</b>:</p>';
+         myHTML += '<p>' + slot + '</p>';
+
+         wrapper.innerHTML = myHTML
+
+      }
+
+      $("#confirm").click(function () {
+         $.ajax({
+            type: "POST",
+            timeout: 20000,
+            url: "/confirmaptmnt",
+            data: { "p_Fname": p_Fname, "p_Lname": p_Lname, "age": age, "gender": gender, "date": date, "docID": docID, "slot": slot, "phno": phno },
+            success: function (data) {
+               alert("datea");
+               if (data == "failed") {
+                  $('#tq-modal').modal('hide');
+                  alert("Appointment Failed: An account already exists with the given phone number.");
+               }
+               else if (data == "failed1") {
+                  // $('#tq-modal').modal('hide');
+                  alert("Appointment Failed: The choosen slot is already taken.");
+                  window.location.href = 'raptmnt';
+               }
+               else {
+                  $('#confirm-modal').modal('hide');
+                  $('#tq-modal').modal('show');
+               }
+            }
+         });
+
+
+
+      });
+
+      $(".close").click(function () {
+      });
+      $("#cancel").click(function () {
+      });
+      $("#back_at_slot").click(function () {
+         $('#datePicker').val() = date
+      });
+      $("#next_attq").click(function () {
+         window.location.href = 'receptionist';
+      });
+
+
+   </script>
+</body>
+
+</html>
