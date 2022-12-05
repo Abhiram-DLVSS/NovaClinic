@@ -16,7 +16,6 @@ def welcome():
         return redirect('/receptionist')
     elif "admin_id" in session:
         return redirect('/admin')
-    
     return render_template("welcome.html")
 
 #Users Login Page
@@ -253,9 +252,9 @@ def confirmaptmnt():
         newtimestring=timestring[0][0][0:slot_dict[slot]]+"1"+timestring[0][0][slot_dict[slot]+1:24]
         if "recep_id" in session:
             pphno=request.form.get('phno')
-            if User.check_new_phno(0,pphno)==0:
-                return "failed"          
-            Appointment.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot,docID)
+            if User.check_new_phno(0,pphno)!=0:
+                Appointment.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot,docID)       
+            
             slotchk=Appointment.updateSlot(0,newtimestring,slot_dict[slot],docID,date)
             if slotchk==-1:
                 return "failed1"
@@ -355,6 +354,24 @@ def receptionist():
         
     result=Receptionist.show_aptmnts(0,None,None,0,todaysdate)
     return render_template("receptionist.html",date=None,speciality=None,result=result,Fname=Fname,Lname=Lname)
+
+#Checks for the users existence
+@views.route('/checkuser', methods=['POST', 'GET'])
+def checkuser():
+    if request.method == "POST":
+        phno=request.form.get('phno')
+        # print(User.check_new_phno(0,phno))
+        return str(User.check_new_phno(0,phno))+""
+
+#Checks for the users existence
+@views.route('/getuserinfo', methods=['POST', 'GET'])
+def getuserinfo():
+    if request.method == "POST":
+        phno=request.form.get('phno')
+        result=User.getUserDetails(0,phno)
+        today = date.today()
+        age = today.year - result[0][2].year - ((today.month, today.day) < (result[0][2].month, result[0][2].day))
+        return {"Fname":result[0][0],"Lname":result[0][1],"Age":int(age),"Gender":result[0][3]}
 
 #Walk In Appointments
 @views.route('/raptmnt',methods=['GET','POST'])
