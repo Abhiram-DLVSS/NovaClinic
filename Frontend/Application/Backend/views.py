@@ -31,7 +31,7 @@ def login():
         session.permanent=True
         phno = request.form.get('phno')
         password1 = request.form.get('password1')
-        response = requests.post(url="http://localhost:8002/verify",json={'phno': phno,'password1':password1})
+        response = requests.post(url="http://172.24.0.3:8002/verify",json={'phno': phno,'password1':password1})
         val=response.json()['val']
         if val==0:
             flash('The Phone Number or Password is incorrect', category='error')
@@ -61,7 +61,7 @@ def user_info():
         phno = request.form.get('phno')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        response = requests.post(url="http://localhost:8002/checknewphno",json={'phno': phno})
+        response = requests.post(url="http://172.24.0.3:8002/checknewphno",json={'phno': phno})
         if response.json()['val']!=1:
             flash('Given Phone Number is already associated with an account.', category='error')
         elif len(firstname) <=0 or len(lastname) <=0:
@@ -75,7 +75,7 @@ def user_info():
         elif len(password1) < 6:
             flash('Password is too short(minimum is 6 characters)', category='error')
         else:
-            requests.post(url="http://localhost:8002/adduser",json={'phno': phno,'firstname':firstname,'lastname':lastname,'dob':dob,'gender':gender,'password1':password1})
+            requests.post(url="http://172.24.0.3:8002/adduser",json={'phno': phno,'firstname':firstname,'lastname':lastname,'dob':dob,'gender':gender,'password1':password1})
             session["phno"]=phno
             return redirect('/home')
 
@@ -85,7 +85,7 @@ def user_info():
 @views.route('/userName', methods=['POST', 'GET'])
 def userName():    
     phno=session["phno"]
-    response = requests.post(url="http://localhost:8002/getname",json={'phno': phno})
+    response = requests.post(url="http://172.24.0.3:8002/getname",json={'phno': phno})
     result=response.json()['val']
     # result=User.getName(0,phno)
     data={
@@ -102,16 +102,16 @@ def home():
         return redirect('/receptionist')
     elif "phno" in session:
         phno=session["phno"]
-        response = requests.post(url="http://localhost:8002/getname",json={'phno': phno})
+        response = requests.post(url="http://172.24.0.3:8002/getname",json={'phno': phno})
         name=response.json()['val']
         if name!=None and name:
             Fname=name[0][0]
             Lname=name[0][1]
         else:
             return redirect('/logout')
-        response = requests.post(url="http://localhost:8005/showaptmnt",json={'phno': phno,'Fname':Fname,'Lname':Lname})
+        response = requests.post(url="http://172.24.0.7:8005/showaptmnt",json={'phno': phno,'Fname':Fname,'Lname':Lname})
         result=response.json()['val']
-        requests.post(url="http://localhost:8005/deleteoldaptmnt")
+        requests.post(url="http://172.24.0.7:8005/deleteoldaptmnt")
         # result=User.show_aptmnt(0,phno,todaysdate)
         # Appointment.delete_old_aptmnt(0,todaysdate)
     else:
@@ -126,14 +126,14 @@ def updateInfo():
         FName = request.form.get('p_FName')
         LName = request.form.get('p_LName')
         NewPhno = request.form.get('Phno')
-        response = requests.post(url="http://localhost:8002/checknewphno",json={'phno': NewPhno})
+        response = requests.post(url="http://172.24.0.3:8002/checknewphno",json={'phno': NewPhno})
         if len(NewPhno)!=10 or len(FName)<=0 or len(LName)<=0:
             return 'failed'
         elif response.json()['val']!=1 and NewPhno!=phno:
             return 'failed1'
         else:
-            requests.post(url="http://localhost:8002/updateinfo",json={'FName': FName,'LName': LName,'NewPhno': NewPhno,'phno': phno})     
-            requests.post(url="http://localhost:8005/updateinfo",json={'FName': FName,'LName': LName,'NewPhno': NewPhno,'phno': phno})       
+            requests.post(url="http://172.24.0.3:8002/updateinfo",json={'FName': FName,'LName': LName,'NewPhno': NewPhno,'phno': phno})     
+            requests.post(url="http://172.24.0.7:8005/updateinfo",json={'FName': FName,'LName': LName,'NewPhno': NewPhno,'phno': phno})       
             if NewPhno!=phno:    
                 return 'success1'
             return 'success'        
@@ -148,7 +148,7 @@ def aptmnt():
         return redirect('/receptionist')
     elif "phno" in session:
         phno=session["phno"]
-        response = requests.post(url="http://localhost:8002/getname",json={'phno': phno})
+        response = requests.post(url="http://172.24.0.3:8002/getname",json={'phno': phno})
         name=response.json()['val']
         if name!=None and name:
             Fname=name[0][0]
@@ -182,12 +182,12 @@ def aptmnt():
         elif high!=None and speciality!=None and gender!=None:
             identifier=7
         
-        response = requests.post(url="http://localhost:8005/aptmntdoctors",json={'identifier': identifier,'speciality':speciality,'gender':gender,'high':high})
+        response = requests.post(url="http://172.24.0.7:8005/aptmntdoctors",json={'identifier': identifier,'speciality':speciality,'gender':gender,'high':high})
         result=response.json()['val']
         # result=Appointment.aptmnt_doctors(0,identifier,speciality,gender,high)
         return render_template("aptmnt.html",result=result,high=high,speciality=speciality,phno=phno,gender=gender)
     else:
-        response = requests.post(url="http://localhost:8005/aptmntdoctors",json={'identifier': 0,'speciality':None,'gender':None,'high':None})
+        response = requests.post(url="http://172.24.0.7:8005/aptmntdoctors",json={'identifier': 0,'speciality':None,'gender':None,'high':None})
         result=response.json()['val']
         # result=Appointment.aptmnt_doctors(0,0,None,None,None)      
         return render_template("aptmnt.html",result=result,phno=phno)
@@ -198,13 +198,13 @@ def getslotsinfo():
     if request.method == "POST":
         date = request.form.get('date')
         docID = request.form.get('docID')
-        response = requests.post(url="http://localhost:8005/getslot",json={'docID': docID,'date':date})
+        response = requests.post(url="http://172.24.0.7:8005/getslot",json={'docID': docID,'date':date})
         result=response.json()['val']
         # result=Appointment.getSlot(0,docID,date)
         if not result:
-            requests.post(url="http://localhost:8005/addslot",json={'docID': docID,'date':date})
+            requests.post(url="http://172.24.0.7:8005/addslot",json={'docID': docID,'date':date})
             # Appointment.addSlot(0,docID,date)
-        response = requests.post(url="http://localhost:8005/getslot",json={'docID': docID,'date':date})
+        response = requests.post(url="http://172.24.0.7:8005/getslot",json={'docID': docID,'date':date})
         result=response.json()['val']
         if(str(date)==str(todaysdate)):
             now = datetime.now()
@@ -265,22 +265,22 @@ def confirmaptmnt():
         docID = request.form.get('docID')
         slot = request.form.get('slot')
         slot_dict={"09:00-09:15":0,"09:15-09:30":1,"09:30-09:45":2,"09:45-10:00":3,"10:00-10:15":4,"10:15-10:30":5,"10:30-10:45":6,"10:45-11:00":7,"11:00-11:15":8,"11:15-11:30":9,"11:30-11:45":10,"11:45-12:00":11,"18:00-18:15":12,"18:15-18:30":13,"18:30-18:45":14,"18:45-19:00":15,"19:00-19:15":16,"19:15-19:30":17,"19:30-19:45":18,"19:45-20:00":19,"20:00-20:15":20,"20:15-20:30":21,"20:30-20:45":22,"20:45-21:00":23}
-        response = requests.post(url="http://localhost:8005/getslottimestring",json={'docID': docID,'date':date})
+        response = requests.post(url="http://172.24.0.7:8005/getslottimestring",json={'docID': docID,'date':date})
         timestring=response.json()['val']
         # timestring=Appointment.getSlottimestring(0,docID,date)
         newtimestring=timestring[0][0][0:slot_dict[slot]]+"1"+timestring[0][0][slot_dict[slot]+1:24]
         if "recep_id" in session:
             pphno=request.form.get('phno')
             
-            response = requests.post(url="http://localhost:8002/checknewphno",json={'phno': pphno})
+            response = requests.post(url="http://172.24.0.3:8002/checknewphno",json={'phno': pphno})
             print("chk1")
             if response.json()['val']!=0:
-                requests.post(url="http://localhost:8005/addtempuser",json={'p_Fname': p_Fname,'p_Lname': p_Lname,'date': date,'gender': gender,'pphno': pphno,'slot': slot,'docID': docID})
+                requests.post(url="http://172.24.0.7:8005/addtempuser",json={'p_Fname': p_Fname,'p_Lname': p_Lname,'date': date,'gender': gender,'pphno': pphno,'slot': slot,'docID': docID})
                 print("chk2")
                 
                 # Appointment.addTempUser(0,p_Fname,p_Lname,date,gender,pphno,slot,docID)         
             slotdictslot=slot_dict[slot]
-            response = requests.post(url="http://localhost:8005/updateslot",json={'newtimestring': newtimestring,'slotdictslot':slotdictslot,'docID':docID,'date':date})
+            response = requests.post(url="http://172.24.0.7:8005/updateslot",json={'newtimestring': newtimestring,'slotdictslot':slotdictslot,'docID':docID,'date':date})
             slotchk=response.json()['val']
             # slotchk=Appointment.updateSlot(0,newtimestring,slotdictslot,docID,date)
             
@@ -290,19 +290,19 @@ def confirmaptmnt():
                 return "failed1"
             
             print("chk5")
-            requests.post(url="http://localhost:8005/insertaptmnt",json={'phno': pphno,'docID':docID,'date':date,'slot':slot})
+            requests.post(url="http://172.24.0.7:8005/insertaptmnt",json={'phno': pphno,'docID':docID,'date':date,'slot':slot})
             # Appointment.insertAptmnt(0,pphno,docID,date,slot)
             
             print("chk6")
             return "Success"
         else:
             slotdictslot=slot_dict[slot]
-            response = requests.post(url="http://localhost:8005/updateslot",json={'newtimestring': newtimestring,'slotdictslot':slotdictslot,'docID':docID,'date':date})
+            response = requests.post(url="http://172.24.0.7:8005/updateslot",json={'newtimestring': newtimestring,'slotdictslot':slotdictslot,'docID':docID,'date':date})
             slotchk=response.json()['val']
             # slotchk=Appointment.updateSlot(0,newtimestring,slotdictslot,docID,date)
             if slotchk==-1:
                 return "failed1"
-            requests.post(url="http://localhost:8005/insertaptmnt",json={'phno': phno,'docID':docID,'date':date,'slot':slot})
+            requests.post(url="http://172.24.0.7:8005/insertaptmnt",json={'phno': phno,'docID':docID,'date':date,'slot':slot})
             # Appointment.insertAptmnt(0,phno,docID,date,slot)
             return "Success"
 
@@ -316,12 +316,12 @@ def aptmntDelete():
         date=request.form.get('date')
         phno=request.form.get('phno')
         slot_dict={"09:00-09:15":0,"09:15-09:30":1,"09:30-09:45":2,"09:45-10:00":3,"10:00-10:15":4,"10:15-10:30":5,"10:30-10:45":6,"10:45-11:00":7,"11:00-11:15":8,"11:15-11:30":9,"11:30-11:45":10,"11:45-12:00":11,"18:00-18:15":12,"18:15-18:30":13,"18:30-18:45":14,"18:45-19:00":15,"19:00-19:15":16,"19:15-19:30":17,"19:30-19:45":18,"19:45-20:00":19,"20:00-20:15":20,"20:15-20:30":21,"20:30-20:45":22,"20:45-21:00":23}
-        response = requests.post(url="http://localhost:8005/getslottimestring",json={'docID': docID,'date':date})
+        response = requests.post(url="http://172.24.0.7:8005/getslottimestring",json={'docID': docID,'date':date})
         timestring=response.json()['val']
         # timestring=Appointment.getSlottimestring(0,docID,date)
         newtimestring=timestring[0][0][0:slot_dict[slot]]+"0"+timestring[0][0][slot_dict[slot]+1:24]
         
-        requests.post(url="http://localhost:8005/deleteaptmnt",json={'aptmnt_id': aptmnt_id,'docID':docID,'newtimestring':newtimestring,'date':date,'phno':phno,'slot':slot})
+        requests.post(url="http://172.24.0.7:8005/deleteaptmnt",json={'aptmnt_id': aptmnt_id,'docID':docID,'newtimestring':newtimestring,'date':date,'phno':phno,'slot':slot})
         # Appointment.delete_aptmnt(0,aptmnt_id,docID,date,newtimestring,phno,slot)
         return "success"
 
@@ -338,7 +338,7 @@ def rlogin():
         session.permanent=True
         recep_id = request.form.get('recep_id')
         password = request.form.get('password')
-        response = requests.post(url="http://localhost:8004/rverify",json={'recep_id': recep_id,'password':password})
+        response = requests.post(url="http://172.24.0.5:8004/rverify",json={'recep_id': recep_id,'password':password})
         val=response.json()['val']
         if val==-1:
             flash('Invalid Credentials. Please try again.', category='error')
@@ -362,7 +362,7 @@ def receptionist():
     elif "recep_id" in session:
         recep_id=session["recep_id"]
         
-        response = requests.post(url="http://localhost:8004/rgetname",json={'recep_id': recep_id})
+        response = requests.post(url="http://172.24.0.5:8004/rgetname",json={'recep_id': recep_id})
         name=response.json()['val']
         # name=Receptionist.getName(0,recep_id)
         if name!=None and name:
@@ -377,7 +377,7 @@ def receptionist():
     if request.method=="POST":        
         date = request.form.get('datePicker')
         speciality = request.form.get('speciality')
-        response = requests.post(url="http://localhost:8002/getallusers")
+        response = requests.post(url="http://172.24.0.3:8002/getallusers")
         usersData=response.json()['val']
         if date=='':
                 date=None
@@ -385,29 +385,29 @@ def receptionist():
             date=None
             speciality=None
         elif speciality==None and date==None:
-            response = requests.post(url="http://localhost:8005/showaptmnts",json={'date': date,'speciality': speciality,'identifier': 0,'todaysdate': str(todaysdate),'usersData': usersData})
+            response = requests.post(url="http://172.24.0.7:8005/showaptmnts",json={'date': date,'speciality': speciality,'identifier': 0,'todaysdate': str(todaysdate),'usersData': usersData})
             result=response.json()['val']
             # result=Receptionist.show_aptmnts(0,date,speciality,0,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         
         elif speciality!=None and date==None:   
-            response = requests.post(url="http://localhost:8005/showaptmnts",json={'date': date,'speciality': speciality,'identifier': 1,'todaysdate': str(todaysdate),'usersData': usersData})
+            response = requests.post(url="http://172.24.0.7:8005/showaptmnts",json={'date': date,'speciality': speciality,'identifier': 1,'todaysdate': str(todaysdate),'usersData': usersData})
             result=response.json()['val']        
             # result=Receptionist.show_aptmnts(0,date,speciality,1,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality==None and date!=None:
-            response = requests.post(url="http://localhost:8005/showaptmnts",json={'date': date,'speciality': speciality,'identifier': 2,'todaysdate': str(todaysdate),'usersData': usersData})
+            response = requests.post(url="http://172.24.0.7:8005/showaptmnts",json={'date': date,'speciality': speciality,'identifier': 2,'todaysdate': str(todaysdate),'usersData': usersData})
             result=response.json()['val']
             # result=Receptionist.show_aptmnts(0,date,speciality,2,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
         elif speciality!=None and date!=None:
-            response = requests.post(url="http://localhost:8005/showaptmnts",json={'date': date,'speciality': speciality,'identifier': 3,'todaysdate': str(todaysdate),'usersData': usersData})
+            response = requests.post(url="http://172.24.0.7:8005/showaptmnts",json={'date': date,'speciality': speciality,'identifier': 3,'todaysdate': str(todaysdate),'usersData': usersData})
             result=response.json()['val']
             # result=Receptionist.show_aptmnts(0,date,speciality,3,todaysdate)
             return render_template("receptionist.html",date=date,speciality=speciality,result=result,Fname=Fname,Lname=Lname)
-    response = requests.post(url="http://localhost:8002/getallusers")
+    response = requests.post(url="http://172.24.0.3:8002/getallusers")
     usersData=response.json()['val']
-    response = requests.post(url="http://localhost:8005/showaptmnts",json={'date': None,'speciality': None,'identifier': 0,'todaysdate': str(todaysdate),'usersData': usersData})
+    response = requests.post(url="http://172.24.0.7:8005/showaptmnts",json={'date': None,'speciality': None,'identifier': 0,'todaysdate': str(todaysdate),'usersData': usersData})
     result=response.json()['val']
     # result=Receptionist.show_aptmnts(0,None,None,0,todaysdate)
     return render_template("receptionist.html",date=None,speciality=None,result=result,Fname=Fname,Lname=Lname)
@@ -421,7 +421,7 @@ def raptmnt():
         return redirect('/home')
     elif "recep_id" in session:
         recep_id=session["recep_id"]
-        response = requests.post(url="http://localhost:8004/rgetname",json={'recep_id': recep_id})
+        response = requests.post(url="http://172.24.0.5:8004/rgetname",json={'recep_id': recep_id})
         name=response.json()['val']
         # name=Receptionist.getName(0,recep_id)
         if name!=None and name:
@@ -457,12 +457,12 @@ def raptmnt():
         elif high!=None and speciality!=None and gender!=None:
             identifier=7
         
-        response = requests.post(url="http://localhost:8005/aptmntdoctors",json={'identifier': identifier,'speciality': speciality,'gender': gender,'high': high})
+        response = requests.post(url="http://172.24.0.7:8005/aptmntdoctors",json={'identifier': identifier,'speciality': speciality,'gender': gender,'high': high})
         result=response.json()['val']
         # result=Appointment.aptmnt_doctors(0,identifier,speciality,gender,high)
         return render_template("raptmnt.html",result=result,high=high,speciality=speciality,gender=gender)
     else:
-        response = requests.post(url="http://localhost:8005/aptmntdoctors",json={'identifier': 0,'speciality': None,'gender': None,'high': None})
+        response = requests.post(url="http://172.24.0.7:8005/aptmntdoctors",json={'identifier': 0,'speciality': None,'gender': None,'high': None})
         result=response.json()['val']
         # result=Appointment.aptmnt_doctors(0,0,None,None,None)        
         return render_template("raptmnt.html",result=result)
@@ -472,7 +472,7 @@ def checkuser():
     if request.method == "POST":
         phno=request.form.get('phno')
         # print(User.check_new_phno(0,phno))
-        response = requests.post(url="http://localhost:8002/checknewphno",json={'phno': phno})
+        response = requests.post(url="http://172.24.0.3:8002/checknewphno",json={'phno': phno})
         return str(response.json()['val'])+""
 
 #Checks for the users existence
@@ -480,7 +480,7 @@ def checkuser():
 def getuserinfo():
     if request.method == "POST":
         phno=request.form.get('phno')
-        response = requests.post(url="http://localhost:8002/getuserdetails",json={'phno': phno})
+        response = requests.post(url="http://172.24.0.3:8002/getuserdetails",json={'phno': phno})
         result=response.json()['val']
         # result=User.getUserDetails(0,phno)
         today = date.today()
@@ -501,7 +501,7 @@ def alogin():
         session.permanent=True
         admin_id = request.form.get('admin_id')
         password = request.form.get('password')
-        response = requests.post(url="http://localhost:8004/verify",json={'admin_id': admin_id,'password':password})
+        response = requests.post(url="http://172.24.0.5:8004/verify",json={'admin_id': admin_id,'password':password})
         val=response.json()['val']
         # val=Admin.verify(0,admin_id,password)
         if val==-1:
@@ -523,19 +523,19 @@ def admin():
         return redirect('/home')
     elif "recep_id" in session:
         return redirect('/receptionist')
-    response = requests.post(url="http://localhost:8005/showdoctors")
+    response = requests.post(url="http://172.24.0.7:8005/showdoctors")
     docids=response.json()['val']
     # docids=Admin.showDoctors(0)
-    response = requests.post(url="http://localhost:8004/showreceps")
+    response = requests.post(url="http://172.24.0.5:8004/showreceps")
     recepids=response.json()['val']
     # recepids=Admin.showReceptionists(0)    
-    response = requests.post(url="http://localhost:8004/showadmins")
+    response = requests.post(url="http://172.24.0.5:8004/showadmins")
     adminids=response.json()['val']
     # adminids=Admin.showAdmins(0)
     if "admin_id" in session:
         admin_id=session["admin_id"]
         
-        response = requests.post(url="http://localhost:8004/getname",json={'admin_id': admin_id})
+        response = requests.post(url="http://172.24.0.5:8004/getname",json={'admin_id': admin_id})
         name=response.json()['val']
         # name=Admin.getName(0,admin_id)
         if name!=None and name:
@@ -560,14 +560,14 @@ def addDoctor():
         id = request.form.get('id')
         exp = request.form.get('exp')
         edu = request.form.get('edu')
-        response = requests.post(url="http://localhost:8005/checknewdocid",json={'id': id})
+        response = requests.post(url="http://172.24.0.7:8005/checknewdocid",json={'id': id})
         chkid=response.json()['val']
         if len(Lname)==0 or len(Fname)==0 or len(spec)==0 or gender=='Gender' or len(id)==0 or len(edu)==0:
             return 'failed'
         elif chkid!=1:
             return 'failed1'
         else:
-            requests.post(url="http://localhost:8005/adddoc",json={'id': id,'Fname': Fname,'Lname': Lname,'spec': spec,'exp': exp,'gender': gender,'edu': edu})
+            requests.post(url="http://172.24.0.7:8005/adddoc",json={'id': id,'Fname': Fname,'Lname': Lname,'spec': spec,'exp': exp,'gender': gender,'edu': edu})
             # Admin.addDoc(0,id,Fname,Lname,spec,exp,gender,edu)
             return 'success'
 
@@ -580,7 +580,7 @@ def updateDoctor():
         flag= request.form.get('flag')
         if flag=='get':
             id = request.form.get('id')
-            response = requests.post(url="http://localhost:8005/getdoc",json={'id': id})
+            response = requests.post(url="http://172.24.0.7:8005/getdoc",json={'id': id})
             result=response.json()['val']
             # result=Admin.getDoctor(0,id)
             return jsonify(result)
@@ -595,7 +595,7 @@ def updateDoctor():
             if len(Lname)==0 or len(Fname)==0 or len(spec)==0 or gender=='Gender' or len(id)==0 or len(edu)==0:
                 return 'failed'
             else:
-                requests.post(url="http://localhost:8005/updatedoc",json={'id': id,'Fname': Fname,'Lname': Lname,'spec': spec,'exp': exp,'gender': gender,'edu': edu})
+                requests.post(url="http://172.24.0.7:8005/updatedoc",json={'id': id,'Fname': Fname,'Lname': Lname,'spec': spec,'exp': exp,'gender': gender,'edu': edu})
                 # Admin.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu)
                 return 'success'
 
@@ -606,13 +606,13 @@ def deleteDoctor():
         flag= request.form.get('flag')
         if flag=='get':
             id = request.form.get('id')
-            response = requests.post(url="http://localhost:8005/getdoc",json={'id': id})
+            response = requests.post(url="http://172.24.0.7:8005/getdoc",json={'id': id})
             result=response.json()['val']
             # result=Admin.getDoctor(0,id)
             return jsonify(result)
         elif flag=='delete':
             id = request.form.get('id')
-            response = requests.post(url="http://localhost:8005/deletedoc",json={'id': id})
+            response = requests.post(url="http://172.24.0.7:8005/deletedoc",json={'id': id})
             # Admin.deleteDoc(0,id)
             return 'success'
 
@@ -623,14 +623,14 @@ def addReceptionist():
         Lname = request.form.get('Lname')
         Fname = request.form.get('Fname')
         id = request.form.get('id')
-        response = requests.post(url="http://localhost:8004/chknewrecep",json={'id': id})
+        response = requests.post(url="http://172.24.0.5:8004/chknewrecep",json={'id': id})
         chkrecep=response.json()['val']
         if len(Lname)==0 or len(Fname)==0 or len(id)==0:
             return 'failed'
         elif chkrecep!=1:
             return 'failed1'
         else:
-            requests.post(url="http://localhost:8004/addrecep",json={'id': id,'Fname': Fname,'Lname': Lname})
+            requests.post(url="http://172.24.0.5:8004/addrecep",json={'id': id,'Fname': Fname,'Lname': Lname})
             # Admin.addReceptionist(0,id,Fname,Lname)
             return 'success'
 
@@ -641,12 +641,12 @@ def deleteReceptionist():
         flag= request.form.get('flag')
         if flag=='get':
             id = request.form.get('id')
-            response=requests.post(url="http://localhost:8004/getrecep",json={'id': id})
+            response=requests.post(url="http://172.24.0.5:8004/getrecep",json={'id': id})
             result=response.json()['val']
             return jsonify(result)
         elif flag=='delete':
             id = request.form.get('id')
-            requests.post(url="http://localhost:8004/deleterecep",json={'id': id})
+            requests.post(url="http://172.24.0.5:8004/deleterecep",json={'id': id})
             # Admin.deleteReceptionist(0,id)
             return 'success'
 
@@ -664,21 +664,21 @@ def updateCredentials():
         else:
             if "phno" in session:
                 phno=session["phno"]
-                response = requests.post(url="http://localhost:8002/updatecredentials",json={'CurrentPassword': CurrentPassword,'Newpassword': Newpassword,'phno': phno})
+                response = requests.post(url="http://172.24.0.3:8002/updatecredentials",json={'CurrentPassword': CurrentPassword,'Newpassword': Newpassword,'phno': phno})
                 if response.json()['val']==-1:
                     return 'failed'
                 else:
                     return 'success'
             elif "admin_id" in session:
                 admin_id=session["admin_id"]
-                response = requests.post(url="http://localhost:8004/updatecredentials",json={'CurrentPassword': CurrentPassword,'Newpassword': Newpassword,'admin_id': admin_id})
+                response = requests.post(url="http://172.24.0.5:8004/updatecredentials",json={'CurrentPassword': CurrentPassword,'Newpassword': Newpassword,'admin_id': admin_id})
                 if response.json()['val']==-1:
                     return 'failed'
                 else:
                     return 'success'
             elif "recep_id" in session:
                 recep_id=session["recep_id"]
-                response = requests.post(url="http://localhost:8004/rupdatecredentials",json={'CurrentPassword': CurrentPassword,'Newpassword': Newpassword,'recep_id': recep_id})
+                response = requests.post(url="http://172.24.0.5:8004/rupdatecredentials",json={'CurrentPassword': CurrentPassword,'Newpassword': Newpassword,'recep_id': recep_id})
                 if response.json()['val']==-1:
                     return 'failed'
                 else:

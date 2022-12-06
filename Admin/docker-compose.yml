@@ -21,12 +21,11 @@ services:
   #     - db
 
   db:
-    image: mysql:5.7.22
+    image: mysql:8.0
     restart: always
     environment:
       MYSQL_DATABASE: nova
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - .dbdata:/var/lib/mysql

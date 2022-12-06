@@ -1,14 +1,9 @@
 import mysql.connector
 import os
 
-# DBhost=os.environ.get('DBhost')
-# DBuser=os.environ.get('DBuser')
-# DBpassword=os.environ.get('DBpassword')
-# DBname=os.environ.get('DBname')
-
-DBhost = 'localhost'
+DBhost = '172.24.0.6'
 DBuser = 'root'
-DBpassword = 'sqlpassword'
+DBpassword = 'root'
 DBname = 'nova'
 
 

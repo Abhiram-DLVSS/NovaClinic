@@ -630,7 +630,6 @@
             url: "/confirmaptmnt",
             data: { "p_Fname": p_Fname, "p_Lname": p_Lname, "age": age, "gender": gender, "date": date, "docID": docID, "slot": slot, "phno": phno },
             success: function (data) {
-               alert("datea");
                if (data == "failed") {
                   $('#tq-modal').modal('hide');
                   alert("Appointment Failed: An account already exists with the given phone number.");
