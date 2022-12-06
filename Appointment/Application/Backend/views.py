@@ -32,6 +32,16 @@ def aptmntdoctors():
         high=request.json['high']
         val=Appointment.aptmnt_doctors(0,identifier,speciality,gender,high)
         return jsonify({'val': val})
+        
+@views.route('/updateinfo',methods=['GET','POST'])
+def updateinfo():
+    if request.method == 'POST':
+        phno=request.json['phno']
+        FName=request.json['FName']
+        LName=request.json['LName']
+        NewPhno=request.json['NewPhno']
+        Appointment.update_info(0,FName,LName,NewPhno,phno)       
+        return "success"
 
 @views.route('/getslot',methods=['GET','POST'])
 def getslot():
@@ -102,3 +112,68 @@ def deleteaptmnt():
         newtimestring=request.json['newtimestring']
         Appointment.delete_aptmnt(0,aptmnt_id,docID,date,newtimestring,phno,slot)
         return "success"
+
+
+@views.route('/checknewdocid',methods=['GET','POST'])
+def checknewdocid():
+    if request.method=="POST":
+        id=request.json['id']
+        val= Appointment.check_new_docid(0,id)
+        return jsonify({'val': val})
+
+@views.route('/showdoctors',methods=['GET','POST'])
+def showdoctors():
+    if request.method=="POST":
+        val= Appointment.showDoctors(0)
+        return jsonify({'val': val})
+
+@views.route('/getdoc',methods=['GET','POST'])
+def getdoc():
+    if request.method=="POST":
+        id=request.json['id']
+        val= Appointment.getDoctor(0,id)
+        return jsonify({'val': val})
+
+@views.route('/adddoc',methods=['GET','POST'])
+def adddoc():
+    if request.method=="POST":
+        id=request.json['id']
+        Fname=request.json['Fname']
+        Lname=request.json['Lname']
+        spec=request.json['spec']
+        exp=request.json['exp']
+        gender=request.json['gender']
+        edu=request.json['edu']
+        Appointment.addDoc(0,id,Fname,Lname,spec,exp,gender,edu)
+        return "success"
+
+@views.route('/updatedoc',methods=['GET','POST'])
+def updatedoc():
+    if request.method=="POST":
+        id=request.json['id']
+        Fname=request.json['Fname']
+        Lname=request.json['Lname']
+        spec=request.json['spec']
+        exp=request.json['exp']
+        gender=request.json['gender']
+        edu=request.json['edu']
+        Appointment.updateDoc(0,id,Fname,Lname,spec,exp,gender,edu)
+        return "success"
+
+@views.route('/deletedoc',methods=['GET','POST'])
+def deletedoc():
+    if request.method=="POST":
+        id=request.json['id']
+        Appointment.deleteDoc(0,id)
+        return "success"
+
+@views.route('/showaptmnts',methods=['GET','POST'])
+def showaptmnts():
+    if request.method=="POST":
+        date=request.json['date']
+        speciality=request.json['speciality']
+        identifier=request.json['identifier']
+        todaysdate=request.json['todaysdate']
+        usersData=request.json['usersData']
+        val= Appointment.show_aptmnts(0,date,speciality,identifier,todaysdate,usersData)
+        return jsonify({'val': val})

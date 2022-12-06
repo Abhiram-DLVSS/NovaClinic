@@ -68,3 +68,9 @@ def getuserdetails():
         day=val[0][2].day
         
         return jsonify({'val': val,'year': year,'month': month,'day': day})
+
+@views.route('/getallusers',methods=['GET','POST'])
+def getallusers():
+    if request.method == 'POST':
+        val=User.getAllUsers(0)
+        return jsonify({'val': val})

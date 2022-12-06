@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     command: 'python main.py'
     ports:
-      - 8004:5000
+      - 8004:8004
     volumes:
       - .:/app
     depends_on:
@@ -24,7 +24,7 @@ services:
     image: mysql:5.7.22
     restart: always
     environment:
-      MYSQL_DATABASE: user
+      MYSQL_DATABASE: nova
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root

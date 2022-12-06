@@ -1,6 +1,6 @@
 -- Login to MySQL (mysql -u root -p)
-CREATE DATABASE user;
-USE user;
+CREATE DATABASE nova;
+USE nova;
 
 CREATE TABLE `users` (
   `Phone_Number` char(10) NOT NULL,

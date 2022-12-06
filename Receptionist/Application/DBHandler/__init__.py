@@ -1,1 +1,0 @@
-from .sqlhandler import Receptionist
