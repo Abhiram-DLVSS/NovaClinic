@@ -15,6 +15,22 @@ docker network connect novanet appointment-backend-1
 docker network connect novanet appointment-db-1
 docker network inspect novanet
 
+docker-compose up --force-recreate --build
+
+
+
+or
 docker network rm novanet
 
 docker-compose up --force-recreate --build
+1.frontend
+2.users,aptmnt,admin
+
+
+from root dir, exectue:
+
+docker network rm novanet
+docker-compose -f ./Frontend/docker-compose.yml up --force-recreate --build
+docker-compose -f ./Users/docker-compose.yml up --force-recreate --build
+docker-compose -f ./Admin/docker-compose.yml up --force-recreate --build
+docker-compose -f ./Appointment/docker-compose.yml up --force-recreate --build

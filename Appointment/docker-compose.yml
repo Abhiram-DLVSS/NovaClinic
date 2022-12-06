@@ -7,18 +7,13 @@ services:
     command: 'python main.py'
     ports:
       - 8005:8005
+    networks:
+      static-network:
+        ipv4_address: 172.24.0.7
     volumes:
       - .:/app
     depends_on:
       - db
-
-  # queue:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   command: 'python -u main.py'
-  #   depends_on:
-  #     - db
 
   db:
     image: mysql:8.0
@@ -31,3 +26,16 @@ services:
       - .dbdata:/var/lib/mysql
     ports:
       - 33065:3306
+    networks:
+      static-network:
+        ipv4_address: 172.24.0.8
+
+networks:
+  static-network:
+    driver: bridge
+    external:
+      name: novanet
+    ipam:
+      driver: default
+      config:
+       - subnet: 172.24.0.0/16
