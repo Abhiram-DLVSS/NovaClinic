@@ -7,17 +7,5 @@ services:
     command: 'python main.py'
     ports:
       - 8001:8001
-    networks:
-      static-network:
-        ipv4_address: 172.24.0.2
     volumes:
       - .:/app
-
-networks:
-  static-network:
-    driver: bridge
-    name: novanet
-    ipam:
-      driver: default
-      config:
-       - subnet: 172.24.0.0/16
