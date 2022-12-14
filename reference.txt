@@ -3,31 +3,36 @@ Users:8002 3 4
 Admin:8004 5 6
 Appointment: 8005 7 8
 
-docker ps
+sudo docker ps
+sudo docker kill $(sudo docker ps -q)
+sudo docker network rm novanet
+sudo docker-compose -f ./Frontend/docker-compose.yml build
+sudo docker-compose -f ./Users/docker-compose.yml build
+sudo docker-compose -f ./Admin/docker-compose.yml build
+sudo docker-compose -f ./Appointment/docker-compose.yml build
+sudo docker-compose -f ./Frontend/docker-compose.yml up -d
+sudo docker-compose -f ./Users/docker-compose.yml up -d
+sudo docker-compose -f ./Admin/docker-compose.yml up -d
+sudo docker-compose -f ./Appointment/docker-compose.yml up -d
+sudo docker network create --subnet=172.24.0.0/16 novanet
 
-docker kill $(docker ps -q)
+sudo docker network connect novanet frontend-backend-1
+sudo docker network connect novanet users-backend-1
+sudo docker network connect novanet users-db-1
+sudo docker network connect novanet admin-backend-1
+sudo docker network connect novanet admin-db-1
+sudo docker network connect novanet appointment-backend-1
+sudo docker network connect novanet appointment-db-1
+sudo docker network inspect novanet
 
-
-docker-compose -f ./Frontend/docker-compose.yml build
-docker-compose -f ./Users/docker-compose.yml build
-docker-compose -f ./Admin/docker-compose.yml build
-docker-compose -f ./Appointment/docker-compose.yml build
-
-docker-compose -f ./Frontend/docker-compose.yml up -d
-docker-compose -f ./Users/docker-compose.yml up -d
-docker-compose -f ./Admin/docker-compose.yml up -d
-docker-compose -f ./Appointment/docker-compose.yml up -d
-
-docker network rm novanet
-docker network create --subnet=172.24.0.0/16 novanet
-docker network connect novanet frontend-backend-1
-docker network connect novanet users-backend-1
-docker network connect novanet users-db-1
-docker network connect novanet admin-backend-1
-docker network connect novanet admin-db-1
-docker network connect novanet appointment-backend-1
-docker network connect novanet appointment-db-1
-docker network inspect novanet
+sudo docker network connect novanet frontend_backend_1
+sudo docker network connect novanet users_backend_1
+sudo docker network connect novanet users_db_1
+sudo docker network connect novanet admin_backend_1
+sudo docker network connect novanet admin_db_1
+sudo docker network connect novanet appointment_backend_1
+sudo docker network connect novanet appointment_db_1
+sudo docker network inspect novanet
 
 docker network rm novanet
 
