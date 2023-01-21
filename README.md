@@ -3,11 +3,18 @@
 This is a web application that helps health centers provide users with an easy way to book a doctor’s appointment online. It also allows the health centers to manage their appointments.
 
 ## Table of contents
-- [Live Demo](#Live-Demo)
+- [Demo](#Demo)
+- [Flowchart](#Flowchart)
 - [Technologies used](#Technologies-used)
 - [Setup & Installation](#Setup--Installation)
 - [Running The App](#Running-The-App)
 - [Viewing The App](#Viewing-The-App)
+
+## Demo
+https://user-images.githubusercontent.com/58914306/213848047-cf210b6f-bb15-4b05-9a7d-d06ee5c8b42f.mp4
+
+## Flowchart
+<img src='Documentation/images/nav_chart.png' width='500'>
 
 ## Technologies used
 - [Flask](https://flask.palletsprojects.com/en/2.0.x/)
@@ -15,6 +22,7 @@ This is a web application that helps health centers provide users with an easy w
 - HTML
 - CSS
 - JavaScript
+
 
 ## Setup & Installation
 
@@ -37,7 +45,7 @@ Make sure you have Python and MySQL installed.
     source [Repository_Directory]//NovaClinic//setupDatabase.sql;
     ```
 
-- Go to the "sqlhandler.py" file at NovaClinic/Application/DBHandler/ and replace `sqlpassword` in 5th line with your MySQL Password.
+- Go to the [sqlhandler.py](Application/DBHandler/sqlhandler.py) file at NovaClinic/Application/DBHandler/ and replace `sqlpassword` in 5th line with your MySQL Password.
 
 ## Running The App
 
