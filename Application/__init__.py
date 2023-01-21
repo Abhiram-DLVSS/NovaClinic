@@ -11,13 +11,7 @@ template_dir = os.path.join(template_dir, 'templates')
 def create_app():
     app=Flask(__name__,template_folder=template_dir,static_folder=static_dir)  
     app.register_blueprint(views,url_prefix='/')
-    
 
-
-    # app.config['SECRET_KEY']=os.environ.get('SECRET_KEY')
-    
     app.config['SECRET_KEY']="RandomSecretString"
     
-
-
     return app

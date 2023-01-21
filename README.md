@@ -30,45 +30,14 @@ Make sure you have Python and MySQL installed.
     pip install -r requirements.txt
     ```
 
-- Run the [setupDatabase.sql](setupDatabase.sql) script file in your MySQL terminal to create the Database (Database Name-nova)
+- Run the [setupDatabase.sql](setupDatabase.sql) script file in your MySQL terminal to create the Database (Database Name: nova)
 
     ```mysql
     mysql -u root -p
     source [Repository_Directory]//NovaClinic//setupDatabase.sql;
     ```
 
-- Go to the "sqlhandler.py" file in NovaClinic/Application/DBHandler/
-
-
-    Replace 
-    ```py
-    DB_URL = os.environ.get('CLEARDB_DATABASE_URL')
-    DBhost=DB_URL[32:59]
-    DBuser=DB_URL[8:22]
-    DBpassword=DB_URL[23:31]
-    DBname=DB_URL[60:82]
-    ```
-    with
-
-    ```py
-    DBhost='localhost'
-    DBuser='root'
-    DBpassword='YOUR_MySQL_PASSWORD'
-    DBname='nova'
-    ```
-
-- Go to the "\_\_init__.py" file in NovaClinic/Application/
-
-    Replace 
-    ```py
-    app.config['SECRET_KEY']=os.environ.get('SECRET_KEY')
-    ```
-    with
-    ```py
-    app.config['SECRET_KEY']="RandomSecretString"
-    ```
-    
-
+- Go to the "sqlhandler.py" file at NovaClinic/Application/DBHandler/ and replace `sqlpassword` in 5th line with your MySQL Password.
 
 ## Running The App
 
