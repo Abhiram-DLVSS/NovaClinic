@@ -4,16 +4,21 @@ This is a web application that helps health centers provide users with an easy w
 
 ## Table of contents
 - [Demo](#Demo)
-- [Flowchart](#Flowchart)
+- [User Flow](#User-Flow)
 - [Technologies used](#Technologies-used)
 - [Setup & Installation](#Setup--Installation)
 - [Running The App](#Running-The-App)
 - [Viewing The App](#Viewing-The-App)
 
 ## Demo
-https://user-images.githubusercontent.com/58914306/213848047-cf210b6f-bb15-4b05-9a7d-d06ee5c8b42f.mp4
+- Explore our web application live on Heroku: [Nova Clinic Web App](https://nova-clinic-13bb0b38494e.herokuapp.com/)
 
-## Flowchart
+- For a comprehensive walkthrough of the application and its diverse features, including user, receptionist, and admin functionalities, watch our demo video:
+
+    https://user-images.githubusercontent.com/58914306/213848047-cf210b6f-bb15-4b05-9a7d-d06ee5c8b42f.mp4
+
+
+## User Flow
 <img src='Documentation/images/nav_chart.png' width='500'>
 
 ## Technologies used
