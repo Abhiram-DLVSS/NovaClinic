@@ -45,7 +45,34 @@ Make sure you have Python and MySQL installed.
     source [Repository_Directory]//NovaClinic//setupDatabase.sql;
     ```
 
-- Go to the [sqlhandler.py](Application/DBHandler/sqlhandler.py) file at NovaClinic/Application/DBHandler/ and replace `sqlpassword` in 5th line with your MySQL Password.
+- Go to the "sqlhandler.py" file in NovaClinic/Application/DBHandler/
+
+    Replace 
+    ```py
+    DB_URL = os.environ.get('DATABASE_URL')
+    DBhost=os.environ.get('DBhost')
+    DBuser=os.environ.get('DBuser')
+    DBpassword=os.environ.get('DBpassword')
+    DBname=os.environ.get('DBname')
+    ```
+    with
+    ```py
+    DBhost='localhost'
+    DBuser='root'
+    DBpassword='YOUR_MySQL_PASSWORD'
+    DBname='nova'
+    ```
+
+- Go to the "\_\_init__.py" file in NovaClinic/Application/
+
+    Replace 
+    ```py
+    app.config['SECRET_KEY']=os.environ.get('SECRET_KEY')
+    ```
+    with
+    ```py
+    app.config['SECRET_KEY']="RandomSecretString"
+    ```
 
 ## Running The App
 

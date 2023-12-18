@@ -437,9 +437,6 @@
          phno = $("#phno").val();
       });
       function usercheck() {
-         console.log($('#phno').val().length);
-         console.log(isNaN($('#phno').val()));
-         console.log($('#phno').val().length != 10 || isNaN($('#phno').val()));
          if ($('#phno').val().length != 10 || isNaN($('#phno').val())) {
             $('#next_atPatient').prop('disabled', true);
             $('#Fname').prop('disabled', true);
@@ -487,7 +484,6 @@
             $('#next_atPatient').prop('disabled', true);
          }
          else {
-
             $('#next_atPatient').prop('disabled', false);
          }
       }

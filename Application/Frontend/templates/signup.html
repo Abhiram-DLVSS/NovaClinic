@@ -129,13 +129,15 @@
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js"></script>
       <script>
          $(function(){
-          let datePicker = document.getElementById('dob');
-          let picker = new Litepicker({
-           element: datePicker,
-           format: 'YYYY-MM-DD',
-           maxDate:moment().format('YYYY-MM-DD'),
-           dropdowns:{"minYear":1920,"maxYear":null,"months":true,"years":true}
-          });
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear();
+            let datePicker = document.getElementById('dob');
+            let picker = new Litepicker({
+               element: datePicker,
+               format: 'YYYY-MM-DD',
+               maxDate:moment().subtract(5, 'years').format('YYYY-MM-DD'),
+               dropdowns:{"minYear":1920,"maxYear":currentYear-5,"months":true,"years":true}
+            });
          });
       </script>
       <script>
