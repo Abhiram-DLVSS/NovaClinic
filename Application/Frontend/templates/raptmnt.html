@@ -510,11 +510,18 @@
 
 
       $("#next_atdate").click(function () {
-         date = $("#datePicker").val();
-         $.ajax({
-            type: "POST",
-            url: "/getslotsinfo",
-            data: { "date": date, "docID": docID },
+         var now = new Date();
+            var hour=now.getHours()
+            var min=now.getMinutes()
+            hourmin=hour.toString()+min.toString()
+            date = $("#datePicker").val();
+            var sameday="false"
+            if(date==moment().format('YYYY-MM-DD'))
+               sameday="true"
+            $.ajax({
+         type: "POST",
+         url: "/getslotsinfo",
+         data: {"date":date,"docID":docID,"current_time":hourmin,"sameday":sameday},
             success: function (data) {
                //Morning
                var i = 0;

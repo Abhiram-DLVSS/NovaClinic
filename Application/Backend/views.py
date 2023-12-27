@@ -183,14 +183,17 @@ def aptmnt():
 def getslotsinfo():
     if request.method == "POST":
         date = request.form.get('date')
+        current_time = request.form.get('current_time')
         docID = request.form.get('docID')
+        sameday = request.form.get('sameday')
+        
         result=Appointment.getSlot(0,docID,date)
         if not result:
             Appointment.addSlot(0,docID,date)
         result=Appointment.getSlot(0,docID,date)
-        if(str(date)==str(todaysdate)):
-            now = datetime.now()
-            current_time = now.strftime("%H%M")
+        if(sameday=="true"):
+            # now = datetime.now()
+            # current_time = now.strftime("%H%M")
             today_slot={"0859":0,"0914":1,"0929":2,"0944":3,"0959":4,"1014":5,"1029":6,"1044":7,"1059":8,"1114":9,"1129":10,"1144":11,"1759":12,"1814":13,"1829":14,"1844":15,"1859":16,"1914":17,"1929":18,"1944":19,"1959":20,"2014":21,"2029":22,"2044":23,"2044":24}
             timesup=24
             for a in today_slot:
